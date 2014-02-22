@@ -130,20 +130,18 @@ public class Tile extends Actor {
 		return tiles;
 	}*/
 	
-	public Set<Tile> getFreeNeighbours() {
+	public Set<Tile> getNeighbours() {
 		Set<Tile> tiles = new HashSet<Tile>();
-		tiles = getFreeNeighbours(tiles, getField().getTile(x, y + 1));
-		tiles = getFreeNeighbours(tiles, getField().getTile(x, y - 1));
-		tiles = getFreeNeighbours(tiles, getField().getTile(x + 1, y));
-		tiles = getFreeNeighbours(tiles, getField().getTile(x - 1, y));
+		tiles = getNeighbours(tiles, getField().getTile(x, y + 1));
+		tiles = getNeighbours(tiles, getField().getTile(x, y - 1));
+		tiles = getNeighbours(tiles, getField().getTile(x + 1, y));
+		tiles = getNeighbours(tiles, getField().getTile(x - 1, y));
 		return tiles;
 	}
 	
-	private Set<Tile> getFreeNeighbours(Set<Tile> tiles, Tile tile) {
+	private Set<Tile> getNeighbours(Set<Tile> tiles, Tile tile) {
 		if (tile != null) {
-			if (tile.isFree()) {
-				tiles.add(tile);
-			}
+			tiles.add(tile);
 		}
 		return tiles;
 	}

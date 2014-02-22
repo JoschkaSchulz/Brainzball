@@ -144,54 +144,65 @@ public class Field extends Group {
 	}
 	
 	public void highlightPass(Player player, int radius) {
-		// TODO }
-	}
-	public void highlightMove(Player player, int radius) {
-		// TODO}
+		// TODO
 	}
 	public void highlightShot(Player player, int radius) {
+		// TODO
+	}
+	public void highlightMove(Player player, int radius) {
 		
-		// Save all reachable tiles with distance
+		// Save all reachable tiles with their cost
 		Map<Tile, Integer> tileDistanceMap = new HashMap<Tile, Integer>();
 		
-		// Visited informations
+		// Visit all tiles in this list
 		LinkedList<Tile> toBeVisited = new LinkedList<Tile>();
-		Set<Tile> visited = new TreeSet<Tile>();
 		
-		// Get opponent team for fight detection
-		Team opponentTeam = (player.getTeam() == team1 ? team2 : team1);
-		
-		// Start at tile from player
+		// Start at the player tile
 		toBeVisited.add(player.getTile());
         while (!toBeVisited.isEmpty()) {
-            Tile tile = toBeVisited.poll();
+            Tile currentTile = toBeVisited.poll();
             
-            // No move no cost!
-            int cost = 0;
-            if (tile.isFree()) {
-            	cost = tile.getDistance() + tile.getCondition();
-            } else if (tile.isInTeam(opponentTeam)) {
-            	cost = Integer.MAX_VALUE;
+            // Get cost for current tile
+           	int costForCurrentTile = 0;
+           	if (tileDistanceMap.containsKey(currentTile)) {
+           		costForCurrentTile = tileDistanceMap.get(currentTile);
+           	}
+            
+            // Get all neighbours from tile
+            Set<Tile> nextTiles = currentTile.getNeighbours();
+            for (Tile nextTile : nextTiles) {
+            	int costForNextTile = costForCurrentTile;
+            	if (nextTile.isFree()) {
+            		costForCurrentTile += nextTile.getCondition();
+            	} else if (nextTiles.isInTeam(team)) {
+            		
+            	}
             }
+
+            		
+            // Cost calculation for next tile	
+            /*if (currentTile.isFree()) {
+           		cost = currentTile.getDistance() + currentTile.getCondition();
+           	} else if (!currentTile.isInTeam(player.getTeam())) {
+           		cost = Integer.MAX_VALUE;
+           	}*/
             
             //if (node.equals(ziel))
             //        return node.dist;
             //if (tile.isInTeam()) {
             //	
             //}
-            int cost = tile.getDistance() + tile.getCondition();
-            if (cost < radius) {
-            	
-            }
+            //int cost = tile.getDistance() + tile.getCondition();
+            //if (cost < radius) {	
+            //}
             
-            if (tile.getDistance() <= radius) {
-                
+            /*if (tile.getDistance() <= radius) {
             	visited.add(tile);
             	for (Tile neighbour : tile.getFreeNeighbours()) {
             		//if (!visited.contains(neighbour))
             		//	toBeVisited.add(new Node<Integer> (neighbor.value, node.dist+1));
             	}
-            }
+            }*/
         }
 	}
 	
