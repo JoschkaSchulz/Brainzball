@@ -24,11 +24,6 @@ public class Tile extends Actor {
 
 	private int x, y;
 	private int condition;
-	
-	private boolean visited;
-	private int distance;
-	
-	
 	private boolean border;
 	private boolean goal;
 	private boolean highlighted;
@@ -146,37 +141,20 @@ public class Tile extends Actor {
 		return tiles;
 	}
 	
-	public void setVisited(boolean visited) {
-		this.visited = visited;
-	}
-	
-	public boolean isVisited() {
-		return visited;
-	}
-	
 	public boolean hasOpponentNeighbour(Team team) {
 		return false;
-	}
+	}	
 	
-	public void setDistance(int distance) {
-		this.distance = distance;
-	}
 	
-	public int getDistance() {
-		return distance;
-	}
+	
+	
+	
+	
 	
 	public int getCondition() {
 		return condition;
 	}
 	
-	public boolean hasNeighbourFromTeam(Team team) {
-		// TODO
-		return false;
-	} 
-	
-	
-
 	public void setHighlighted(boolean highlighted) {
 		this.highlighted = highlighted;
 	}
