@@ -187,9 +187,9 @@ public class Field extends Group {
 
 	@Override
 	public void act(float delta) {
-
+		
 		resetMouseOverTile();
-
+		
 		mouseX = Gdx.input.getX();
 		mouseY = Gdx.input.getY();
 
@@ -197,13 +197,19 @@ public class Field extends Group {
 				&& mouseY > getY() && mouseY < (getY() + getHeight())) {
 			mouseX -= getX();
 			mouseY -= getY();
+
 			overX = (int) (mouseX / 64);
 			overY = (int) (mouseY / 64);
 
+
+			overX = (int)(mouseX/64);
+			overY = (int)(((getHeight())-mouseY)/64);
+			
 			overTile = getTile(overX, overY);
 			overTile.setMouseOver(true);
 		}
-
+		
+		
 		super.act(delta);
 	}
 
