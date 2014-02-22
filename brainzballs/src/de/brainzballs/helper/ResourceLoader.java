@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-public class RessourceLoader {
+public class ResourceLoader {
 
 	public static TextureRegion[] CLOUD;
 	public static TextureRegion MENU_BACKGROUND_SKY;

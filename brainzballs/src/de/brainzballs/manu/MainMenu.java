@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
 import de.brainzballs.BrainzBalls;
 import de.brainzballs.game.Game;
-import de.brainzballs.helper.RessourceLoader;
+import de.brainzballs.helper.ResourceLoader;
 
 public class MainMenu extends Group {
 	private Image background;
@@ -29,10 +29,10 @@ public class MainMenu extends Group {
 	}
 	
 	private void createBackground() {
-		background = new Image(RessourceLoader.MENU_BACKGROUND_SKY);
+		background = new Image(ResourceLoader.MENU_BACKGROUND_SKY);
 		addActor(background);
 		
-		ground = new Image(RessourceLoader.MENU_GROUND);
+		ground = new Image(ResourceLoader.MENU_GROUND);
 		addActor(ground);
 	}
 	
@@ -51,7 +51,7 @@ public class MainMenu extends Group {
 	private void createMenu() {		
 		Table table = new Table();
 		
-		TextButton startButton = new TextButton("Starte Spiel", RessourceLoader.SKIN);
+		TextButton startButton = new TextButton("Starte Spiel", ResourceLoader.SKIN);
 		startButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -59,7 +59,7 @@ public class MainMenu extends Group {
 			}
 		});
 		
-		TextButton creditsButton = new TextButton("Credits", RessourceLoader.SKIN);	
+		TextButton creditsButton = new TextButton("Credits", ResourceLoader.SKIN);	
 		creditsButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -67,7 +67,7 @@ public class MainMenu extends Group {
 			}
 		});
 		
-		TextButton endButton = new TextButton("Beenden", RessourceLoader.SKIN);
+		TextButton endButton = new TextButton("Beenden", ResourceLoader.SKIN);
 		endButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {

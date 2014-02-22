@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import de.brainzballs.game.Game;
-import de.brainzballs.helper.RessourceLoader;
+import de.brainzballs.helper.ResourceLoader;
 import de.brainzballs.manu.MainMenu;
 
 public class BrainzBalls implements ApplicationListener {
@@ -20,7 +20,7 @@ public class BrainzBalls implements ApplicationListener {
 	    Gdx.input.setInputProcessor(stage);
 	    
 	    //Load Resources
-	    RessourceLoader.loadRessources();
+	    ResourceLoader.loadRessources();
 	    
 	    //create main menu
 	    mainMenu = new MainMenu(this);
