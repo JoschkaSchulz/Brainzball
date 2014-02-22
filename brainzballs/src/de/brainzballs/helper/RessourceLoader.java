@@ -4,6 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class RessourceLoader {
 
@@ -14,6 +18,8 @@ public class RessourceLoader {
 	public static BitmapFont BUTTON_FONT;
 	public static TextureRegion BUTTON;
 	public static TextureRegion BUTTON_PRESSED;
+	
+	public static Skin SKIN;
 	
 	public static void loadRessources() {
 		Texture.setEnforcePotImages(false);
@@ -29,5 +35,23 @@ public class RessourceLoader {
 		BUTTON_FONT = new BitmapFont(Gdx.files.internal("data/GUI/Fonts/ButtonFont.fnt"),Gdx.files.internal("data/GUI/Fonts/ButtonFont.png"), false);
 		BUTTON = new TextureRegion(new Texture(Gdx.files.internal("data/GUI/Buttons/Button.png")));
 		BUTTON_PRESSED = new TextureRegion(new Texture(Gdx.files.internal("data/GUI/Buttons/ButtonPressed.png")));
+	
+		
+		//Creating the Skin
+		SKIN = new Skin();
+		
+		SKIN.add("button_font", BUTTON_FONT);
+		
+		TextButtonStyle textButtonStyle = new TextButtonStyle();
+		textButtonStyle.up = new TextureRegionDrawable(BUTTON);
+		textButtonStyle.down = new TextureRegionDrawable(BUTTON_PRESSED);
+		textButtonStyle.over = new TextureRegionDrawable(BUTTON_PRESSED);
+		textButtonStyle.checked = new TextureRegionDrawable(BUTTON_PRESSED);
+		textButtonStyle.font = SKIN.get("button_font", BitmapFont.class);
+		SKIN.add("default", textButtonStyle);
+		
+		LabelStyle labelStyle = new LabelStyle();
+		labelStyle.font = SKIN.get("button_font", BitmapFont.class);
+		SKIN.add("default", labelStyle);
 	}
 }
