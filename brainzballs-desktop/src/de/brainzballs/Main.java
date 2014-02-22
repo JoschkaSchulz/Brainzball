@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "brainzballs";
-		cfg.useGL20 = false;
+		cfg.useGL20 = true;
 		cfg.resizable = false;
 		cfg.width = 1280;
 		cfg.height = 720;
