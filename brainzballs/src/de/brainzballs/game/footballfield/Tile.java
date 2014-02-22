@@ -56,7 +56,7 @@ public class Tile extends Actor {
 	public boolean isFree() {
 		return getField().isFree(x, y);
 	}
-
+	
 	public boolean isBorder() {
 		return border;
 	}
@@ -160,11 +160,11 @@ public class Tile extends Actor {
 		return distance;
 	}
 	
-	public int getDistanceCondition() {
-		return distance + condition;
+	public int getCondition() {
+		return condition;
 	}
 	
-	public boolean hasEnemyNeighbour(Team team) {
+	public boolean hasNeighbourFromTeam(Team team) {
 		// TODO
 		return false;
 	} 

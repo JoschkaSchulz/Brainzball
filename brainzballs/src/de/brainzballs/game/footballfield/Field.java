@@ -11,6 +11,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
+import de.brainzballs.game.Game;
 import de.brainzballs.game.footballfield.team.Player;
 import de.brainzballs.game.footballfield.team.Team;
 
@@ -118,54 +119,59 @@ public class Field extends Group {
 			return;
 
 		if (currentFieldAction == FieldAction.PASS && currentPlayer.canPass()) {
-			highlightPass(currentPlayer);
+			highlightPass(currentPlayer, 4);
 		} else if (currentFieldAction == FieldAction.MOVE
 				&& currentPlayer.canMove()) {
-			highlightMove(currentPlayer);
+			highlightMove(currentPlayer, 4);
 		} else if (currentFieldAction == FieldAction.SHOT
 				&& currentPlayer.canShot()) {
-			highlightShot(currentPlayer);
+			highlightShot(currentPlayer, 4);
 		}
 	}
 
-	private void highlightPass(Player player) {
-		
-	}
-
-	private void highlightMove(Player player) {
-
-	}
-
-	private void highlightShot(Player player) {
-
-	}
-
 	public boolean isFree(int x, int y) {
-		return isFree(x, y, getTeam1().getPlayers())
-				|| isFree(x, y, getTeam2().getPlayers());
+		return !isInTeam(x, y, getTeam1()) && !isInTeam(x, y, getTeam2());
 	}
-
-	public boolean isFree(int x, int y, List<Player> players) {
-		for (Player p : players)
+	
+	public boolean isInTeam(int x, int y, Team team) {
+		for (Player p : team.getPlayers())
 			if (p.getPositionX() == x && p.getPositionY() == y)
 				return true;
-
+		
 		return false;
 	}
-
-	public void getMovement(Player player, int radius) {
+	
+	public void highlightPass(Player player, int radius) {
+		// TODO }
+	}
+	public void highlightMove(Player player, int radius) {
+		// TODO}
+	}
+	public void highlightShot(Player player, int radius) {
 		LinkedList<Tile> toBeVisited = new LinkedList<Tile>();
 		Set<Tile> visited = new TreeSet<Tile>();
 		toBeVisited.add(player.getTile());
+		
+		
+		Team opponentTeam = (player.getTeam() == team1 ? team2 : team1);
+		
 		
         while (!toBeVisited.isEmpty()) {
             Tile tile = toBeVisited.poll();
             
             
             
+            //if (tile.hasNeighbourFromTeam(team))
+            
             //if (node.equals(ziel))
             //        return node.dist;
-            int tileDistance = tile.getDistance();
+            //if (tile.isInTeam()) {
+            //	
+            //}
+            int cost = tile.getDistance() + tile.getCondition();
+            if (cost < radius) {
+            	
+            }
             
             if (tile.getDistance() <= radius) {
                 
@@ -213,6 +219,10 @@ public class Field extends Group {
 		}
 	}
 
+	public Game getGame() {
+		return (Game)getParent();
+	}
+	
 	private int mouseX, mouseY, overX, overY;
 	private Tile overTile;
 
