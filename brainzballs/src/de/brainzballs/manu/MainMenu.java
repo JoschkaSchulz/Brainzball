@@ -28,7 +28,7 @@ public class MainMenu extends Group {
 		createBackground();
 		createMenu();
 		
-		debugOverlay();
+//		debugOverlay();
 	}
 	
 	private void debugOverlay() {

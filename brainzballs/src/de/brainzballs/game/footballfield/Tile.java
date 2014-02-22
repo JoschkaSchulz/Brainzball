@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -153,11 +154,9 @@ public class Tile extends Actor {
 		return result;
 	}
 	
-	
-	
-	
-	
-	
+	private void mouseClick(Tile tile) {
+		//TODO: GO RAIMUND GO!!!
+	}
 	
 	public int getCondition() {
 		return condition;
@@ -174,7 +173,7 @@ public class Tile extends Actor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-
+		
 		switch (condition) {
 		default:
 		case CONDITION_GOOD:
@@ -188,8 +187,15 @@ public class Tile extends Actor {
 			break;
 		}
 
-		if (mouseOver)
+		batch.draw(ResourceLoader.TILE_GRID, x * 64, y * 64);
+		
+		if (mouseOver) {
 			batch.draw(ResourceLoader.HIGHLIGHT, x * 64, y * 64);
+			
+			if(Gdx.input.isTouched()) {
+				mouseClick(getField().getTile(x * 64, y * 64));
+			}
+		}
 	}
 
 }

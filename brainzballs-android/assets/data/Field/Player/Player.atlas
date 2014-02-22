@@ -5,7 +5,7 @@ filter: Linear,Linear
 repeat: none
 Ball
   rotate: false
-  xy: 269, 75
+  xy: 205, 3
   size: 57, 51
   orig: 69, 67
   offset: 8, 8
@@ -13,6 +13,13 @@ Ball
 Body
   rotate: false
   xy: 130, 56
+  size: 63, 70
+  orig: 76, 85
+  offset: 6, 6
+  index: -1
+BodyRed
+  rotate: false
+  xy: 195, 56
   size: 63, 70
   orig: 76, 85
   offset: 6, 6
@@ -26,35 +33,35 @@ Head
   index: -1
 LeftFoot
   rotate: false
-  xy: 390, 98
+  xy: 396, 98
   size: 50, 28
   orig: 76, 30
   offset: 14, 2
   index: -1
 LeftHand
   rotate: true
-  xy: 269, 46
+  xy: 334, 40
   size: 27, 31
   orig: 33, 37
   offset: 4, 5
   index: -1
 LeftLowerArm
   rotate: false
-  xy: 235, 24
+  xy: 294, 24
   size: 31, 33
   orig: 40, 34
   offset: 0, 1
   index: -1
 LeftLowerLeg
   rotate: true
-  xy: 328, 69
+  xy: 334, 69
   size: 28, 40
   orig: 34, 41
   offset: 2, 0
   index: -1
 LeftUpperArm
   rotate: true
-  xy: 328, 99
+  xy: 334, 99
   size: 27, 60
   orig: 58, 84
   offset: 15, 10
@@ -68,21 +75,21 @@ LeftUpperLeg
   index: -1
 Neck
   rotate: true
-  xy: 243, 59
+  xy: 308, 59
   size: 23, 24
   orig: 35, 33
   offset: 5, 4
   index: -1
 RightFoot
   rotate: false
-  xy: 442, 98
+  xy: 448, 98
   size: 50, 28
   orig: 63, 33
   offset: 7, 5
   index: -1
 RightHand
   rotate: true
-  xy: 268, 19
+  xy: 327, 13
   size: 25, 30
   orig: 37, 35
   offset: 6, 0
@@ -96,21 +103,21 @@ RightLowerArm
   index: -1
 RightLowerLeg
   rotate: false
-  xy: 205, 15
+  xy: 264, 15
   size: 28, 42
   orig: 75, 73
   offset: 18, 30
   index: -1
 RightUpperArm
   rotate: false
-  xy: 195, 59
+  xy: 260, 59
   size: 46, 23
   orig: 72, 50
   offset: 11, 12
   index: -1
 RightUpperLeg
   rotate: true
-  xy: 195, 84
+  xy: 260, 84
   size: 42, 72
   orig: 67, 83
   offset: 14, 7

@@ -23,6 +23,7 @@ public class ResourceLoader {
 	public static TextureRegion TILE_GOOD[];
 	public static TextureRegion TILE_NORMAL[];
 	public static TextureRegion TILE_BAD[];
+	public static TextureRegion TILE_GRID;
 	public static TextureRegion HIGHLIGHT;
 	
 	public static BitmapFont BUTTON_FONT;
@@ -51,6 +52,8 @@ public class ResourceLoader {
 		
 		TILE_BAD = new TextureRegion[1];
 		TILE_BAD[0] = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/DirtTileBad1.png"))); 
+		
+		TILE_GRID = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/Grid.png"))); 
 		
 		HIGHLIGHT = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/highlight.png"))); 
 

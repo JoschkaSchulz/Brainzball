@@ -23,21 +23,31 @@ public class Player extends Actor {
 	    KEEPER, DEFENDER, MIDFIELDER, STRIKER
 	}
 	
+	public static final int NORTH 	= 0;
+	public static final int WEST 	= 1;
+	public static final int SOUTH  	= 2;
+	public static final int EAST 	= 3;
+	
+	private int direction;
 	private int x, y;
 	private PlayerType playerType;
 	private int goals, fouls, passes, moves, shoots;
 	private boolean jailed;
-	private Animation idle, run;
+	private Animation idle, idleBall, run, runBall, shootBall;
+	private Animation[] specialIdle;
+	private float idleTimer;
 	private AnimationState state;
 	private Skeleton skeleton;
 	private SkeletonRenderer renderer;
 	private PolygonSpriteBatch polyBatch;
 	private SkeletonData skeletonData;
 	
-	private Player(int x, int y, PlayerType playerType) {
+	private Player(int x, int y, PlayerType playerType, int direction) {
 		this.x = x;
 		this.y = y;
 		this.playerType = playerType;
+		this.idleTimer = (float) (Math.random()*10);
+		this.direction = direction;
 		
 		polyBatch = new PolygonSpriteBatch();
 		
@@ -49,10 +59,19 @@ public class Player extends Actor {
 		renderer = new SkeletonRenderer();
 		
 		run = skeletonData.findAnimation("run");
+		runBall = skeletonData.findAnimation("runball");
+		shootBall = skeletonData.findAnimation("shootball");
 		idle = skeletonData.findAnimation("idle1");
+		specialIdle = new Animation[5];
+		specialIdle[0] = skeletonData.findAnimation("idle2");
+		specialIdle[1] = skeletonData.findAnimation("idle3");
+		specialIdle[2] = skeletonData.findAnimation("idle4");
+		specialIdle[3] = skeletonData.findAnimation("idle5");
+		specialIdle[4] = skeletonData.findAnimation("idle6");
+		idleBall = skeletonData.findAnimation("idle1ball");
 		
-		skeletonData.findBone("root").setScaleX(0.25f);
-		skeletonData.findBone("root").setScaleY(0.25f);
+		skeletonData.findBone("root").setScaleX(0.5f);
+		skeletonData.findBone("root").setScaleY(0.5f);
 		
 		skeleton = new Skeleton(skeletonData);
 		skeleton.updateWorldTransform();
@@ -60,6 +79,16 @@ public class Player extends Actor {
 		AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
 		stateData.setMix("run", "idle1", 0.2f);
 		stateData.setMix("idle1", "run", 0.2f);
+		stateData.setMix("idle1", "idle2", 0.2f);
+		stateData.setMix("idle1", "idle3", 0.2f);
+		stateData.setMix("idle1", "idle4", 0.2f);
+		stateData.setMix("idle1", "idle5", 0.2f);
+		stateData.setMix("idle1", "idle6", 0.2f);
+		stateData.setMix("idle2", "idle1", 0.2f);
+		stateData.setMix("idle3", "idle1", 0.2f);
+		stateData.setMix("idle4", "idle1", 0.2f);
+		stateData.setMix("idle5", "idle1", 0.2f);
+		stateData.setMix("idle6", "idle1", 0.2f);
 
 		state = new AnimationState(stateData);
 		
@@ -67,8 +96,8 @@ public class Player extends Actor {
 		state.setAnimation(0, "idle1", true);
 	}
 	
-	public static Player newInstance(int x, int y, PlayerType playerType) {
-		return new Player(x, y, playerType);
+	public static Player newInstance(int x, int y, PlayerType playerType, int direction) {
+		return new Player(x, y, playerType, direction);
 	}
 	
 	public void pass(Tile tile) {
@@ -168,7 +197,7 @@ public class Player extends Actor {
 		batch.end();
 		polyBatch.begin();
 		skeleton.setX((x*64)+64);
-		skeleton.setY(y*64);
+		skeleton.setY((y*64)+96);
 		renderer.draw(polyBatch, skeleton);
 		
 		polyBatch.end();
@@ -178,6 +207,13 @@ public class Player extends Actor {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
+		this.idleTimer += delta;
+		
+		if(idleTimer >= 15) {
+			idleTimer = 0;
+			state.setAnimation(0, specialIdle[(int) Math.round(Math.random()*(specialIdle.length-1))], false);
+			state.addAnimation(0, idle, true, state.getCurrent(0).getTime());
+		}
 		
 		state.update(delta);
 		state.apply(skeleton);
