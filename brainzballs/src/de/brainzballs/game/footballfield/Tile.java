@@ -125,8 +125,8 @@ public class Tile extends Actor {
 		return tiles;
 	}*/
 	
-	public Set<Tile> getNeighbours() {
-		Set<Tile> tiles = new HashSet<Tile>();
+	public List<Tile> getNeighbours() {
+		List<Tile> tiles = new ArrayList<Tile>();
 		tiles = getNeighbours(tiles, getField().getTile(x, y + 1));
 		tiles = getNeighbours(tiles, getField().getTile(x, y - 1));
 		tiles = getNeighbours(tiles, getField().getTile(x + 1, y));
@@ -134,7 +134,7 @@ public class Tile extends Actor {
 		return tiles;
 	}
 	
-	private Set<Tile> getNeighbours(Set<Tile> tiles, Tile tile) {
+	private List<Tile> getNeighbours(List<Tile> tiles, Tile tile) {
 		if (tile != null) {
 			tiles.add(tile);
 		}
@@ -142,8 +142,16 @@ public class Tile extends Actor {
 	}
 	
 	public boolean hasOpponentNeighbour(Team team) {
+		
+		
 		return false;
-	}	
+	}
+	
+	private boolean hasOpponentNeighbour(Tile tile) {
+		boolean result = false;
+		
+		return result;
+	}
 	
 	
 	
