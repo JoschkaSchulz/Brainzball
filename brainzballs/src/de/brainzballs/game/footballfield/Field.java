@@ -153,22 +153,22 @@ public class Field extends Group {
 		return false;
 	}
 
-	public void getMovement(Player player, int movement) {
-		Tile startTile = player.getTile();
+	public void getMovement(Player player, int radius) {
 		Queue<Tile> toBeVisited = new LinkedList<Tile>();
 		Set<Tile> visited = new TreeSet<Tile>();
+		toBeVisited.add(player.getTile());
         while (!toBeVisited.isEmpty()) {
             Tile tile = toBeVisited.poll();
             
             //if (node.equals(ziel))
             //        return node.dist;
             
-            if (tile.getDistance() <= movement) {
+            if (tile.getDistance() <= radius) {
                 
             	visited.add(tile);
             	for (Tile neighbour : tile.getFreeNeighbours()) {
-            		if (!visited.contains(neighbour))
-            			toBeVisited.add(new Node<Integer> (neighbor.value, node.dist+1));
+            		//if (!visited.contains(neighbour))
+            		//	toBeVisited.add(new Node<Integer> (neighbor.value, node.dist+1));
             	}
             }
         }
