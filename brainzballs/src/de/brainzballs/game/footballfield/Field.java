@@ -78,6 +78,18 @@ public class Field extends Group {
 		return false;
 	}
 
+	public Ball getBall() {
+		return ball;
+	}
+
+	public Team getTeam1() {
+		return team1;
+	}
+	
+	public Team getTeam2() {
+		return team2;
+	}
+	
 	public Tile getTile(int x, int y) {
 		// TODO getTile(int int)
 		return null;

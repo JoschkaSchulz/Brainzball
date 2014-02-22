@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import de.brainzballs.game.footballfield.team.Player;
 
 public class Tile extends Actor {
+	
 	private int CONDITION_GOOD 		= 1;
 	private int CONDITION_NORMAL	= 2;
 	private int CONDITION_BAD		= 3;
@@ -16,10 +17,14 @@ public class Tile extends Actor {
 	private boolean goal;
 	private boolean highlighted;
 	
-	public Tile(int x, int y) {
+	private Tile(int x, int y) {
 		this.x = x;
 		this.y = y;
 		this.field = (Field) getParent();
+	}
+	
+	public Tile newInstance(int x, int y) {
+		return new Tile(x, y);
 	}
 	
 	public boolean isFree() {
