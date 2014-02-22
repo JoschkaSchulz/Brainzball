@@ -192,7 +192,7 @@ public class Field extends Group {
 			mouseX -= getX();
 			mouseY -= getY();
 			overX = (int)(mouseX/64);
-			overY = (int)(((getHeight()+64)-mouseY)/64)-1;
+			overY = (int)(((getHeight())-mouseY)/64);
 			
 			overTile = getTile(overX, overY);
 			overTile.setMouseOver(true);
