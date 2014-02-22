@@ -6,14 +6,39 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 
 public class Team extends Group {
 	private List<Player> players;
-	
-	public int getGoals() {
-		//TODO getGoals
-		return 0;
+
+	public int getPasses() {
+		int result = 0;
+		for (Player player : players)
+			result += player.getPasses();
+		return result;
 	}
-	
+
+	public int getMoves() {
+		int result = 0;
+		for (Player player : players)
+			result += player.getMoves();
+		return result;
+	}
+
+	public int getShoots() {
+		int result = 0;
+		for (Player player : players)
+			result += player.getShoots();
+		return result;
+	}
+
+	public int getGoals() {
+		int result = 0;
+		for (Player player : players)
+			result += player.getGoals();
+		return result;
+	}
+
 	public int getFouls() {
-		//TODO getFouls
-		return 0;
+		int result = 0;
+		for (Player player : players)
+			result += player.getFouls();
+		return result;
 	}
 }

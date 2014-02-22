@@ -33,12 +33,12 @@ public class Field extends Group {
 		return false;
 	}
 	
-	private Tile getTile(int x, int y) {
+	public Tile getTile(int x, int y) {
 		//TODO getTile(int int)
 		return null;
 	}
 	
-	private void resetHighlight() {
+	public void resetHighlight() {
 		for(int w = 0; w < field.length; w++) {
 			for(int h = 0; h < field[0].length; h++) {
 				field[w][h].setHighlighted(false);
