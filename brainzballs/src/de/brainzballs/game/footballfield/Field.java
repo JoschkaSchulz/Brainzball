@@ -30,29 +30,34 @@ public class Field extends Group {
 			}
 		}
 
+		// Create ball
+		int horizontalCenter = (int)height / 2;
+		int verticalCenter = (int)width / 2;
+		ball = Ball.newInstance(horizontalCenter, verticalCenter);
+		
 		// Create team1 on the left half
 		List<Player> players;
 		players = new ArrayList<Player>();
-		players.add(new Player()); // Keeper
-		players.add(new Player()); 
-		players.add(new Player());
-		players.add(new Player());
-		players.add(new Player());
+		players.add(Player.newInstance(0, verticalCenter, Player.PlayerType.KEEPER));
+		players.add(Player.newInstance(1, verticalCenter - 2, Player.PlayerType.DEFENDER));
+		players.add(Player.newInstance(1, verticalCenter + 2, Player.PlayerType.DEFENDER));
+		players.add(Player.newInstance(1, verticalCenter, Player.PlayerType.MIDFIELDER));
+		players.add(Player.newInstance(2, verticalCenter - 1, Player.PlayerType.STRIKER));
+		players.add(Player.newInstance(2, verticalCenter + 1, Player.PlayerType.STRIKER));
 		team1 = new Team(players);
 
 		// create team2 on the right half
 		players = new ArrayList<Player>();
-		players.add(new Player());
-		players.add(new Player());
-		players.add(new Player());
-		players.add(new Player());
-		players.add(new Player());
+		players.add(Player.newInstance(width - 1, verticalCenter, Player.PlayerType.KEEPER));
+		players.add(Player.newInstance(width - 2, verticalCenter - 2, Player.PlayerType.DEFENDER));
+		players.add(Player.newInstance(width - 2, verticalCenter + 2, Player.PlayerType.DEFENDER));
+		players.add(Player.newInstance(width - 2, verticalCenter, Player.PlayerType.MIDFIELDER));
+		players.add(Player.newInstance(width - 3, verticalCenter - 1, Player.PlayerType.STRIKER));
+		players.add(Player.newInstance(width - 3, verticalCenter + 1, Player.PlayerType.STRIKER));
 		team1 = new Team(players);
-
-		ball = new Ball();
 	}
 
-	public Field newInstance(int width, int height) {
+	public static Field newInstance(int width, int height) {
 		if (width < FIELD_WIDTH_MIN || width > FIELD_WIDTH_MAX) {
 			System.out.println("width out of range");
 			return null;

@@ -7,13 +7,23 @@ import de.brainzballs.game.footballfield.Tile;
 
 public class Player extends Actor {
 	
-	public static final int PLAYER_TYPE_KEEPER	 	= 0;
-	public static final int PLAYER_TYPE_DEFENDER	= 1;
-	public static final int PLAYER_TYPE_MIDFIELDER	= 2;
-	public static final int PLAYER_TYPE_STRIKER	 	= 3;
+	public enum PlayerType {
+	    KEEPER, DEFENDER, MIDFIELDER, STRIKER
+	}
 	
 	private int x, y;
+	private PlayerType playerType;
 	private int goals, fouls, passes, moves, shoots;
+	
+	private Player(int x, int y, PlayerType playerType) {
+		this.x = x;
+		this.y = y;
+		this.playerType = playerType;
+	}
+	
+	public static Player newInstance(int x, int y, PlayerType playerType) {
+		return new Player(x, y, playerType);
+	}
 	
 	public void pass(Tile tile) {
 		passes++;
@@ -52,6 +62,10 @@ public class Player extends Actor {
 	
 	public boolean hasBall() {
 		return false;
+	}
+	
+	public PlayerType getPlayerType() {
+		return playerType;
 	}
 	
 	public Team getTeam() {
