@@ -1,9 +1,6 @@
 #java specific
 *.class
 
-#android specific
-*R.java
-
 #netbeans ignore personal stuff 
 nbproject/private/
 
