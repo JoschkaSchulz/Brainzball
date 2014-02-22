@@ -11,3 +11,5 @@ nbproject/private/
 *.DS_Store
 *.swp
 *.out
+brainzballs-android/bin/jarlist.cache
+brainzballs-android/gen/de/brainzballs/BuildConfig.java
