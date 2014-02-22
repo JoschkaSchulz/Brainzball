@@ -22,8 +22,12 @@ public class Tile extends Actor {
 	private final int CONDITION_BAD = 3;
 
 	private int x, y;
-	private int state;
+	private int condition;
+	
 	private boolean visited;
+	private int distance;
+	
+	
 	private boolean border;
 	private boolean goal;
 	private boolean highlighted;
@@ -33,7 +37,7 @@ public class Tile extends Actor {
 	private Tile(int x, int y) {
 		this.x = x;
 		this.y = y;
-		state = CONDITION_GOOD;
+		this.condition = CONDITION_GOOD;
 		this.highlighted = false;
 		this.mouseOver = false;
 		goodId = (int) Math.round(Math.random()
@@ -58,14 +62,6 @@ public class Tile extends Actor {
 
 	public boolean isGoal() {
 		return goal;
-	}
-
-	public void setVisited(boolean visited) {
-		this.visited = visited;
-	}
-	
-	public boolean isVisited() {
-		return visited;
 	}
 	
 	public boolean isHighlighted() {
@@ -113,26 +109,21 @@ public class Tile extends Actor {
 		return getNeighbours(1);
 	}*/
 	
-	public Map<Tile, Integer> getNeighbours(int depth) {
+	/*public Map<Tile, Integer> getNeighbours(int depth) {
 		return getNeighbours(new HashMap<Tile, Integer>(), depth);
-	}
+	}*/
 	
-	public Map<Tile, Integer> getNeighbours(Map<Tile, Integer> tiles, int depth) {
+	/*public Map<Tile, Integer> getNeighbours(Map<Tile, Integer> tiles, int depth) {
 		if (depth == 0)
 			return tiles;
 		
-		/*tiles = getNeighbours(tiles, getField().getTile(x, y + 1), depth);
+		tiles = getNeighbours(tiles, getField().getTile(x, y + 1), depth);
 		tiles = getNeighbours(tiles, getField().getTile(x, y - 1), depth);
 		tiles = getNeighbours(tiles, getField().getTile(x + 1, y), depth);
-		tiles = getNeighbours(tiles, getField().getTile(x - 1, y), depth);*/
+		tiles = getNeighbours(tiles, getField().getTile(x - 1, y), depth);
 		
 		return tiles;
-	}
-	
-	public void getFreeNeighbours(Tile tile) {
-		Queue<Tile> toBeVisited = new LinkedList<Tile>();
-		
-	}
+	}*/
 	
 	public Set<Tile> getFreeNeighbours() {
 		Set<Tile> tiles = new HashSet<Tile>();
@@ -152,8 +143,21 @@ public class Tile extends Actor {
 		return tiles;
 	}
 	
+	public void setVisited(boolean visited) {
+		this.visited = visited;
+	}
 	
+	public boolean isVisited() {
+		return visited;
+	}
 	
+	public void setDistance(int distance) {
+		this.distance = distance;
+	}
+	
+	public int getDistance() {
+		return distance + condition;
+	}
 	
 	
 	
@@ -171,7 +175,7 @@ public class Tile extends Actor {
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 
-		switch (state) {
+		switch (condition) {
 		default:
 		case CONDITION_GOOD:
 			batch.draw(ResourceLoader.TILE_GOOD[goodId], x * 64, y * 64);

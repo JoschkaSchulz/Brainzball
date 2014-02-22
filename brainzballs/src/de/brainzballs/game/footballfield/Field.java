@@ -1,7 +1,11 @@
 package de.brainzballs.game.footballfield;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -68,6 +72,7 @@ public class Field extends Group {
 		players.add(Player.newInstance(2, verticalCenter + 1,
 				Player.PlayerType.STRIKER));
 		team1 = new Team(players);
+		addActor(team1);
 
 		// create team2 on the right half
 		players = new ArrayList<Player>();
@@ -83,7 +88,8 @@ public class Field extends Group {
 				Player.PlayerType.STRIKER));
 		players.add(Player.newInstance(width - 3, verticalCenter + 1,
 				Player.PlayerType.STRIKER));
-		team1 = new Team(players);
+		team2 = new Team(players);
+		addActor(team2);
 	}
 
 	public static Field newInstance(int width, int height) {
@@ -147,6 +153,27 @@ public class Field extends Group {
 		return false;
 	}
 
+	public void getMovement(Player player, int movement) {
+		Tile startTile = player.getTile();
+		Queue<Tile> toBeVisited = new LinkedList<Tile>();
+		Set<Tile> visited = new TreeSet<Tile>();
+        while (!toBeVisited.isEmpty()) {
+            Tile tile = toBeVisited.poll();
+            
+            //if (node.equals(ziel))
+            //        return node.dist;
+            
+            if (tile.getDistance() <= movement) {
+                
+            	visited.add(tile);
+            	for (Tile neighbour : tile.getFreeNeighbours()) {
+            		if (!visited.contains(neighbour))
+            			toBeVisited.add(new Node<Integer> (neighbor.value, node.dist+1));
+            	}
+            }
+        }
+	}
+	
 	public Ball getBall() {
 		return ball;
 	}

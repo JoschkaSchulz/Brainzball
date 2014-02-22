@@ -12,6 +12,8 @@ public class Team extends Group {
 	
 	public Team(List<Player> players) {
 		this.players = players;
+		for (Player p : this.players)
+			addActor(p);
 	}
 	
 	public int getPasses() {
