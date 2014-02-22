@@ -3,8 +3,10 @@ package de.brainzballs.game.footballfield;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -21,6 +23,7 @@ public class Tile extends Actor {
 
 	private int x, y;
 	private int state;
+	private boolean visited;
 	private boolean border;
 	private boolean goal;
 	private boolean highlighted;
@@ -57,10 +60,18 @@ public class Tile extends Actor {
 		return goal;
 	}
 
+	public void setVisited(boolean visited) {
+		this.visited = visited;
+	}
+	
+	public boolean isVisited() {
+		return visited;
+	}
+	
 	public boolean isHighlighted() {
 		return highlighted;
 	}
-
+	
 	public Field getField() {
 		return (Field) getParent();
 	}
@@ -90,9 +101,17 @@ public class Tile extends Actor {
 		return true;
 	}
 
-	public Map<Tile, Integer> getNeighbours() {
+	
+	
+	
+	
+	
+	
+	
+	
+	/*public Map<Tile, Integer> getNeighbours() {
 		return getNeighbours(1);
-	}
+	}*/
 	
 	public Map<Tile, Integer> getNeighbours(int depth) {
 		return getNeighbours(new HashMap<Tile, Integer>(), depth);
@@ -102,35 +121,43 @@ public class Tile extends Actor {
 		if (depth == 0)
 			return tiles;
 		
-		/*Set<Tile> newTiles = new HashSet<Tile>();
-		newTiles = getNeighbours(tiles, getField().getTile(x, y + 1));
-		newTiles = getNeighbours(tiles, getField().getTile(x, y - 1));
-		newTiles = getNeighbours(tiles, getField().getTile(x + 1, y));
-		newTiles = getNeighbours(tiles, getField().getTile(x - 1, y));*/
-		//for (Tile tile : newTiles) {
-			
-		//}
+		/*tiles = getNeighbours(tiles, getField().getTile(x, y + 1), depth);
+		tiles = getNeighbours(tiles, getField().getTile(x, y - 1), depth);
+		tiles = getNeighbours(tiles, getField().getTile(x + 1, y), depth);
+		tiles = getNeighbours(tiles, getField().getTile(x - 1, y), depth);*/
 		
 		return tiles;
 	}
 	
-	private Map<Tile, Integer> getNeighbours(Map<Tile, Integer> tiles, Tile tile, int depth) {
+	public void getFreeNeighbours(Tile tile) {
+		Queue<Tile> toBeVisited = new LinkedList<Tile>();
+		
+	}
+	
+	public Set<Tile> getFreeNeighbours() {
+		Set<Tile> tiles = new HashSet<Tile>();
+		tiles = getFreeNeighbours(tiles, getField().getTile(x, y + 1));
+		tiles = getFreeNeighbours(tiles, getField().getTile(x, y - 1));
+		tiles = getFreeNeighbours(tiles, getField().getTile(x + 1, y));
+		tiles = getFreeNeighbours(tiles, getField().getTile(x - 1, y));
+		return tiles;
+	}
+	
+	private Set<Tile> getFreeNeighbours(Set<Tile> tiles, Tile tile) {
 		if (tile != null) {
-			if (!tiles.containsKey(tile)) {
-				tiles.put(tile, depth);
-				//tiles = getNeighbours(tiles, depth - 1);
+			if (tile.isFree()) {
+				tiles.add(tile);
 			}
 		}
 		return tiles;
 	}
 	
-	/*private Set<Tile> getNeighbours(Set<Tile> tiles, int x, int y) {
-		Tile tile = getField().getTile(x, y);
-		if (tile != null)
-			tiles.add(tile);
-		
-		return tiles;
-	}*/
+	
+	
+	
+	
+	
+	
 
 	public void setHighlighted(boolean highlighted) {
 		this.highlighted = highlighted;
