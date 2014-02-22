@@ -233,7 +233,8 @@ public class Field extends Group {
 	            	// Check if the next file is free
 	            	if (nextTile.isFree()) {
 	            		
-	            		// Calculate cost and insert or update the current information 
+	            		// Calculate cost and insert or update the
+	            		// current information 
 	            		boolean visitNextTile = false;
 	            		int cost = currentTileNode.cost + currentTile.getCondition();
 	           			TileNode nextTileNode = result.get(nextTile);
@@ -248,9 +249,16 @@ public class Field extends Group {
 	           				}
 	           			}
 	           			
-	           			// If next tile is new or better insert tile to visit list
-	           			for (int i = 0; i < toBeVisited.size(); i++) {
-	           				
+	           			// If next tile is new or better than the one before
+	           			// insert tile into visit list
+	           			if (visitNextTile) {
+	           				for (int i = 0; i < toBeVisited.size(); i++) {
+	           					TileNode tileNode = result.get(toBeVisited.get(0));
+	           					if (tileNode.getCost() > cost) {
+	           						toBeVisited.add(i, nextTile);
+	           						break;
+	           					}
+	           				}
 	           			}
 	           		}
 	           	}
