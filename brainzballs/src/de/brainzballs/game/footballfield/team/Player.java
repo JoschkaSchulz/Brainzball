@@ -1,5 +1,7 @@
 package de.brainzballs.game.footballfield.team;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import de.brainzballs.game.footballfield.Field;
@@ -14,6 +16,7 @@ public class Player extends Actor {
 	private int x, y;
 	private PlayerType playerType;
 	private int goals, fouls, passes, moves, shoots;
+	private boolean jailed;
 	
 	private Player(int x, int y, PlayerType playerType) {
 		this.x = x;
@@ -40,6 +43,27 @@ public class Player extends Actor {
 		// TODO
 	}
 	
+	public boolean canPass() {
+		if (!hasBall())
+			return false;
+		
+		// TODO
+		return false;
+	}
+	
+	public boolean canMove() {
+		// TODO
+		return false;
+	}
+	
+	public boolean canShot() {
+		if (!hasBall())
+			return false;
+		
+		// TODO
+		return false;
+	}
+	
 	public int getPasses() {
 		return passes;
 	}
@@ -61,6 +85,7 @@ public class Player extends Actor {
 	}
 	
 	public boolean hasBall() {
+		// TODO
 		return false;
 	}
 	
@@ -86,5 +111,9 @@ public class Player extends Actor {
 	
 	public int getPositionY() {
 		return y;
+	}
+	
+	public boolean isJailed() {
+		return jailed;
 	}
 }

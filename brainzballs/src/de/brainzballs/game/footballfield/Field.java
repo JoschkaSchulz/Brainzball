@@ -11,6 +11,10 @@ import de.brainzballs.game.footballfield.team.Team;
 
 public class Field extends Group {
 
+	public enum FieldAction {
+		PASS, MOVE, SHOT, NONE
+	}
+
 	public static final int FIELD_WIDTH_MIN = 11;
 	public static final int FIELD_WIDTH_MAX = 21;
 	public static final int FIELD_HEIGHT_MIN = 7;
@@ -20,16 +24,21 @@ public class Field extends Group {
 	private Ball ball;
 	private Team team1, team2;
 
+	private Player currentPlayer;
+	private FieldAction currentFieldAction;
+
 	private Field(int width, int height) {
 
 		// Create field
 		field = new Tile[width][height];
-		for (int w = 0; w < width; w++) {
+		for (int w = 0; w < width; w++)
 			for (int h = 0; h < height; h++) {
 				field[w][h] = Tile.newInstance(w, h);
 				addActor(field[w][h]);
 			}
-		}
+
+		// Set initial field action
+		fieldAction = FieldAction.NONE;
 
 		// Create ball
 		int horizontalCenter = (int) height / 2;
@@ -80,10 +89,34 @@ public class Field extends Group {
 		return new Field(width, height);
 	}
 
-	public boolean isFree(int x, int y) {
-		return isFree(x, y, getTeam1().getPlayers()) || isFree(x, y, getTeam2().getPlayers());
+	public boolean setPlayerFieldAction(Player player, FieldAction fieldAction) {
+		if (player.isJailed())
+			return false;
+
+		boolean result = false;
+		if (fieldAction == FieldAction.PASS && player.canPass()) {
+			result = true;
+		} else if (fieldAction == FieldAction.MOVE && player.canMove()) {
+			result = true;
+		} else if (fieldAction == FieldAction.SHOT && player.canShot()) {
+			result = true;
+		}
+		return result;
 	}
-	
+
+	/*
+	 * private boolean canPlayerPass(Player player) { // TODO return false; }
+	 * 
+	 * private boolean canPlayerMove(Player player) { // TODO return false; }
+	 * 
+	 * private boolean canPlayerShot(Player player) { // TODO return false; }
+	 */
+
+	public boolean isFree(int x, int y) {
+		return isFree(x, y, getTeam1().getPlayers())
+				|| isFree(x, y, getTeam2().getPlayers());
+	}
+
 	public boolean isFree(int x, int y, List<Player> players) {
 		for (Player p : players)
 			if (p.getPositionX() == x && p.getPositionY() == y)
@@ -104,16 +137,18 @@ public class Field extends Group {
 	}
 
 	public Tile getTile(int x, int y) {
-		// TODO getTile(int int)
-		return null;
+		if (x < 0 || x >= field.length)
+			return null;
+		if (y < 0 || y >= field[0].length)
+			return null;
+
+		return field[x][y];
 	}
 
 	public void resetHighlight() {
-		for (int w = 0; w < field.length; w++) {
-			for (int h = 0; h < field[0].length; h++) {
+		for (int w = 0; w < field.length; w++)
+			for (int h = 0; h < field[0].length; h++)
 				field[w][h].setHighlighted(false);
-			}
-		}
 	}
 
 	@Override
