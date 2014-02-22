@@ -14,10 +14,15 @@ public class ResourceLoader {
 	public static TextureRegion[] CLOUD;
 	public static TextureRegion MENU_BACKGROUND_SKY;
 	public static TextureRegion MENU_GROUND;
+
+	public static TextureRegion TILE_GOOD[];
+	public static TextureRegion TILE_NORMAL[];
+	public static TextureRegion TILE_BAD[];
 	
 	public static BitmapFont BUTTON_FONT;
 	public static TextureRegion BUTTON;
 	public static TextureRegion BUTTON_PRESSED;
+	
 	
 	public static Skin SKIN;
 	
@@ -27,10 +32,20 @@ public class ResourceLoader {
 		CLOUD[0] = new TextureRegion(new Texture(Gdx.files.internal("data/Menu/Cloud1.png")));
 		CLOUD[1] = new TextureRegion(new Texture(Gdx.files.internal("data/Menu/Cloud2.png")));
 		CLOUD[2] = new TextureRegion(new Texture(Gdx.files.internal("data/Menu/Cloud3.png")));
-		
 		MENU_BACKGROUND_SKY = new TextureRegion(new Texture(Gdx.files.internal("data/Menu/MenuBackgroundSky.png")));
-	
 		MENU_GROUND = new TextureRegion(new Texture(Gdx.files.internal("data/Menu/MenuGround.png")));
+		
+		TILE_GOOD = new TextureRegion[3];
+		TILE_GOOD[0] = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/GrassTileNormal1.png"))); 
+		TILE_GOOD[1] = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/GrassTileNormal2.png"))); 
+		TILE_GOOD[2] = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/GrassTileNormal3.png"))); 
+		
+		TILE_NORMAL = new TextureRegion[2];
+		TILE_NORMAL[0] = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/DirtTileNormal1.png"))); 
+		TILE_NORMAL[1] = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/DirtTileNormal2.png"))); 
+		
+		TILE_BAD = new TextureRegion[1];
+		TILE_BAD[0] = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/DirtTileBad1.png"))); 
 		
 		BUTTON_FONT = new BitmapFont(Gdx.files.internal("data/GUI/Fonts/ButtonFont.fnt"),Gdx.files.internal("data/GUI/Fonts/ButtonFont.png"), false);
 		BUTTON = new TextureRegion(new Texture(Gdx.files.internal("data/GUI/Buttons/Button.png")));
