@@ -79,7 +79,7 @@ public class Field extends Group {
 
 		// create team2 on the right half
 		players = new ArrayList<Player>();
-		players.add(Player.newInstance(width - 1, verticalCenter,
+		players.add(Player.newInstance(0,0,//width - 1, verticalCenter,
 				Player.PlayerType.KEEPER));
 		players.add(Player.newInstance(width - 2, verticalCenter - 2,
 				Player.PlayerType.DEFENDER));
