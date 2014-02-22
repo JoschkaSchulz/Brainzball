@@ -18,7 +18,7 @@ public class Game extends Group {
 	public Game(BrainzBalls brainzBalls) {
 		this.brainzBalls = brainzBalls;
 		
-		this.field = Field.newInstance(21, 11);
+		this.field = Field.newInstance(19, 9);
 		addActor(this.field);
 	}
 }

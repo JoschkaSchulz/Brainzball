@@ -18,12 +18,16 @@ public class Tile extends Actor {
 	private boolean border;
 	private boolean goal;
 	private boolean highlighted;
+	private boolean mouseOver;
 	private int goodId, normalId, badId;	//Texture Array ID's
 	
 	private Tile(int x, int y) {
 		this.x = x;
 		this.y = y;
 		this.field = (Field) getParent();
+		state = CONDITION_GOOD;
+		this.highlighted = false;
+		this.mouseOver = false;
 		goodId = (int) Math.round(Math.random()*(ResourceLoader.TILE_GOOD.length-1));
 		normalId = (int) Math.round(Math.random()*(ResourceLoader.TILE_NORMAL.length-1));
 		badId = (int) Math.round(Math.random()*(ResourceLoader.TILE_BAD.length-1));
@@ -51,6 +55,12 @@ public class Tile extends Actor {
 	public void setHighlighted(boolean highlighted) {
 		this.highlighted = highlighted;
 	}
+	
+	
+
+	public void setMouseOver(boolean mouseOver) {
+		this.mouseOver = mouseOver;
+	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
@@ -68,6 +78,8 @@ public class Tile extends Actor {
 				batch.draw(ResourceLoader.TILE_BAD[badId], x*64, y*64);
 				break;
 		}
+		
+		if(mouseOver) batch.draw(ResourceLoader.HIGHLIGHT, x*64, y*64);
 	}
 	
 }
