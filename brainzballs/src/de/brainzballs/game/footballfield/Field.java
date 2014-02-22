@@ -154,14 +154,18 @@ public class Field extends Group {
 	}
 
 	public void getMovement(Player player, int radius) {
-		Queue<Tile> toBeVisited = new LinkedList<Tile>();
+		LinkedList<Tile> toBeVisited = new LinkedList<Tile>();
 		Set<Tile> visited = new TreeSet<Tile>();
 		toBeVisited.add(player.getTile());
+		
         while (!toBeVisited.isEmpty()) {
             Tile tile = toBeVisited.poll();
             
+            
+            
             //if (node.equals(ziel))
             //        return node.dist;
+            int tileDistance = tile.getDistance();
             
             if (tile.getDistance() <= radius) {
                 

@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import de.brainzballs.game.footballfield.team.Player;
+import de.brainzballs.game.footballfield.team.Team;
 import de.brainzballs.helper.ResourceLoader;
 
 public class Tile extends Actor {
@@ -156,10 +157,17 @@ public class Tile extends Actor {
 	}
 	
 	public int getDistance() {
+		return distance;
+	}
+	
+	public int getDistanceCondition() {
 		return distance + condition;
 	}
 	
-	
+	public boolean hasEnemyNeighbour(Team team) {
+		// TODO
+		return false;
+	} 
 	
 	
 
