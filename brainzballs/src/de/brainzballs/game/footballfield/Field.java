@@ -105,34 +105,34 @@ public class Field extends Group {
 		List<Player> players;
 		players = new ArrayList<Player>();
 		players.add(Player.newInstance(0, verticalCenter,
-				Player.PlayerType.KEEPER));
+				Player.PlayerType.KEEPER, Player.EAST));
 		players.add(Player.newInstance(1, verticalCenter - 2,
-				Player.PlayerType.DEFENDER));
+				Player.PlayerType.DEFENDER, Player.EAST));
 		players.add(Player.newInstance(1, verticalCenter + 2,
-				Player.PlayerType.DEFENDER));
+				Player.PlayerType.DEFENDER, Player.EAST));
 		players.add(Player.newInstance(1, verticalCenter,
-				Player.PlayerType.MIDFIELDER));
+				Player.PlayerType.MIDFIELDER, Player.EAST));
 		players.add(Player.newInstance(2, verticalCenter - 1,
-				Player.PlayerType.STRIKER));
+				Player.PlayerType.STRIKER, Player.EAST));
 		players.add(Player.newInstance(2, verticalCenter + 1,
-				Player.PlayerType.STRIKER));
+				Player.PlayerType.STRIKER, Player.EAST));
 		team1 = new Team(players);
 		addActor(team1);
 
 		// create team2 on the right half
 		players = new ArrayList<Player>();
-		players.add(Player.newInstance(0,0,//width - 1, verticalCenter,
-				Player.PlayerType.KEEPER));
+		players.add(Player.newInstance(width - 1, verticalCenter,
+				Player.PlayerType.KEEPER, Player.WEST));
 		players.add(Player.newInstance(width - 2, verticalCenter - 2,
-				Player.PlayerType.DEFENDER));
+				Player.PlayerType.DEFENDER, Player.WEST));
 		players.add(Player.newInstance(width - 2, verticalCenter + 2,
-				Player.PlayerType.DEFENDER));
+				Player.PlayerType.DEFENDER, Player.WEST));
 		players.add(Player.newInstance(width - 2, verticalCenter,
-				Player.PlayerType.MIDFIELDER));
+				Player.PlayerType.MIDFIELDER, Player.WEST));
 		players.add(Player.newInstance(width - 3, verticalCenter - 1,
-				Player.PlayerType.STRIKER));
+				Player.PlayerType.STRIKER, Player.WEST));
 		players.add(Player.newInstance(width - 3, verticalCenter + 1,
-				Player.PlayerType.STRIKER));
+				Player.PlayerType.STRIKER, Player.WEST));
 		team2 = new Team(players);
 		addActor(team2);
 	}

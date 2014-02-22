@@ -23,6 +23,12 @@ public class Player extends Actor {
 	    KEEPER, DEFENDER, MIDFIELDER, STRIKER
 	}
 	
+	public static final int NORTH 	= 0;
+	public static final int WEST 	= 1;
+	public static final int SOUTH  	= 2;
+	public static final int EAST 	= 3;
+	
+	private int direction;
 	private int x, y;
 	private PlayerType playerType;
 	private int goals, fouls, passes, moves, shoots;
@@ -36,11 +42,12 @@ public class Player extends Actor {
 	private PolygonSpriteBatch polyBatch;
 	private SkeletonData skeletonData;
 	
-	private Player(int x, int y, PlayerType playerType) {
+	private Player(int x, int y, PlayerType playerType, int direction) {
 		this.x = x;
 		this.y = y;
 		this.playerType = playerType;
 		this.idleTimer = (float) (Math.random()*10);
+		this.direction = direction;
 		
 		polyBatch = new PolygonSpriteBatch();
 		
@@ -89,8 +96,8 @@ public class Player extends Actor {
 		state.setAnimation(0, "idle1", true);
 	}
 	
-	public static Player newInstance(int x, int y, PlayerType playerType) {
-		return new Player(x, y, playerType);
+	public static Player newInstance(int x, int y, PlayerType playerType, int direction) {
+		return new Player(x, y, playerType, direction);
 	}
 	
 	public void pass(Tile tile) {
