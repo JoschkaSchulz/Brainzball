@@ -38,7 +38,7 @@ public class Field extends Group {
 			}
 
 		// Set initial field action
-		fieldAction = FieldAction.NONE;
+		currentFieldAction = FieldAction.NONE;
 
 		// Create ball
 		int horizontalCenter = (int) height / 2;
@@ -90,6 +90,12 @@ public class Field extends Group {
 	}
 
 	public boolean setPlayerFieldAction(Player player, FieldAction fieldAction) {
+		if (player == null) {
+			player = null;
+			fieldAction = FieldAction.NONE;
+			return false;
+		}
+		
 		if (player.isJailed())
 			return false;
 
@@ -104,6 +110,11 @@ public class Field extends Group {
 		return result;
 	}
 
+	public boolean setPlayerAction() {
+		// TODO
+		return false;
+	}
+	
 	/*
 	 * private boolean canPlayerPass(Player player) { // TODO return false; }
 	 * 
