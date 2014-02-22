@@ -11,13 +11,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
+import de.brainzballs.BrainzBalls;
+import de.brainzballs.game.Game;
 import de.brainzballs.helper.RessourceLoader;
 
 public class MainMenu extends Group {
 	private Image background;
 	private Image ground;
 	
-	public MainMenu() {
+	private BrainzBalls brainzBalls;
+	
+	public MainMenu(BrainzBalls brainzBalls) {
+		this.brainzBalls = brainzBalls;
+		
 		createBackground();
 		createMenu();
 	}
@@ -31,7 +37,7 @@ public class MainMenu extends Group {
 	}
 	
 	private void startGame() {
-		
+		brainzBalls.startGame();
 	}
 	
 	private void showCredits() {
