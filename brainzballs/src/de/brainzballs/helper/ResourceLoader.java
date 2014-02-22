@@ -3,14 +3,19 @@ package de.brainzballs.helper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.esotericsoftware.spine.SkeletonData;
+import com.esotericsoftware.spine.SkeletonJson;
 
 public class ResourceLoader {
 
+	public static TextureRegion OVERLAY_BACKGROUND;
+	
 	public static TextureRegion[] CLOUD;
 	public static TextureRegion MENU_BACKGROUND_SKY;
 	public static TextureRegion MENU_GROUND;
@@ -26,7 +31,6 @@ public class ResourceLoader {
 	
 	
 	public static Skin SKIN;
-	
 	public static void loadRessources() {
 		Texture.setEnforcePotImages(false);
 		CLOUD = new TextureRegion[3];
@@ -49,6 +53,8 @@ public class ResourceLoader {
 		TILE_BAD[0] = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/DirtTileBad1.png"))); 
 		
 		HIGHLIGHT = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/highlight.png"))); 
+
+		OVERLAY_BACKGROUND = new TextureRegion(new Texture(Gdx.files.internal("data/Overlay/overlay_background.png"))); 
 		
 		BUTTON_FONT = new BitmapFont(Gdx.files.internal("data/GUI/Fonts/ButtonFont.fnt"),Gdx.files.internal("data/GUI/Fonts/ButtonFont.png"), false);
 		BUTTON = new TextureRegion(new Texture(Gdx.files.internal("data/GUI/Buttons/Button.png")));

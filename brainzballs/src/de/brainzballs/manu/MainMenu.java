@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
 import de.brainzballs.BrainzBalls;
 import de.brainzballs.game.Game;
+import de.brainzballs.game.overlay.Fight;
 import de.brainzballs.helper.ResourceLoader;
 
 public class MainMenu extends Group {
@@ -26,6 +27,13 @@ public class MainMenu extends Group {
 		
 		createBackground();
 		createMenu();
+		
+		debugOverlay();
+	}
+	
+	private void debugOverlay() {
+		Fight fight = new Fight();
+		addActor(fight);
 	}
 	
 	private void createBackground() {
