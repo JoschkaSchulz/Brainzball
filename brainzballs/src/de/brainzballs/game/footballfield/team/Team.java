@@ -7,8 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import de.brainzballs.game.footballfield.Field;
 
 public class Team extends Group {
+	
 	private List<Player> players;
-
+	
+	public Team(List<Player> players) {
+		this.players = players;
+	}
+	
 	public int getPasses() {
 		int result = 0;
 		for (Player player : players)
@@ -42,6 +47,10 @@ public class Team extends Group {
 		for (Player player : players)
 			result += player.getFouls();
 		return result;
+	}
+	
+	public List<Player> getPlayers() {
+		return players;
 	}
 	
 	public Field getField() {

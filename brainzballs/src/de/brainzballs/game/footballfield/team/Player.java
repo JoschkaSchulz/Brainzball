@@ -7,6 +7,11 @@ import de.brainzballs.game.footballfield.Tile;
 
 public class Player extends Actor {
 	
+	public static final int PLAYER_TYPE_KEEPER	 	= 0;
+	public static final int PLAYER_TYPE_DEFENDER	= 1;
+	public static final int PLAYER_TYPE_MIDFIELDER	= 2;
+	public static final int PLAYER_TYPE_STRIKER	 	= 3;
+	
 	private int x, y;
 	private int goals, fouls, passes, moves, shoots;
 	
