@@ -57,6 +57,10 @@ public class Tile extends Actor {
 		return getField().isFree(x, y);
 	}
 	
+	public boolean isInTeam(Team team) {
+		return getField().isInTeam(x, y, team);
+	}
+	
 	public boolean isBorder() {
 		return border;
 	}

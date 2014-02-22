@@ -1,8 +1,10 @@
 package de.brainzballs.game.footballfield;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
@@ -148,20 +150,29 @@ public class Field extends Group {
 		// TODO}
 	}
 	public void highlightShot(Player player, int radius) {
+		
+		// Save all reachable tiles with distance
+		Map<Tile, Integer> tileDistanceMap = new HashMap<Tile, Integer>();
+		
+		// Visited informations
 		LinkedList<Tile> toBeVisited = new LinkedList<Tile>();
 		Set<Tile> visited = new TreeSet<Tile>();
-		toBeVisited.add(player.getTile());
 		
-		
+		// Get opponent team for fight detection
 		Team opponentTeam = (player.getTeam() == team1 ? team2 : team1);
 		
-		
+		// Start at tile from player
+		toBeVisited.add(player.getTile());
         while (!toBeVisited.isEmpty()) {
             Tile tile = toBeVisited.poll();
             
-            
-            
-            //if (tile.hasNeighbourFromTeam(team))
+            // No move no cost!
+            int cost = 0;
+            if (tile.isFree()) {
+            	cost = tile.getDistance() + tile.getCondition();
+            } else if (tile.isInTeam(opponentTeam)) {
+            	cost = Integer.MAX_VALUE;
+            }
             
             //if (node.equals(ziel))
             //        return node.dist;
