@@ -2,6 +2,7 @@ package de.brainzballs.game;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 
+import de.brainzballs.BrainzBalls;
 import de.brainzballs.game.footballfield.Field;
 
 public class Game extends Group {
@@ -12,4 +13,11 @@ public class Game extends Group {
 	
 	private Field field;
 	private int state;
+	private BrainzBalls brainzBalls;
+	
+	public Game(BrainzBalls brainzBalls) {
+		this.brainzBalls = brainzBalls;
+		
+		
+	}
 }

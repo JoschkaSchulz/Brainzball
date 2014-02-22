@@ -11,7 +11,7 @@ import de.brainzballs.manu.MainMenu;
 
 public class BrainzBalls implements ApplicationListener {
 	private Stage stage;
-
+	
 	private MainMenu mainMenu;
 	private Game game;
 	
@@ -23,10 +23,10 @@ public class BrainzBalls implements ApplicationListener {
 	    RessourceLoader.loadRessources();
 	    
 	    //create main menu
-	    mainMenu = new MainMenu();
+	    mainMenu = new MainMenu(this);
 	    
 	    //create game
-	    game = new Game();
+	    game = new Game(this);
 	    
 	    //Adding the menu to stage
 	    stage.addActor(mainMenu);
@@ -52,5 +52,15 @@ public class BrainzBalls implements ApplicationListener {
 
 	@Override
 	public void resume() {
+	}
+	
+	public void startGame() {
+		stage.clear();
+		stage.addActor(game);
+	}
+	
+	public void startMenu() {
+		stage.clear();
+		stage.addActor(mainMenu);
 	}
 }
