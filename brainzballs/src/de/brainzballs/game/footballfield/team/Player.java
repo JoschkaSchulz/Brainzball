@@ -79,4 +79,12 @@ public class Player extends Actor {
 	public Tile getTile() {
 		return getField().getTile(x, y);
 	}
+	
+	public int getPositionX() {
+		return x;
+	}
+	
+	public int getPositionY() {
+		return y;
+	}
 }

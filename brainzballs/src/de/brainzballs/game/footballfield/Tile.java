@@ -23,7 +23,7 @@ public class Tile extends Actor {
 		this.field = (Field) getParent();
 	}
 	
-	public Tile newInstance(int x, int y) {
+	public static Tile newInstance(int x, int y) {
 		return new Tile(x, y);
 	}
 	
