@@ -135,6 +135,16 @@ public class Field extends Group {
 		return !isInTeam(x, y, getTeam1()) && !isInTeam(x, y, getTeam2());
 	}
 	
+	public boolean isOpponent(int x, int y, Team currentTeam) {
+		boolean result = false;
+		if (team1 != currentTeam) {
+			result = result || isInTeam(x, y, team1);
+		} else {
+			result = result || isInTeam(x, y, team2);
+		}
+		return false;
+	}
+	
 	public boolean isInTeam(int x, int y, Team team) {
 		for (Player p : team.getPlayers())
 			if (p.getPositionX() == x && p.getPositionY() == y)
@@ -164,7 +174,7 @@ public class Field extends Group {
         while (!toBeVisited.isEmpty()) {
             Tile currentTile = toBeVisited.poll();
             
-            // Stop 
+            // Check if an enemy can hold the player on this tile
             if (!currentTile.hasOpponentNeighbour(player.getTeam())) {
             	
             }
