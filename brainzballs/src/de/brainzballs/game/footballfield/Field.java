@@ -152,20 +152,28 @@ public class Field extends Group {
 	public void highlightMove(Player player, int radius) {
 		
 		// Save all reachable tiles with their cost
-		Map<Tile, Integer> tileDistanceMap = new HashMap<Tile, Integer>();
+		Map<Tile, Integer> tileCostMap = new HashMap<Tile, Integer>();
 		
 		// Visit all tiles in this list
 		LinkedList<Tile> toBeVisited = new LinkedList<Tile>();
 		
 		// Start at the player tile
-		toBeVisited.add(player.getTile());
+		Tile startTile = player.getTile();
+		toBeVisited.add(startTile);
+		tileCostMap.put(startTile, 0);
         while (!toBeVisited.isEmpty()) {
             Tile currentTile = toBeVisited.poll();
             
+            // Stop 
+            if (!currentTile.hasOpponentNeighbour(player.getTeam())) {
+            	
+            }
+            
+            
             // Get cost for current tile
            	int costForCurrentTile = 0;
-           	if (tileDistanceMap.containsKey(currentTile)) {
-           		costForCurrentTile = tileDistanceMap.get(currentTile);
+           	if (tileCostMap.containsKey(currentTile)) {
+           		costForCurrentTile = tileCostMap.get(currentTile);
            	}
             
             // Get all neighbours from tile
@@ -174,9 +182,12 @@ public class Field extends Group {
             	int costForNextTile = costForCurrentTile;
             	if (nextTile.isFree()) {
             		costForCurrentTile += nextTile.getCondition();
-            	} else if (nextTiles.isInTeam(team)) {
-            		
+            		//} else if (nextTile.isOpponent(player.getTeam())) {
+            		//	costForCurrentTile = Integer.MAX_VALUE;
             	}
+            	
+            	toBeVisited.add(nextTile);
+            	
             }
 
             		

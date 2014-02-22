@@ -154,6 +154,10 @@ public class Tile extends Actor {
 		return visited;
 	}
 	
+	public boolean hasOpponentNeighbour(Team team) {
+		return false;
+	}
+	
 	public void setDistance(int distance) {
 		this.distance = distance;
 	}
