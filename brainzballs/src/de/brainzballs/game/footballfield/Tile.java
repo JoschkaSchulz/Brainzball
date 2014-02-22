@@ -189,6 +189,8 @@ public class Tile extends Actor {
 
 		batch.draw(ResourceLoader.TILE_GRID, x * 64, y * 64);
 		
+		if (highlighted) batch.draw(ResourceLoader.HIGHLIGHT, x * 64, y * 64);
+		
 		if (mouseOver) {
 			batch.draw(ResourceLoader.HIGHLIGHT, x * 64, y * 64);
 			
