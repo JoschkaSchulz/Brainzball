@@ -54,7 +54,7 @@ public class Player extends Actor {
 	}
 	
 	public Field getField() {
-		return (Field)getTeam().getParent();
+		return getTeam().getField();
 	}
 	
 	public Tile getTile() {

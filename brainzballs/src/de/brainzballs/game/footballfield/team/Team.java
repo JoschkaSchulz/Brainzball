@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 
+import de.brainzballs.game.footballfield.Field;
+
 public class Team extends Group {
 	private List<Player> players;
 
@@ -40,5 +42,9 @@ public class Team extends Group {
 		for (Player player : players)
 			result += player.getFouls();
 		return result;
+	}
+	
+	public Field getField() {
+		return (Field)getParent();
 	}
 }
