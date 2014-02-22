@@ -29,13 +29,13 @@ public class Field extends Group {
 	private FieldAction currentFieldAction;
 
 	private Field(int width, int height) {
-		
-		int gWidth = width*64;
-		int gHeight = height*64;
-		int fieldX = Gdx.graphics.getWidth()/2 -gWidth/2;
-		int fieldY = Gdx.graphics.getHeight()/2 -gHeight/2;
+
+		int gWidth = width * 64;
+		int gHeight = height * 64;
+		int fieldX = Gdx.graphics.getWidth() / 2 - gWidth / 2;
+		int fieldY = Gdx.graphics.getHeight() / 2 - gHeight / 2;
 		setBounds(fieldX, fieldY, gWidth, gHeight);
-		
+
 		// Create field
 		field = new Tile[width][height];
 		for (int w = 0; w < width; w++)
@@ -96,39 +96,43 @@ public class Field extends Group {
 		return new Field(width, height);
 	}
 
-	public boolean setPlayerFieldAction(Player player, FieldAction fieldAction) {
-		if (player == null) {
-			player = null;
-			fieldAction = FieldAction.NONE;
-			return false;
+	public void setPlayer(Player player) {
+		currentPlayer = player;
+		updateTiles();
+	}
+
+	public void setFieldAction(FieldAction fieldAction) {
+		currentFieldAction = fieldAction;
+		updateTiles();
+	}
+
+	private void updateTiles() {
+		resetHighlight();
+		if (currentPlayer == null)
+			return;
+
+		if (currentFieldAction == FieldAction.PASS && currentPlayer.canPass()) {
+			highlightPass(currentPlayer);
+		} else if (currentFieldAction == FieldAction.MOVE
+				&& currentPlayer.canMove()) {
+			highlightMove(currentPlayer);
+		} else if (currentFieldAction == FieldAction.SHOT
+				&& currentPlayer.canShot()) {
+			highlightShot(currentPlayer);
 		}
+	}
+
+	private void highlightPass(Player player) {
 		
-		if (player.isJailed())
-			return false;
-
-		boolean result = false;
-		if (fieldAction == FieldAction.PASS && player.canPass()) {
-			result = true;
-		} else if (fieldAction == FieldAction.MOVE && player.canMove()) {
-			result = true;
-		} else if (fieldAction == FieldAction.SHOT && player.canShot()) {
-			result = true;
-		}
-		return result;
 	}
 
-	public boolean setPlayerAction() {
-		// TODO
-		return false;
+	private void highlightMove(Player player) {
+
 	}
-	
-	/*
-	 * private boolean canPlayerPass(Player player) { // TODO return false; }
-	 * 
-	 * private boolean canPlayerMove(Player player) { // TODO return false; }
-	 * 
-	 * private boolean canPlayerShot(Player player) { // TODO return false; }
-	 */
+
+	private void highlightShot(Player player) {
+
+	}
 
 	public boolean isFree(int x, int y) {
 		return isFree(x, y, getTeam1().getPlayers())
@@ -139,6 +143,7 @@ public class Field extends Group {
 		for (Player p : players)
 			if (p.getPositionX() == x && p.getPositionY() == y)
 				return true;
+
 		return false;
 	}
 
@@ -176,29 +181,29 @@ public class Field extends Group {
 			}
 		}
 	}
-	
+
 	private int mouseX, mouseY, overX, overY;
 	private Tile overTile;
+
 	@Override
 	public void act(float delta) {
-		
+
 		resetMouseOverTile();
-		
+
 		mouseX = Gdx.input.getX();
 		mouseY = Gdx.input.getY();
-		
-		if(mouseX > getX() && mouseX < (getX()+getWidth()) &&
-				mouseY > getY() && mouseY < (getY()+getHeight())) {
+
+		if (mouseX > getX() && mouseX < (getX() + getWidth())
+				&& mouseY > getY() && mouseY < (getY() + getHeight())) {
 			mouseX -= getX();
 			mouseY -= getY();
-			overX = (int)(mouseX/64);
-			overY = (int)(mouseY/64);
-			
+			overX = (int) (mouseX / 64);
+			overY = (int) (mouseY / 64);
+
 			overTile = getTile(overX, overY);
 			overTile.setMouseOver(true);
 		}
-		
-		
+
 		super.act(delta);
 	}
 
