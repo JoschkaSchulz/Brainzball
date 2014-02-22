@@ -2,6 +2,7 @@ package de.brainzballs.game.footballfield.team;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.esotericsoftware.spine.Animation;
@@ -30,29 +31,32 @@ public class Player extends Actor {
 	private Skeleton skeleton;
 	SkeletonData skeletonData;
 	private SkeletonRenderer renderer;
+	private PolygonSpriteBatch polyBatch;
 	
 	private Player(int x, int y, PlayerType playerType) {
 		this.x = x;
 		this.y = y;
 		this.playerType = playerType;
 		
+		polyBatch = new PolygonSpriteBatch();
+		
 		//Loading Player Skeleton and Animation
-		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("Player.atlas"));
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/Player.atlas"));
 		SkeletonJson json = new SkeletonJson(atlas);
-		skeletonData = json.readSkeletonData(Gdx.files.internal("Player.json"));
+		json.setScale(0.25f);
+		skeletonData = json.readSkeletonData(Gdx.files.internal("data/Field/Player/Player.json"));
+		
+		renderer = new SkeletonRenderer();
 		
 		run = skeletonData.findAnimation("run");
 		idle = skeletonData.findAnimation("idle1");
 		
 		skeleton = new Skeleton(skeletonData);
 		skeleton.updateWorldTransform();
-		skeleton.setX(-50);
-		skeleton.setY(20);
 		
 		AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
-		stateData.setMix("walk", "jump", 0.2f);
-		stateData.setMix("jump", "walk", 0.4f);
-		stateData.setMix("jump", "jump", 0.2f);
+		stateData.setMix("run", "idle1", 0.2f);
+		stateData.setMix("idle1", "run", 0.2f);
 
 		state = new AnimationState(stateData);
 		
@@ -153,19 +157,29 @@ public class Player extends Actor {
 		return jailed;
 	}
 
+	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 		
-		renderer.draw(batch, skeleton);
+		batch.end();
+		polyBatch.begin();
+		skeleton.setX(x*64);
+		skeleton.setY(y*64);
+		System.out.println("" + ((y*64)));
+		renderer.draw(polyBatch, skeleton);
+		
+		polyBatch.end();
+		batch.begin();
 	}
 
 	@Override
 	public void act(float delta) {
 		super.act(delta);
 		
-		skeleton.updateWorldTransform();
-		skeleton.update(delta);
+		state.update(delta);
+		state.apply(skeleton);
+		skeleton.updateWorldTransform(); 
 	}
 	
 	
