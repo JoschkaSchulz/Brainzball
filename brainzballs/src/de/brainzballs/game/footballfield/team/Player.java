@@ -15,6 +15,7 @@ import com.esotericsoftware.spine.SkeletonRenderer;
 
 import de.brainzballs.game.footballfield.Field;
 import de.brainzballs.game.footballfield.Tile;
+import de.brainzballs.helper.ResourceLoader;
 
 public class Player extends Actor {
 	
@@ -29,9 +30,9 @@ public class Player extends Actor {
 	private Animation idle, run;
 	private AnimationState state;
 	private Skeleton skeleton;
-	SkeletonData skeletonData;
 	private SkeletonRenderer renderer;
 	private PolygonSpriteBatch polyBatch;
+	private SkeletonData skeletonData;
 	
 	private Player(int x, int y, PlayerType playerType) {
 		this.x = x;
@@ -42,14 +43,16 @@ public class Player extends Actor {
 		
 		//Loading Player Skeleton and Animation
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/Player.atlas"));
-		SkeletonJson json = new SkeletonJson(atlas);
-		json.setScale(0.25f);
-		skeletonData = json.readSkeletonData(Gdx.files.internal("data/Field/Player/Player.json"));
+		SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
+		skeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/Player.json"));
 		
 		renderer = new SkeletonRenderer();
 		
 		run = skeletonData.findAnimation("run");
 		idle = skeletonData.findAnimation("idle1");
+		
+		skeletonData.findBone("root").setScaleX(0.25f);
+		skeletonData.findBone("root").setScaleY(0.25f);
 		
 		skeleton = new Skeleton(skeletonData);
 		skeleton.updateWorldTransform();
@@ -164,9 +167,8 @@ public class Player extends Actor {
 		
 		batch.end();
 		polyBatch.begin();
-		skeleton.setX(x*64);
+		skeleton.setX((x*64)+64);
 		skeleton.setY(y*64);
-		System.out.println("" + ((y*64)));
 		renderer.draw(polyBatch, skeleton);
 		
 		polyBatch.end();

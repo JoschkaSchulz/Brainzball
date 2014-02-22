@@ -3,6 +3,13 @@ Player-1.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+Ball
+  rotate: false
+  xy: 269, 75
+  size: 57, 51
+  orig: 69, 67
+  offset: 8, 8
+  index: -1
 Body
   rotate: false
   xy: 130, 56
@@ -19,35 +26,35 @@ Head
   index: -1
 LeftFoot
   rotate: false
-  xy: 268, 98
+  xy: 390, 98
   size: 50, 28
   orig: 76, 30
   offset: 14, 2
   index: -1
 LeftHand
-  rotate: false
-  xy: 433, 95
+  rotate: true
+  xy: 269, 46
   size: 27, 31
   orig: 33, 37
   offset: 4, 5
   index: -1
 LeftLowerArm
-  rotate: true
-  xy: 398, 95
+  rotate: false
+  xy: 235, 24
   size: 31, 33
   orig: 40, 34
   offset: 0, 1
   index: -1
 LeftLowerLeg
-  rotate: false
-  xy: 201, 18
+  rotate: true
+  xy: 328, 69
   size: 28, 40
   orig: 34, 41
   offset: 2, 0
   index: -1
 LeftUpperArm
-  rotate: false
-  xy: 239, 66
+  rotate: true
+  xy: 328, 99
   size: 27, 60
   orig: 58, 84
   offset: 15, 10
@@ -55,27 +62,27 @@ LeftUpperArm
 LeftUpperLeg
   rotate: true
   xy: 130, 2
-  size: 52, 69
+  size: 52, 73
   orig: 67, 83
   offset: 5, 10
   index: -1
 Neck
   rotate: true
-  xy: 350, 78
+  xy: 243, 59
   size: 23, 24
   orig: 35, 33
   offset: 5, 4
   index: -1
 RightFoot
   rotate: false
-  xy: 268, 68
+  xy: 442, 98
   size: 50, 28
   orig: 63, 33
   offset: 7, 5
   index: -1
 RightHand
-  rotate: false
-  xy: 462, 96
+  rotate: true
+  xy: 268, 19
   size: 25, 30
   orig: 37, 35
   offset: 6, 0
@@ -89,22 +96,22 @@ RightLowerArm
   index: -1
 RightLowerLeg
   rotate: false
-  xy: 320, 84
+  xy: 205, 15
   size: 28, 42
   orig: 75, 73
   offset: 18, 30
   index: -1
 RightUpperArm
   rotate: false
-  xy: 350, 103
+  xy: 195, 59
   size: 46, 23
   orig: 72, 50
   offset: 11, 12
   index: -1
 RightUpperLeg
-  rotate: false
-  xy: 195, 60
-  size: 42, 66
+  rotate: true
+  xy: 195, 84
+  size: 42, 72
   orig: 67, 83
   offset: 14, 7
   index: -1
