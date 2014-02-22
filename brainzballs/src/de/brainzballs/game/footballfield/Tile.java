@@ -14,6 +14,7 @@ public class Tile extends Actor {
 	private int state;
 	private boolean border;
 	private boolean goal;
+	private boolean highlighted;
 	
 	public Tile(int x, int y) {
 		this.x = x;
@@ -31,6 +32,15 @@ public class Tile extends Actor {
 	public boolean isGoal() {
 		return goal;
 	}
+
+	public boolean isHighlighted() {
+		return highlighted;
+	}
+
+	public void setHighlighted(boolean highlighted) {
+		this.highlighted = highlighted;
+	}
+	
 	
 	
 }

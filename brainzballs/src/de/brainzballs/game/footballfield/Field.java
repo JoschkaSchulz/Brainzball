@@ -1,5 +1,7 @@
 package de.brainzballs.game.footballfield;
 
+import java.util.List;
+
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
@@ -34,6 +36,14 @@ public class Field extends Group {
 	private Tile getTile(int x, int y) {
 		//TODO getTile(int int)
 		return null;
+	}
+	
+	private void resetHighlight() {
+		for(int w = 0; w < field.length; w++) {
+			for(int h = 0; h < field[0].length; h++) {
+				field[w][h].setHighlighted(false);
+			}
+		}
 	}
 	
 	@Override
