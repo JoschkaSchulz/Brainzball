@@ -159,7 +159,7 @@ public class Fight extends Group {
 		
 		rightSkeleton.setFlipX(true);
 		rightSkeleton.setSkin(right.getTeamString());
-		leftSkeletonData.findSlot("Head").setAttachmentName(right.getHeadString());
+		rightSkeletonData.findSlot("Head").setAttachmentName(right.getHeadString());
 		rightSkeleton.setToSetupPose();
 		
 		AnimationStateData stateData = new AnimationStateData(rightSkeletonData); // Defines mixing (crossfading) between animations.
