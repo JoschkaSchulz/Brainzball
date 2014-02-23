@@ -115,9 +115,9 @@ public class Fight extends Group {
 	private AnimationState leftState;
 	private void createLeftPlayer() {
 		//Loading Player Skeleton and Animation
-		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/"+(left.isZombie()?"Zombie":"Player")+".atlas"));
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/"+(left.isZombie()?"Zombie/Zombie":"Player/Player")+".atlas"));
 		SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
-		leftSkeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/"+(left.isZombie()?"Zombie":"Player")+".json"));
+		leftSkeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/"+(left.isZombie()?"Zombie/Zombie":"Player/Player")+".json"));
 		
 		leftRenderer = new SkeletonRenderer();
 		
@@ -146,9 +146,9 @@ public class Fight extends Group {
 	private AnimationState rightState;
 	private void createRightPlayer() {
 		//Loading Player Skeleton and Animation
-		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/"+(right.isZombie()?"Zombie":"Player")+".atlas"));
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/"+(right.isZombie()?"Zombie/Zombie":"Player/Player")+".atlas"));
 		SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
-		rightSkeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/"+(right.isZombie()?"Zombie":"Player")+".json"));
+		rightSkeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/"+(right.isZombie()?"Zombie/Zombie":"Player/Player")+".json"));
 		
 		rightRenderer = new SkeletonRenderer();
 		

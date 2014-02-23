@@ -87,8 +87,8 @@ public class Player extends Actor {
 		skeleton.updateWorldTransform();
 		
 		if(playerType == PlayerType.DEFENDER) {
-			this.headString = "Head2";
 			skeletonData.findSlot("Head").setAttachmentName("Head2");
+			this.headString = "Head2";
 		}else if(playerType == PlayerType.KEEPER){
 			skeletonData.findSlot("Head").setAttachmentName("Head4");
 			this.headString = "Head4";
