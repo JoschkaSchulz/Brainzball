@@ -83,6 +83,9 @@ public class Player extends Actor {
 		}
 		skeleton.setToSetupPose();
 		
+		int head = (int)Math.round((Math.random()*1)+1);
+		state.setAnimation(0, "head"+head, false);
+		
 		AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
 		stateData.setMix("run", "idle1", 0.2f);
 		stateData.setMix("idle1", "run", 0.2f);

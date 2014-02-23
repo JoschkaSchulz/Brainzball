@@ -5,21 +5,21 @@ filter: Linear,Linear
 repeat: none
 Ball
   rotate: false
-  xy: 205, 3
+  xy: 308, 3
   size: 57, 51
   orig: 69, 67
   offset: 8, 8
   index: -1
 Body
   rotate: false
-  xy: 130, 56
+  xy: 233, 56
   size: 63, 70
   orig: 76, 85
   offset: 6, 6
   index: -1
 BodyRed
   rotate: false
-  xy: 195, 56
+  xy: 298, 56
   size: 63, 70
   orig: 76, 85
   offset: 6, 6
@@ -31,65 +31,72 @@ Head
   orig: 134, 112
   offset: 1, 2
   index: -1
-LeftFoot
+Head2
   rotate: false
-  xy: 396, 98
+  xy: 130, 24
+  size: 101, 102
+  orig: 134, 112
+  offset: 19, 0
+  index: -1
+LeftFoot
+  rotate: true
+  xy: 367, 7
   size: 50, 28
   orig: 76, 30
   offset: 14, 2
   index: -1
 LeftHand
   rotate: true
-  xy: 334, 40
+  xy: 427, 10
   size: 27, 31
   orig: 33, 37
   offset: 4, 5
   index: -1
 LeftLowerArm
   rotate: false
-  xy: 294, 24
+  xy: 479, 34
   size: 31, 33
   orig: 40, 34
   offset: 0, 1
   index: -1
 LeftLowerLeg
   rotate: true
-  xy: 334, 69
+  xy: 437, 39
   size: 28, 40
   orig: 34, 41
   offset: 2, 0
   index: -1
 LeftUpperArm
   rotate: true
-  xy: 334, 99
+  xy: 437, 99
   size: 27, 60
   orig: 58, 84
   offset: 15, 10
   index: -1
 LeftUpperLeg
   rotate: true
-  xy: 130, 2
+  xy: 233, 2
   size: 52, 73
   orig: 67, 83
   offset: 5, 10
   index: -1
 Neck
   rotate: true
-  xy: 308, 59
+  xy: 411, 59
   size: 23, 24
   orig: 35, 33
   offset: 5, 4
   index: -1
 RightFoot
   rotate: false
-  xy: 448, 98
+  xy: 437, 69
   size: 50, 28
   orig: 63, 33
   offset: 7, 5
   index: -1
 RightHand
-  rotate: true
-  xy: 327, 13
+  rotate: false
+  xy: 460, 2
   size: 25, 30
   orig: 37, 35
   offset: 6, 0
@@ -103,21 +110,21 @@ RightLowerArm
   index: -1
 RightLowerLeg
   rotate: false
-  xy: 264, 15
+  xy: 397, 15
   size: 28, 42
   orig: 75, 73
   offset: 18, 30
   index: -1
 RightUpperArm
   rotate: false
-  xy: 260, 59
+  xy: 363, 59
   size: 46, 23
   orig: 72, 50
   offset: 11, 12
   index: -1
 RightUpperLeg
   rotate: true
-  xy: 260, 84
+  xy: 363, 84
   size: 42, 72
   orig: 67, 83
   offset: 14, 7
