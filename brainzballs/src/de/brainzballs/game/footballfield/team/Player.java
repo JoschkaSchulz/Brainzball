@@ -32,6 +32,7 @@ public class Player extends Actor {
 	private LinkedList<Tile> moveList;
 	private Team team;
 	private int x, y;
+	private int offended;
 	private PlayerType playerType;
 	private boolean jailed;
 	private Animation idle, idleBall, run, runBall, shootBall;
@@ -49,6 +50,7 @@ public class Player extends Actor {
 	private Player(int x, int y, PlayerType playerType, int direction, Team team) {
 		this.x = x;
 		this.y = y;
+		this.offended = 0;
 		this.playerType = playerType;
 		this.idleTimer = (float) (Math.random()*10);
 		this.team = team;
@@ -153,6 +155,19 @@ public class Player extends Actor {
 		this.zombie = zombie;
 	}
 
+	public boolean isOffended() {
+		return offended > 0;
+	}
+	
+	public void incrementOffended() {
+		offended++;
+	}
+	
+	public void decrementOffended() {
+		if (offended > 0)
+			offended--;
+	}
+	
 	public int getMoveRadius() {
 		if (playerType == PlayerType.KEEPER)
 			return 2;

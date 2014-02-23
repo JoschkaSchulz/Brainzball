@@ -424,7 +424,15 @@ public class Fight extends Group {
 			addActor(playerLabel);
 			state = STATE_FIGHTINIT;
 		}else if(state == STATE_END) {
-			
+			int result = whoWon();
+			if (result == 0) {
+				left.incrementOffended();
+				right.incrementOffended();
+			} else if (result == 1) {
+				right.incrementOffended();
+			} else if (result == 2) {
+				left.incrementOffended();
+			}
 			getParent().removeActor(this);
 		}
 		

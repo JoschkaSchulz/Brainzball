@@ -123,10 +123,14 @@ public class Tile extends Group {
 	
 	public boolean hasOpponentNeighbour() {
 		boolean result = false;
-		result |= getField().isOpponentOnPosition(x + 1, y);
+		/*result |= getField().isOpponentOnPosition(x + 1, y);
 		result |= getField().isOpponentOnPosition(x - 1, y);
 		result |= getField().isOpponentOnPosition(x, y + 1);
-		result |= getField().isOpponentOnPosition(x, y - 1);
+		result |= getField().isOpponentOnPosition(x, y - 1);*/
+		result |= getField().isHealOpponentOnPosition(x + 1, y);
+		result |= getField().isHealOpponentOnPosition(x - 1, y);
+		result |= getField().isHealOpponentOnPosition(x, y + 1);
+		result |= getField().isHealOpponentOnPosition(x, y - 1);
 		return result;
 	}
 	
