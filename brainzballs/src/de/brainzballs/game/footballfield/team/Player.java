@@ -202,7 +202,7 @@ public class Player extends Actor {
 		super.draw(batch, parentAlpha);
 		
 		skeleton.setX((x*64)+32);
-		skeleton.setY((y*64)-32);
+		skeleton.setY((y*64)+32);
 		
 		renderer.draw(batch, skeleton);
 	}

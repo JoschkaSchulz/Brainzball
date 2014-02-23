@@ -92,8 +92,8 @@ public class Field extends Group {
 		currentFieldAction = FieldAction.NONE;
 
 		// Create ball
-		int horizontalCenter = (int)(width / 2) + 1;
-		int verticalCenter = (int)(height / 2) + 1;
+		int horizontalCenter = (int)(width / 2);
+		int verticalCenter = (int)(height / 2);
 		ball = Ball.newInstance(horizontalCenter, verticalCenter);
 
 		// Create team1 on the left half
