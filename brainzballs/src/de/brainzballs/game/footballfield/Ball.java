@@ -46,6 +46,7 @@ public class Ball extends Actor {
 		state = new AnimationState(stateData);
 		
 		//Set the default animation on idle
+		//still, pass, shot
 		state.setAnimation(0, "still", true);
 	}
 	
@@ -82,7 +83,6 @@ public class Ball extends Actor {
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 		
-		System.out.println("X:" + x + "/" + y);
 		skeleton.setX((x*64)+32);
 		skeleton.setY((y*64)+32);
 		
