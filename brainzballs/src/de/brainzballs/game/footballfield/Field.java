@@ -458,6 +458,8 @@ public class Field extends Group {
 					
 				} else if (currentFieldAction == FieldAction.MOVE) {
 					currentPlayer.addMovePoints(path);
+					currentPlayer = null;
+					updateCurrentTiles();
 					getGame().setCurrentState(Game.STATE_ACTION_BEGIN);
 				} else if (currentFieldAction == FieldAction.SHOT) {
 					
