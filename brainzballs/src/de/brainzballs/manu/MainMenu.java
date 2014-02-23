@@ -27,13 +27,6 @@ public class MainMenu extends Group {
 		
 		createBackground();
 		createMenu();
-		
-//		debugOverlay();
-	}
-	
-	private void debugOverlay() {
-		Fight fight = new Fight();
-		addActor(fight);
 	}
 	
 	private void createBackground() {
