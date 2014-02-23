@@ -218,7 +218,6 @@ public class Player extends Actor {
 	public boolean isJailed() {
 		return jailed;
 	}
-
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
