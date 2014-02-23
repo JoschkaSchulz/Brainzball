@@ -289,6 +289,7 @@ public class Player extends Actor {
 		
 		if(moveList.size() > 0 && moveTile == null) {
 			moveTile = moveList.getFirst();
+			System.out.println("MapTile: " + moveTile.getPositionX() + ":" + moveTile.getPositionY());
 			if(moveTile.getPositionX() < getPositionX()) {
 				skeleton.setFlipX(true);
 				skeleton.setToSetupPose();
