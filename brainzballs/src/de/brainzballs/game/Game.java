@@ -16,12 +16,16 @@ import de.brainzballs.game.overlay.Fight;
 import de.brainzballs.helper.ResourceLoader;
 
 public class Game extends Group {
-	public static final int STATE_TEAM1 	= 0;
-	public static final int STATE_TEAM2 	= 1;
-	public static final int STATE_ACTION 	= 2;
+	
+	public static final int TEAM_1 	= 0;
+	public static final int TEAM_2 	= 1;
+	
+	public static final int STATE_ACTION_CHOOSE	= 0;
+	public static final int STATE_ACTION_BEGIN	= 1;
+	public static final int STATE_ACTION_END	= 2;
 	
 	private Field field;
-	private int state;
+	private int currentState, currentTeam;
 	private BrainzBalls brainzBalls;
 	
 	private Table points;
@@ -41,7 +45,7 @@ public class Game extends Group {
 		createActionUI();
 		showActions();
 		
-		state = STATE_TEAM1;
+		setCurrentState(STATE_ACTION_CHOOSE);
 		
 //		debugOverlay();
 	}
@@ -112,17 +116,29 @@ public class Game extends Group {
 		
 	}
 	
-	public void nextState() {
-		state++;
+	public void setCurrentState(int state) {
+		currentState = state;
+		if (currentState == STATE_ACTION_CHOOSE) {
 		
-		if(state == STATE_ACTION) {
-			eventHandling();
-			actionHandling();
-			state = STATE_TEAM1;
+			// Choose action
+			currentTeam = (currentTeam == TEAM_1 ? TEAM_2 : TEAM_1);
+		
+		} else if (currentState == STATE_ACTION_BEGIN){
+			
+			// Action begins
+			
+		} else if (currentState == STATE_ACTION_END) {
+			
+			// Action ends
+			setCurrentState(STATE_ACTION_CHOOSE);
 		}
 	}
 	
-	public int getState() {
-		return state;
+	public int getCurrentState() {
+		return currentState;
+	}
+	
+	public int getCurrentTeam() {
+		return currentTeam;
 	}
 }
