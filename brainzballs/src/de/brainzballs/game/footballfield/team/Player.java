@@ -329,6 +329,7 @@ public class Player extends Actor {
 					if(moveList.size() == 0) {
 						checkLastMove();
 					}
+					setPositionXY(moveTile.getPositionX(), moveTile.getPositionY());
 					moveTile = null;
 				}
 			}else if(moveTile.getPositionX() < getPositionX()) {
@@ -338,6 +339,7 @@ public class Player extends Actor {
 					if(moveList.size() == 0) {
 						checkLastMove();
 					}
+					setPositionXY(moveTile.getPositionX(), moveTile.getPositionY());
 					moveTile = null;
 				}
 			}else if(moveTile.getPositionY() < getPositionY()) {
@@ -347,6 +349,7 @@ public class Player extends Actor {
 					if(moveList.size() == 0) {
 						checkLastMove();
 					}
+					setPositionXY(moveTile.getPositionX(), moveTile.getPositionY());
 					moveTile = null;
 				}
 			}else if(moveTile.getPositionY() > getPositionY()) {
@@ -356,6 +359,7 @@ public class Player extends Actor {
 					if(moveList.size() == 0) {
 						checkLastMove();
 					}
+					setPositionXY(moveTile.getPositionX(), moveTile.getPositionY());
 					moveTile = null;
 				}
 			}
