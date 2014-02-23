@@ -3,8 +3,6 @@ package de.brainzballs.game.footballfield.team;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.scenes.scene2d.Group;
-
 import de.brainzballs.game.footballfield.Field;
 
 public class Team {

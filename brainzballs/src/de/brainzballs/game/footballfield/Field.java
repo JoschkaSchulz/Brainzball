@@ -398,11 +398,21 @@ public class Field extends Group {
 					
 				} else if (currentFieldAction == FieldAction.MOVE) {
 					currentPlayer.addMovePoints(path);
-					currentPlayer = null;
+					
+					
+					
 					if (tile.hasOpponentNeighbour()) {
 						List<Tile> tiles = tile.getNeighbours();
-						// find all enemys in tiles
+						List<Tile> enemys = new ArrayList<Tile>();
+						for (Tile t : tiles) {
+							if (isOpponentOnPosition(t.getPositionX(), t.getPositionY()))
+								enemys.add(t);
+						}
 					}
+					
+					
+					
+					currentPlayer = null;
 					getGame().setCurrentState(Game.STATE_ACTION_BEGIN);
 				} else if (currentFieldAction == FieldAction.SHOT) {
 					
