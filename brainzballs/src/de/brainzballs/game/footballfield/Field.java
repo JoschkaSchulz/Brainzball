@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -28,25 +29,30 @@ public class Field extends Group {
 	public static final int FIELD_HEIGHT_MIN = 7;
 	public static final int FIELD_HEIGHT_MAX = 15;
 
+	// Data object
 	private Tile[][] field;
 	private Ball ball;
 	private Team team1, team2;
-
-	//private int currentState;
+	
+	// Current selection for action
 	private Player currentPlayer;
 	private FieldAction currentFieldAction;
 	private Map<Tile, TileNode> currentTiles;
+	
+	// Decoration
 	private Image overlay;
 
+	
 	private Field(int width, int height) {
 
+		// Set bounds for the field
 		int gWidth = width * 64;
 		int gHeight = height * 64;
 		int fieldX = Gdx.graphics.getWidth() / 2 - gWidth / 2;
 		int fieldY = Gdx.graphics.getHeight() / 2 - gHeight / 2;
 		setBounds(fieldX, fieldY, gWidth, gHeight);
 
-		// Create field
+		// Create field with tiles
 		field = new Tile[width][height];
 		for (int w = 0; w < width; w++)
 			for (int h = 0; h < height; h++) {
@@ -54,16 +60,17 @@ public class Field extends Group {
 				addActor(field[w][h]);
 			}
 
+		// Add field lines as decoration
 		overlay = new Image(ResourceLoader.FIELD_OVERLAY);
 		addActor(overlay);
 		
 		// Create ball
-		int horizontalCenter = (int)(width / 2);
-		int verticalCenter = (int)(height / 2);
+		int horizontalCenter = (width / 2);
+		int verticalCenter = (height / 2);
 		ball = Ball.newInstance(horizontalCenter, verticalCenter);
 		addActor(ball);
 		
-		// Create team1 on the left half
+		// Create team1 with players on the left
 		team1 = new Team(this);
 		List<Player> players = new ArrayList<Player>();
 		players.add(Player.newInstance(0, verticalCenter,
@@ -85,7 +92,7 @@ public class Field extends Group {
 			addActor(p);
 		team1.setPlayers(players);
 
-		// create team2 on the right half
+		// create team2 with players on the right
 		team2 = new Team(this);
 		players = new ArrayList<Player>();
 		players.add(Player.newInstance(width - 1, verticalCenter,
@@ -103,12 +110,9 @@ public class Field extends Group {
 		for (Player p : players)
 			addActor(p);
 		team2.setPlayers(players);
-		orderPlayers();
 		
-		// Set initial field action
-		currentPlayer = team1.getPlayers().get(0);
-		currentFieldAction = FieldAction.MOVE;
-		currentTiles = new HashMap<Tile, TileNode>();
+		// Order players for correct z buffer position
+		orderPlayers();
 	}
 
 	public static Field newInstance(int width, int height) {
@@ -122,40 +126,21 @@ public class Field extends Group {
 	}
 
 	private void orderPlayers() {
-		
 		List<Player> players = new ArrayList<Player>();
 		
-		for(Actor a : getChildren()) {
-			if(a instanceof Player) {
+		// Get all players
+		for(Actor a : getChildren())
+			if(a instanceof Player)
 				players.add((Player)a);
-			}
-		}
 		
-		for(int i = 0; i < players.size(); i++) {
-			for(int o = 0; o < players.size(); o++) {
+		// Reorder players on z axis
+		for(int i = 0; i < players.size(); i++)
+			for(int o = 0; o < players.size(); o++)
 				if(players.get(i).getPositionY() > players.get(o).getPositionY()) {
 					swapActor(players.get(i), players.get(o));
 					Collections.swap(players, i, o);
 				}
-			}
-		}
 	}
-	
-	/*public Player getPlayer(int x, int y) {
-		Player result = getPlayer(x, y, team1);
-		if (result == null)
-			result = getPlayer(x, y, team2);
-		
-		return result;
-	}
-	
-	public Player getPlayer(int x, int y, Team team) {
-		for (Player p : team.getPlayers())
-			if (p.getPositionX() == x && p.getPositionY() == y)
-				return p;
-			
-		return null;
-	}*/
 	
 	public void setCurrentPlayer(int x, int y) {
 		currentPlayer = null;
@@ -444,7 +429,7 @@ public class Field extends Group {
 	}
 	
 	public boolean isFree(int x, int y) {
-		return !isTeamOnPosition(x, y, getTeam1()) && !isTeamOnPosition(x, y, getTeam2());
+		return !isTeamOnPosition(x, y, team1) && !isTeamOnPosition(x, y, team2);
 	}
 	
 	public boolean isOpponentOnPosition(int x, int y) {
@@ -496,13 +481,13 @@ public class Field extends Group {
 		return ball;
 	}
 
-	public Team getTeam1() {
+	/*public Team getTeam1() {
 		return team1;
 	}
 
 	public Team getTeam2() {
 		return team2;
-	}
+	}*/
 
 	public Tile getTile(int x, int y) {
 		if (x < 0 || x >= field.length)
@@ -520,11 +505,9 @@ public class Field extends Group {
 	}
 
 	public void resetMouseOverTile() {
-		for (int w = 0; w < field.length; w++) {
-			for (int h = 0; h < field[0].length; h++) {
+		for (int w = 0; w < field.length; w++)
+			for (int h = 0; h < field[0].length; h++)
 				field[w][h].setMouseOver(false);
-			}
-		}
 	}
 
 	public Game getGame() {
@@ -536,36 +519,18 @@ public class Field extends Group {
 
 	@Override
 	public void act(float delta) {
-		
 		resetMouseOverTile();
-		
 		mouseX = Gdx.input.getX();
 		mouseY = Gdx.input.getY();
-
 		if (mouseX > getX() && mouseX < (getX() + getWidth())
 				&& mouseY > getY() && mouseY < (getY() + getHeight())) {
 			mouseX -= getX();
 			mouseY -= getY();
-
-			overX = (int) (mouseX / 64);
-			overY = (int) (mouseY / 64);
-
-
-			overX = (int)(mouseX/64);
-			overY = (int)(((getHeight())-mouseY)/64);
-			
+			overX = (mouseX / 64);
+			overY = (int)(((getHeight()) - mouseY) / 64);
 			overTile = getTile(overX, overY);
 			overTile.setMouseOver(true);
 		}
-		
-		
 		super.act(delta);
-	}
-
-	
-	
-	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
 	}
 }
