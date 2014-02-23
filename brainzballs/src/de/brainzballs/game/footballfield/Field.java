@@ -444,6 +444,9 @@ public class Field extends Group {
 	}
 	
 	public void doFieldAction(Tile tile) {
+		
+		System.out.println(Arrays.toString(getPathToTile(tile).toArray()));
+		
 		currentPlayer.addMovePoints(getPathToTile(tile));
 	}
 	
