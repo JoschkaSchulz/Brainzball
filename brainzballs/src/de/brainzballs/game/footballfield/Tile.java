@@ -155,7 +155,7 @@ public class Tile extends Group {
 	}
 	
 	private void mouseClick() {
-		Player player = getField().getPlayer(x, y+1);
+		Player player = getField().getPlayer(x, y);
 		if (player != null) {
 			getField().highlightMove(player, 10);
 		}
