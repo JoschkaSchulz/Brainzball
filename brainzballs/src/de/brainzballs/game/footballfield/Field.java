@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import de.brainzballs.game.Game;
 import de.brainzballs.game.footballfield.team.Player;
 import de.brainzballs.game.footballfield.team.Team;
+import de.brainzballs.helper.ResourceLoader;
 
 public class Field extends Group {
 
