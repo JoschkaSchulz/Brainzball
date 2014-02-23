@@ -92,23 +92,23 @@ public class Player extends Actor {
 		skeleton = new Skeleton(skeletonData);
 		skeleton.updateWorldTransform();
 		
+		if(playerType == PlayerType.DEFENDER) {
+			skeletonData.findSlot("Head").setAttachmentName("Head2");
+		}else if(playerType == PlayerType.KEEPER){
+			skeletonData.findSlot("Head").setAttachmentName("Head4");
+		}else if(playerType == PlayerType.MIDFIELDER){
+			skeletonData.findSlot("Head").setAttachmentName("Head3");
+		}else if(playerType == PlayerType.STRIKER){
+			skeletonData.findSlot("Head").setAttachmentName("Head");
+		}else{
+			skeletonData.findSlot("Head").setAttachmentName("Head");
+		}
+		
 		if(direction == WEST) {
 			skeleton.setFlipX(true);
 			skeleton.setSkin("RedTeam");
 		}else{
 			skeleton.setSkin("WhiteTeam");
-			
-			if(playerType == PlayerType.DEFENDER) {
-				skeletonData.findSlot("Head").setAttachmentName("Head2");
-			}else if(playerType == PlayerType.KEEPER){
-				skeletonData.findSlot("Head").setAttachmentName("Head4");
-			}else if(playerType == PlayerType.MIDFIELDER){
-				skeletonData.findSlot("Head").setAttachmentName("Head3");
-			}else if(playerType == PlayerType.STRIKER){
-				skeletonData.findSlot("Head").setAttachmentName("Head");
-			}else{
-				skeletonData.findSlot("Head").setAttachmentName("Head");
-			}
 		}
 		skeleton.setToSetupPose();
 		
