@@ -1,20 +1,15 @@
 package de.brainzballs.game.footballfield.team;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.esotericsoftware.spine.Animation;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
-import com.esotericsoftware.spine.BoneData;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
@@ -22,7 +17,6 @@ import com.esotericsoftware.spine.SkeletonRenderer;
 
 import de.brainzballs.game.footballfield.Field;
 import de.brainzballs.game.footballfield.Tile;
-import de.brainzballs.helper.ResourceLoader;
 
 public class Player extends Actor {
 	
@@ -48,8 +42,11 @@ public class Player extends Actor {
 	private AnimationState state;
 	private Skeleton skeleton;
 	private SkeletonRenderer renderer;
-	private PolygonSpriteBatch polyBatch;
 	private SkeletonData skeletonData;
+	
+	private String headString;
+	private String teamString;
+	private boolean zombie;
 	
 	private Player(int x, int y, PlayerType playerType, int direction, Team team) {
 		this.x = x;
@@ -60,19 +57,19 @@ public class Player extends Actor {
 		this.team = team;
 		this.moveList = new LinkedList<Tile>();
 		
-		polyBatch = new PolygonSpriteBatch();
-		
 		//Loading Player Skeleton and Animation
 		if(direction == WEST) {
 			TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Zombie/Zombie.atlas"));
 			SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
 			jsonSkeleton.setScale(0.5f);
 			skeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Zombie/Zombie.json"));
+			this.zombie = true;
 		}else{
 			TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/Player.atlas"));
 			SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
 			jsonSkeleton.setScale(0.5f);
 			skeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/Player.json"));
+			this.zombie = false;
 		}
 		
 		renderer = new SkeletonRenderer();
@@ -93,22 +90,29 @@ public class Player extends Actor {
 		skeleton.updateWorldTransform();
 		
 		if(playerType == PlayerType.DEFENDER) {
+			this.headString = "Head2";
 			skeletonData.findSlot("Head").setAttachmentName("Head2");
 		}else if(playerType == PlayerType.KEEPER){
 			skeletonData.findSlot("Head").setAttachmentName("Head4");
+			this.headString = "Head4";
 		}else if(playerType == PlayerType.MIDFIELDER){
 			skeletonData.findSlot("Head").setAttachmentName("Head3");
+			this.headString = "Head3";
 		}else if(playerType == PlayerType.STRIKER){
 			skeletonData.findSlot("Head").setAttachmentName("Head");
+			this.headString = "Head";
 		}else{
 			skeletonData.findSlot("Head").setAttachmentName("Head");
+			this.headString = "Head";
 		}
 		
 		if(direction == WEST) {
 			skeleton.setFlipX(true);
 			skeleton.setSkin("RedTeam");
+			teamString = "RedTeam";
 		}else{
 			skeleton.setSkin("WhiteTeam");
+			teamString = "WhiteTeam";
 		}
 		skeleton.setToSetupPose();
 		
@@ -143,6 +147,32 @@ public class Player extends Actor {
 		// TODO
 	}
 	
+	
+	
+	public String getHeadString() {
+		return headString;
+	}
+
+	public void setHeadString(String headString) {
+		this.headString = headString;
+	}
+
+	public String getTeamString() {
+		return teamString;
+	}
+
+	public void setTeamString(String teamString) {
+		this.teamString = teamString;
+	}
+
+	public boolean isZombie() {
+		return zombie;
+	}
+
+	public void setZombie(boolean zombie) {
+		this.zombie = zombie;
+	}
+
 	public int getMoveRadius() {
 		if (playerType == PlayerType.KEEPER)
 			return 2;

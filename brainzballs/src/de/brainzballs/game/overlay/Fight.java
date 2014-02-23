@@ -19,6 +19,7 @@ import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 
+import de.brainzballs.game.footballfield.team.Player;
 import de.brainzballs.helper.ResourceLoader;
 
 public class Fight extends Group {
@@ -40,7 +41,12 @@ public class Fight extends Group {
 	private Table actions;
 	private float timer;
 	
-	public Fight() {
+	private Player left, right;
+	
+	public Fight(Player left, Player right) {
+		this.left = left;
+		this.right = right;
+		
 		this.enemySelection = (int)Math.round(Math.random()*2);
 		
 		switch(enemySelection) {
@@ -109,9 +115,9 @@ public class Fight extends Group {
 	private AnimationState leftState;
 	private void createLeftPlayer() {
 		//Loading Player Skeleton and Animation
-		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/Player.atlas"));
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/"+(left.isZombie()?"Zombie":"Player")+".atlas"));
 		SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
-		leftSkeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/Player.json"));
+		leftSkeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/"+(left.isZombie()?"Zombie":"Player")+".json"));
 		
 		leftRenderer = new SkeletonRenderer();
 		
@@ -120,7 +126,8 @@ public class Fight extends Group {
 		leftSkeleton.setX(300);
 		leftSkeleton.setY(180);
 		
-		leftSkeleton.setSkin("WhiteTeam");
+		leftSkeleton.setSkin(left.getTeamString());
+		leftSkeletonData.findSlot("Head").setAttachmentName(left.getHeadString());
 		leftSkeleton.setToSetupPose();
 		
 		AnimationStateData stateData = new AnimationStateData(leftSkeletonData); // Defines mixing (crossfading) between animations.
@@ -139,9 +146,9 @@ public class Fight extends Group {
 	private AnimationState rightState;
 	private void createRightPlayer() {
 		//Loading Player Skeleton and Animation
-		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/Player.atlas"));
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/"+(right.isZombie()?"Zombie":"Player")+".atlas"));
 		SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
-		rightSkeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/Player.json"));
+		rightSkeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/"+(right.isZombie()?"Zombie":"Player")+".json"));
 		
 		rightRenderer = new SkeletonRenderer();
 		
@@ -151,7 +158,8 @@ public class Fight extends Group {
 		rightSkeleton.setY(180);
 		
 		rightSkeleton.setFlipX(true);
-		rightSkeleton.setSkin("RedTeam");
+		rightSkeleton.setSkin(right.getTeamString());
+		leftSkeletonData.findSlot("Head").setAttachmentName(right.getHeadString());
 		rightSkeleton.setToSetupPose();
 		
 		AnimationStateData stateData = new AnimationStateData(rightSkeletonData); // Defines mixing (crossfading) between animations.
