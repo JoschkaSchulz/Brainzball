@@ -399,8 +399,6 @@ public class Player extends Actor {
 					}
 					moveTile = null;
 				}
-			}else{
-				moveTile = null;
 			}
 		}
 		

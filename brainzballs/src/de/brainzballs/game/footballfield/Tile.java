@@ -18,8 +18,7 @@ public class Tile extends Group {
 	private final int CONDITION_GOOD = 1;
 	private final int CONDITION_NORMAL = 2;
 	private final int CONDITION_BAD = 3;
-
-	private float clickTimer;
+	
 	private int x, y;
 	private int condition;
 	private boolean border;
@@ -38,7 +37,6 @@ public class Tile extends Group {
 		this.debugLabel = new Label("X", ResourceLoader.SKIN);
 		this.debugLabel.setPosition((x * 64) + 16, (y * 64) + 16);
 		this.debugLabel.setName("debugLabel");
-		this.clickTimer = 0;
 		goodId = (int) Math.round(Math.random()
 				* (ResourceLoader.TILE_GOOD.length - 1));
 		normalId = (int) Math.round(Math.random()
@@ -138,8 +136,8 @@ public class Tile extends Group {
 	}
 	
 	private void mouseClick() {
-		
-		//if(clickTimer >= 0.5) {
+
+		// Click is possible in choose state
 		if (getField().getGame().getCurrentState() == Game.STATE_ACTION_CHOOSE) {	
 		
 			// If no player selected select one
@@ -175,7 +173,6 @@ public class Tile extends Group {
 					}
 				}
 			}
-			clickTimer = 0;
 		}
 	}
 	
@@ -229,10 +226,6 @@ public class Tile extends Group {
 
 	@Override
 	public void act(float delta) {
-		this.clickTimer += delta;
 		super.act(delta);
 	}
-
-	
-	
 }
