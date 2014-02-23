@@ -443,7 +443,14 @@ public class Field extends Group {
 		return closedMap;
 	}
 	
-	public List<Tile> getPathToTile(Tile tile) {
+	public void doFieldAction(Tile tile) {
+		
+		System.out.println(Arrays.toString(getPathToTile(tile).toArray()));
+		
+		currentPlayer.addMovePoints(getPathToTile(tile));
+	}
+	
+	private List<Tile> getPathToTile(Tile tile) {
 		List<Tile> result = new ArrayList<Tile>();
 		if (isTileReachable(tile)) {
 			TileNode tileNode = currentTiles.get(tile);

@@ -263,8 +263,8 @@ public class Player extends Actor {
 		return true;
 	}
 
-	public void addMovePoints(Collections collection) {
-		this.moveList.addAll((Collection<? extends Tile>) collection);
+	public void addMovePoints(List<Tile> list) {
+		this.moveList.addAll(list);
 	}
 	
 	private Tile moveTile;
