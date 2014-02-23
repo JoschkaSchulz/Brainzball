@@ -226,6 +226,15 @@ public class Fight extends Group {
 		rightState.update(delta);
 		rightState.apply(rightSkeleton);
 		rightSkeleton.updateWorldTransform(); 
+		
+		if(state == STATE_FIGHTANIM) {
+			if(leftSkeleton.getX() + 200 < rightSkeleton.getX()) {
+				leftSkeleton.setX(leftSkeleton.getX() + (delta  * 50));
+				rightSkeleton.setX(rightSkeleton.getX() - (delta  * 50));
+			}else{
+				state = STATE_END;
+			}
+		}
 	}
 	
 	@Override
@@ -265,7 +274,7 @@ public class Fight extends Group {
 			addActor(playerLabel);
 			if(timer >= 5f) state = STATE_FIGHTANIM;
 		}else if(state == STATE_FIGHTANIM) {
-			state = STATE_END;
+//			state = STATE_END;
 		}else if(state == STATE_END) {
 			getParent().removeActor(this);
 		}
