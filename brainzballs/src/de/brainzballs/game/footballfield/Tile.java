@@ -1,23 +1,17 @@
 package de.brainzballs.game.footballfield;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
-import de.brainzballs.game.footballfield.team.Player;
 import de.brainzballs.game.footballfield.team.Team;
 import de.brainzballs.helper.ResourceLoader;
 
-public class Tile extends Actor {
+public class Tile extends Group {
 
 	private final int CONDITION_GOOD = 1;
 	private final int CONDITION_NORMAL = 2;
@@ -30,6 +24,7 @@ public class Tile extends Actor {
 	private boolean highlighted;
 	private boolean mouseOver;
 	private int goodId, normalId, badId; // Texture Array ID's
+	private Label debugLabel;
 
 	private Tile(int x, int y) {
 		this.x = x;
@@ -37,6 +32,9 @@ public class Tile extends Actor {
 		this.condition = CONDITION_GOOD;
 		this.highlighted = false;
 		this.mouseOver = false;
+		this.debugLabel = new Label("X", ResourceLoader.SKIN);
+		this.debugLabel.setPosition((x * 64) + 16, (y * 64) + 16);
+		this.debugLabel.setName("debugLabel");
 		goodId = (int) Math.round(Math.random()
 				* (ResourceLoader.TILE_GOOD.length - 1));
 		normalId = (int) Math.round(Math.random()
@@ -175,8 +173,6 @@ public class Tile extends Actor {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
-		
 		switch (condition) {
 		default:
 		case CONDITION_GOOD:
@@ -192,6 +188,13 @@ public class Tile extends Actor {
 
 		batch.draw(ResourceLoader.TILE_GRID, x * 64, y * 64);
 		
+		if (highlighted)  {
+			if(findActor("debugLabel") == null) addActor(debugLabel);
+			batch.draw(ResourceLoader.HIGHLIGHT, x * 64, y * 64);
+		}else{
+			if(findActor("debugLabel") != null) removeActor(debugLabel);
+		}
+		
 		if (mouseOver) {
 			batch.draw(ResourceLoader.HIGHLIGHT, x * 64, y * 64);
 			
@@ -199,6 +202,8 @@ public class Tile extends Actor {
 				mouseClick(getField().getTile(x * 64, y * 64));
 			}
 		}
+		
+		super.draw(batch, parentAlpha);
 	}
 
 }
