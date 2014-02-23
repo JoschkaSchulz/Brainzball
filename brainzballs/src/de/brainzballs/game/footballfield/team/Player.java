@@ -122,25 +122,43 @@ public class Player extends Actor {
 		// TODO
 	}
 	
-	public boolean canPass() {
-		if (!hasBall())
-			return false;
-		
-		// TODO
-		return false;
+	public int getMoveRadius() {
+		if (playerType == PlayerType.KEEPER)
+			return 2;
+		if (playerType == PlayerType.DEFENDER)
+			return 4;
+		if (playerType == PlayerType.MIDFIELDER)
+			return 6;
+		if (playerType == PlayerType.STRIKER)
+			return 8;
+		else
+			return 0;
 	}
 	
-	public boolean canMove() {
-		// TODO
-		return false;
+	public int getPassRadius() {
+		if (playerType == PlayerType.KEEPER)
+			return 10;
+		if (playerType == PlayerType.DEFENDER)
+			return 8;
+		if (playerType == PlayerType.MIDFIELDER)
+			return 6;
+		if (playerType == PlayerType.STRIKER)
+			return 4;
+		else
+			return 0;
 	}
 	
-	public boolean canShot() {
-		if (!hasBall())
-			return false;
-		
-		// TODO
-		return false;
+	public int getShotRadius() {
+		if (playerType == PlayerType.KEEPER)
+			return 10;
+		if (playerType == PlayerType.DEFENDER)
+			return 4;
+		if (playerType == PlayerType.MIDFIELDER)
+			return 6;
+		if (playerType == PlayerType.STRIKER)
+			return 8;
+		else
+			return 0;
 	}
 	
 	public int getPasses() {
@@ -164,8 +182,7 @@ public class Player extends Actor {
 	}
 	
 	public boolean hasBall() {
-		// TODO
-		return false;
+		return getField().isBall(x, y);
 	}
 	
 	public PlayerType getPlayerType() {

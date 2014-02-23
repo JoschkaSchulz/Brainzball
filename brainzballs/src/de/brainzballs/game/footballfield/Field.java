@@ -182,13 +182,13 @@ public class Field extends Group {
 		if (currentPlayer == null)
 			return;
 
-		resetHighlight();		
+		resetHighlight();
 		if (currentFieldAction == FieldAction.PASS) {
-			currentTiles = getCurrentTilesForPass(currentPlayer, 4);
+			currentTiles = getCurrentTilesForPass(currentPlayer);
 		} else if (currentFieldAction == FieldAction.MOVE) {
-			currentTiles = getCurrentTilesForMove(currentPlayer, 4);
+			currentTiles = getCurrentTilesForMove(currentPlayer);
 		} else if (currentFieldAction == FieldAction.SHOT) {
-			currentTiles = getCurrentTilesForShot(currentPlayer, 4);
+			currentTiles = getCurrentTilesForShot(currentPlayer);
 		} else {
 			currentTiles = new HashMap<Tile, Field.TileNode>();
 		}
@@ -215,6 +215,10 @@ public class Field extends Group {
 		return result;
 	}
 	
+	public boolean isBall(int x, int y) {
+		return (ball.getPositionX() == x && ball.getPositionY() == y);
+	}
+	
 	public boolean isInTeam(int x, int y, Team team) {
 		for (Player p : team.getPlayers())
 			if (p.getPositionX() == x && p.getPositionY() == y)
@@ -223,17 +227,17 @@ public class Field extends Group {
 		return false;
 	}
 	
-	public Map<Tile, TileNode> getCurrentTilesForPass(Player player, int radius) {
+	public Map<Tile, TileNode> getCurrentTilesForPass(Player player) {
 		Map<Tile, TileNode> closedMap = new HashMap<Tile, TileNode>();
 		return closedMap;
 	}
 	
-	public Map<Tile, TileNode> getCurrentTilesForShot(Player player, int radius) {
+	public Map<Tile, TileNode> getCurrentTilesForShot(Player player) {
 		Map<Tile, TileNode> closedMap = new HashMap<Tile, TileNode>();
 		return closedMap;
 	}
 	
-	public Map<Tile, TileNode> getCurrentTilesForMove(Player player, int radius) {
+	public Map<Tile, TileNode> getCurrentTilesForMove(Player player) {
 		
 		// Save all reachable tiles with their cost
 		Map<Tile, TileNode> closedMap = new HashMap<Tile, TileNode>();
@@ -268,7 +272,7 @@ public class Field extends Group {
 	            		// Calculate cost and insert or update the
 	            		// current information
 	            		int cost = currentTileNode.cost + currentTile.getCondition();
-	            		if (cost <= radius) {
+	            		if (cost <= player.getMoveRadius()) {
 	            			boolean visitNextTile = false;
 		           			TileNode nextTileNode = closedMap.get(nextTile);
 		           			if (nextTileNode == null) {
