@@ -202,6 +202,7 @@ public class Tile extends Group {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		
 		switch (condition) {
 		default:
 		case CONDITION_GOOD:
