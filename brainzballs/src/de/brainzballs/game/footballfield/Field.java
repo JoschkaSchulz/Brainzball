@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -181,16 +183,21 @@ public class Field extends Group {
 			return;
 
 		resetHighlight();		
-		if (currentFieldAction == FieldAction.PASS && currentPlayer.canPass()) {
+		if (currentFieldAction == FieldAction.PASS) {
 			currentTiles = getCurrentTilesForPass(currentPlayer, 4);
-		} else if (currentFieldAction == FieldAction.MOVE
-				&& currentPlayer.canMove()) {
+		} else if (currentFieldAction == FieldAction.MOVE) {
 			currentTiles = getCurrentTilesForMove(currentPlayer, 4);
-		} else if (currentFieldAction == FieldAction.SHOT
-				&& currentPlayer.canShot()) {
+		} else if (currentFieldAction == FieldAction.SHOT) {
 			currentTiles = getCurrentTilesForShot(currentPlayer, 4);
 		} else {
 			currentTiles = new HashMap<Tile, Field.TileNode>();
+		}
+		
+		// Highlight all tiles with cost
+		for (Tile tile : currentTiles.keySet()) {
+			TileNode tileNode = currentTiles.get(tile);
+			tile.setHighlighted(true);
+			tile.getDebugLabel().setText(String.valueOf(tileNode.cost));
 		}
 	}
 
@@ -237,15 +244,15 @@ public class Field extends Group {
 		closedMap.put(startTile, startTileNode);
 		
 		// Add start tile to visit list
-		List<Tile> toBeVisited = new ArrayList<Tile>();
-		toBeVisited.add(startTile);
+		List<Tile> openList = new ArrayList<Tile>();
+		openList.add(startTile);
 		
 		// Iterate over tiles to visit
-		while (!toBeVisited.isEmpty()) {
+		while (!openList.isEmpty()) {
 			
 	        // Get first tile and remove it from list 
-	        Tile currentTile = toBeVisited.get(0);
-	        toBeVisited.remove(0);
+	        Tile currentTile = openList.get(0);
+	        openList.remove(0);
 	        
 	        // Get information about current tile
 	        TileNode currentTileNode = closedMap.get(currentTile);
@@ -278,22 +285,16 @@ public class Field extends Group {
 		           			// If next tile is new or better than the one before
 		           			// insert tile into visit list
 		           			if (visitNextTile) {
-		           				
-		           				
-		           				nextTile.setHighlighted(true);
-		           				nextTile.getDebugLabel().setText(String.valueOf(cost));
-		           				
-		           				
 		           				int i = 0;
-		           				while (i < toBeVisited.size()) {
-		           					TileNode tileNode = closedMap.get(toBeVisited.get(i));
+		           				while (i < openList.size()) {
+		           					TileNode tileNode = closedMap.get(openList.get(i));
 		           					if (tileNode.getCost() > cost) {
 		           						break;
 		           					} else {
 		           						i++;
 		           					}
 		           				}
-		           				toBeVisited.add(i, nextTile);
+		           				openList.add(i, nextTile);
 		           			}
 	            		}
 	           		}
