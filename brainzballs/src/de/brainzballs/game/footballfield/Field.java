@@ -250,8 +250,10 @@ public class Field extends Group {
 		resetHighlight();
 		for (Tile tile : currentTiles.keySet()) {
 			TileNode tileNode = currentTiles.get(tile);
-			tile.setHighlighted(true);
-			tile.getDebugLabel().setText(String.valueOf(tileNode.cost));
+			if (!tileNode.isStart()) {
+				tile.setHighlighted(true);
+				tile.getDebugLabel().setText(String.valueOf(tileNode.cost));
+			}
 		}
 	}
 	
@@ -308,6 +310,14 @@ public class Field extends Group {
 	           		}
 	           	}
 			}
+		}
+		
+		// Remove all occupied tiles
+		Iterator<Map.Entry<Tile, TileNode>> iterator = closedMap.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Map.Entry<Tile, TileNode> entry = iterator.next();
+			if (entry.getValue().isFree())
+				iterator.remove();
 		}
 		
 		return closedMap;
@@ -434,7 +444,6 @@ public class Field extends Group {
 	}
 	
 	public List<Tile> getPathForTile(Tile destination) {
-		//if (currentTiles.size() == 0)
 		List<Tile> result = new ArrayList<Tile>();
 		
 		return result;
@@ -481,7 +490,12 @@ public class Field extends Group {
 	}
 	
 	public boolean isTileReachable(Tile tile) {
-		return currentTiles.containsKey(tile);
+		boolean result = false;
+		if (currentTiles.containsKey(tile)) {
+			TileNode tileNode = currentTiles.get(tile);
+			result = !tileNode.isStart();
+		}
+		return result;
 	}
 	
 	public Ball getBall() {
