@@ -81,6 +81,7 @@ public class Player extends Actor {
 		}else{
 			skeleton.setSkin("WhiteTeam");
 		}
+		skeleton.setToSetupPose();
 		
 		AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
 		stateData.setMix("run", "idle1", 0.2f);
@@ -202,11 +203,10 @@ public class Player extends Actor {
 		
 		skeleton.setX((x*64)+32);
 		skeleton.setY((y*64)-32);
-		renderer.draw(batch, skeleton);
 		
+		renderer.draw(batch, skeleton);
 	}
 
-	private float blabla = 1;
 	@Override
 	public void act(float delta) {
 		super.act(delta);

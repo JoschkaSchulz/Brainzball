@@ -157,8 +157,8 @@ public class Tile extends Group {
 		return debugLabel;
 	}
 	
-	private void mouseClick(Tile tile) {
-		Player player = getField().getPlayer(x, y);
+	private void mouseClick() {
+		Player player = getField().getPlayer(x, y+1);
 		if (player != null) {
 			getField().highlightMove(player, 10);
 		}
@@ -204,7 +204,7 @@ public class Tile extends Group {
 			batch.draw(ResourceLoader.HIGHLIGHT, x * 64, y * 64);
 			
 			if(Gdx.input.isTouched()) {
-				mouseClick(getField().getTile(x * 64, y * 64));
+				mouseClick();
 			}
 		}
 		
