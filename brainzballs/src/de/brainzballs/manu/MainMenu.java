@@ -56,8 +56,39 @@ public class MainMenu extends Group {
 		}
 		
 		createHumanPlayer();
+		createZombie();
 		
 		createMenu();
+	}
+	
+	private SkeletonData rightSkeletonData;
+	private SkeletonRenderer rightRenderer;
+	private Animation rightRun, rightrunBall;
+	private Skeleton rightSkeleton;
+	private AnimationState rightState;
+	private void createZombie() {
+		//Loading Player Skeleton and Animation
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Zombie/Zombie.atlas"));
+		SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
+		rightSkeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Zombie/Zombie.json"));
+		
+		rightRenderer = new SkeletonRenderer();
+		
+		rightSkeleton = new Skeleton(rightSkeletonData);
+		rightSkeleton.updateWorldTransform();
+		rightSkeleton.setX(-500);
+		rightSkeleton.setY(120);
+		
+		rightSkeleton.setSkin("RedTeam");
+		rightSkeleton.setToSetupPose();
+		
+		AnimationStateData stateData = new AnimationStateData(rightSkeletonData); // Defines mixing (crossfading) between animations.
+		stateData.setDefaultMix(0.5f);
+
+		rightState = new AnimationState(stateData);
+		
+		//Set the default animation on idle
+		rightState.setAnimation(0, "run", true);
 	}
 	
 	private SkeletonData leftSkeletonData;
@@ -122,9 +153,22 @@ public class MainMenu extends Group {
 		
 		if(leftSkeleton.getX() > Gdx.graphics.getWidth() + 200) {
 			leftSkeleton.setX(-200);
-			int head = (int) (Math.round(Math.random() * 4)-1);
-			leftSkeletonData.findSlot("Head").setAttachmentName((head == 0 ? "Head" : "Head"+head));
+			int head = (int) (Math.round(Math.random() * 3)+1);
+			leftSkeletonData.findSlot("Head").setAttachmentName((head == 1 ? "Head" : "Head"+head));
 			leftSkeleton.setToSetupPose();
+		}
+		
+		rightState.update(delta);
+		rightState.apply(rightSkeleton);
+		rightSkeleton.updateWorldTransform(); 
+		
+		rightSkeleton.setX(rightSkeleton.getX() + (150 * delta));
+		
+		if(rightSkeleton.getX() > Gdx.graphics.getWidth() + 200) {
+			rightSkeleton.setX(-200);
+			int head = (int) (Math.round(Math.random() * 3)+1);
+			rightSkeletonData.findSlot("Head").setAttachmentName((head == 1 ? "Head" : "Head"+head));
+			rightSkeleton.setToSetupPose();
 		}
 		
 		for(Image cloud : clouds) {
@@ -143,6 +187,7 @@ public class MainMenu extends Group {
 		super.draw(batch, parentAlpha);
 		
 		leftRenderer.draw(batch, leftSkeleton);
+		rightRenderer.draw(batch, rightSkeleton);
 
 	}
 
