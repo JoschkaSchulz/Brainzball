@@ -5,154 +5,154 @@ filter: Linear,Linear
 repeat: none
 Ball
   rotate: false
-  xy: 844, 75
+  xy: 693, 34
   size: 57, 51
   orig: 69, 67
   offset: 8, 8
   index: -1
 Body
   rotate: false
-  xy: 560, 57
+  xy: 569, 57
   size: 60, 69
   orig: 74, 77
   offset: 6, 1
   index: -1
 BodyRed
   rotate: false
-  xy: 622, 57
+  xy: 631, 57
   size: 60, 69
   orig: 74, 77
   offset: 6, 1
   index: -1
 Head
   rotate: false
-  xy: 246, 40
-  size: 118, 86
-  orig: 141, 92
-  offset: 10, 0
+  xy: 2, 20
+  size: 123, 106
+  orig: 141, 154
+  offset: 5, 22
   index: -1
 Head2
-  rotate: true
-  xy: 366, 30
-  size: 96, 104
+  rotate: false
+  xy: 359, 40
+  size: 118, 86
   orig: 150, 150
-  offset: 32, 19
+  offset: 21, 47
   index: -1
 Head3
   rotate: true
-  xy: 2, 16
-  size: 110, 133
+  xy: 127, 25
+  size: 101, 119
   orig: 150, 150
-  offset: 21, 16
+  offset: 29, 31
   index: -1
 Head4
   rotate: false
-  xy: 137, 22
-  size: 107, 104
+  xy: 248, 27
+  size: 109, 99
   orig: 150, 150
-  offset: 23, 21
+  offset: 24, 27
   index: -1
 Jaw
   rotate: false
-  xy: 472, 2
+  xy: 853, 92
   size: 74, 34
   orig: 83, 34
   offset: 9, 0
   index: -1
 LeftFoot
   rotate: false
-  xy: 969, 98
+  xy: 797, 57
   size: 50, 28
   orig: 76, 30
   offset: 14, 2
   index: -1
 LeftLowerArm
-  rotate: false
-  xy: 659, 16
+  rotate: true
+  xy: 797, 18
   size: 37, 39
   orig: 47, 40
   offset: 7, 1
   index: -1
 LeftLowerLeg
-  rotate: false
-  xy: 698, 20
+  rotate: true
+  xy: 752, 17
   size: 28, 40
   orig: 34, 41
   offset: 2, 0
   index: -1
 RightLowerLeg
-  rotate: false
-  xy: 698, 20
+  rotate: true
+  xy: 752, 17
   size: 28, 40
   orig: 34, 41
   offset: 2, 0
   index: -1
 LeftUpperArm
   rotate: true
-  xy: 903, 94
+  xy: 929, 94
   size: 32, 64
   orig: 49, 68
   offset: 8, 1
   index: -1
 LeftUpperLeg
   rotate: true
-  xy: 684, 87
+  xy: 693, 87
   size: 39, 78
   orig: 48, 86
   offset: 6, 4
   index: -1
 LeftUpperLegRed
   rotate: true
-  xy: 764, 87
+  xy: 773, 87
   size: 39, 78
   orig: 48, 86
   offset: 6, 4
   index: -1
 Neck
   rotate: false
-  xy: 809, 64
+  xy: 127, 2
   size: 26, 21
   orig: 32, 29
   offset: 2, 3
   index: -1
 RightFoot
   rotate: false
-  xy: 757, 57
+  xy: 623, 27
   size: 50, 28
   orig: 63, 33
   offset: 7, 5
   index: -1
 RightHand
   rotate: false
-  xy: 614, 17
+  xy: 752, 47
   size: 43, 38
   orig: 50, 46
   offset: 4, 1
   index: -1
 RightLowerArm
   rotate: true
-  xy: 560, 36
+  xy: 569, 36
   size: 19, 52
   orig: 30, 56
   offset: 5, 2
   index: -1
 RightUpperArm
   rotate: false
-  xy: 684, 62
+  xy: 248, 2
   size: 71, 23
   orig: 81, 31
   offset: 6, 4
   index: -1
 RightUpperLeg
-  rotate: false
-  xy: 472, 38
+  rotate: true
+  xy: 479, 84
   size: 42, 88
   orig: 53, 94
   offset: 6, 3
   index: -1
 RightUpperLegRed
-  rotate: false
-  xy: 516, 38
+  rotate: true
+  xy: 479, 40
   size: 42, 88
   orig: 53, 94
   offset: 6, 3
