@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import de.brainzballs.BrainzBalls;
 import de.brainzballs.game.footballfield.Field;
+import de.brainzballs.game.footballfield.Field.FieldAction;
 import de.brainzballs.game.overlay.Fight;
 import de.brainzballs.helper.ResourceLoader;
 
@@ -40,7 +41,7 @@ public class Game extends Group {
 		
 		state = STATE_TEAM1;
 		
-		debugOverlay();
+//		debugOverlay();
 	}
 	
 	private void debugOverlay() {
@@ -73,17 +74,29 @@ public class Game extends Group {
 		pass.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				
+				field.setCurrentFieldAction(FieldAction.PASS);
 			}
 		});
 		TextButton shot = new TextButton("shot", ResourceLoader.SKIN);
+		shot.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				field.setCurrentFieldAction(FieldAction.SHOT);
+			}
+		});
 		TextButton move = new TextButton("move", ResourceLoader.SKIN);
+		move.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				field.setCurrentFieldAction(FieldAction.MOVE);
+			}
+		});
 		TextButton random = new TextButton("???", ResourceLoader.SKIN);
 		
 		actions.add(pass).size(250f, 64f).padRight(50f);
 		actions.add(shot).size(250f, 64f).padRight(50f);
 		actions.add(move).size(250f, 64f).padRight(50f);
-		actions.add(random).size(250f, 64f);
+//		actions.add(random).size(250f, 64f);
 		
 		actions.setPosition(field.getX() + (field.getWidth()/2),
 				field.getY() + - (pass.getHeight()/2));
