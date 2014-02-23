@@ -131,6 +131,14 @@ public class Player extends Actor {
 		return new Player(x, y, playerType, direction, team);
 	}
 	
+	public void setBallIdle(boolean ballIdle) {
+		if(ballIdle) {
+			state.setAnimation(0, idleBall, true);
+		}else{
+			state.setAnimation(0, idle, true);
+		}
+	}
+	
 	public String getHeadString() {
 		return headString;
 	}
