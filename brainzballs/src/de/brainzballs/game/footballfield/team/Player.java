@@ -75,6 +75,12 @@ public class Player extends Actor {
 		skeleton = new Skeleton(skeletonData);
 		skeleton.updateWorldTransform();
 		
+		if(playerType == PlayerType.DEFENDER) {
+			skeletonData.findSlot("Head").setAttachmentName("Head2");
+		}else{
+			skeletonData.findSlot("Head").setAttachmentName("Head");
+		}
+		
 		if(direction == WEST) {
 			skeleton.setFlipX(true);
 			skeleton.setSkin("RedTeam");
@@ -98,11 +104,6 @@ public class Player extends Actor {
 		stateData.setMix("idle6", "idle1", 0.2f);
 
 		state = new AnimationState(stateData);
-		
-		//Set the head
-		int head = (int)Math.round((Math.random()*1))+1;
-		state.setAnimation(0, "head"+head, true);
-		System.out.println("head:" + head);
 		
 		//Set the default animation on idle
 		state.addAnimation(0, "idle1", true,0);
