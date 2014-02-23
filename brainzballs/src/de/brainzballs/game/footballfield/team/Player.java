@@ -1,5 +1,11 @@
 package de.brainzballs.game.footballfield.team;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
@@ -29,6 +35,7 @@ public class Player extends Actor {
 	public static final int SOUTH  	= 2;
 	public static final int EAST 	= 3;
 	
+	private LinkedList<Tile> moveList;
 	private Team team;
 	private int direction;
 	private int x, y;
@@ -51,6 +58,7 @@ public class Player extends Actor {
 		this.idleTimer = (float) (Math.random()*10);
 		this.direction = direction;
 		this.team = team;
+		this.moveList = new LinkedList<Tile>();
 		
 		polyBatch = new PolygonSpriteBatch();
 		
@@ -252,6 +260,26 @@ public class Player extends Actor {
 		return true;
 	}
 
+	public void addMovePoints(Collections collection) {
+		this.moveList.addAll((Collection<? extends Tile>) collection);
+	}
+	
+	private Tile moveTile;
+	private void hanldeMoveList() {
+		if(moveList.size() > 0) {
+			moveTile = moveList.getFirst();
+			if(moveTile.getPositionX() < getPositionX()) {
+				direction = WEST;
+				skeleton.setFlipX(true);
+				skeleton.setToSetupPose();
+			}else{
+				skeleton.setFlipX(false);
+				skeleton.setToSetupPose();
+				direction = EAST;
+			}
+		}
+	}
+	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
@@ -265,12 +293,16 @@ public class Player extends Actor {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		this.idleTimer += delta;
+		if(moveTile == null) {
+			this.idleTimer += delta;
 		
-		if(idleTimer >= 15) {
-			idleTimer = 0;
-			state.setAnimation(0, specialIdle[(int) Math.round(Math.random()*(specialIdle.length-1))], false);
-			state.addAnimation(0, idle, true, state.getCurrent(0).getTime());
+			if(idleTimer >= 15) {
+				idleTimer = 0;
+				state.setAnimation(0, specialIdle[(int) Math.round(Math.random()*(specialIdle.length-1))], false);
+				state.addAnimation(0, idle, true, state.getCurrent(0).getTime());
+			}
+		}else{
+//			if(moveTile.getPositionX() < )
 		}
 		
 		state.update(delta);
