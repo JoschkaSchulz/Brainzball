@@ -37,6 +37,7 @@ public class BrainzBalls implements ApplicationListener {
 	    
 	    music = Gdx.audio.newMusic(Gdx.files.internal("data/music/music1.mp3"));
 	    music.setLooping(true);
+	    music.setVolume(0.15f);
 	    music.play();
 	}
 
