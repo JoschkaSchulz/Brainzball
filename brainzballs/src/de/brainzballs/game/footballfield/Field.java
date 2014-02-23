@@ -4,30 +4,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import de.brainzballs.game.Game;
 import de.brainzballs.game.footballfield.team.Player;
 import de.brainzballs.game.footballfield.team.Team;
-import de.brainzballs.helper.ResourceLoader;
 
 public class Field extends Group {
 
 	private class TileNode {
 		
 		private final boolean start;
-		private final boolean end;
+		private final boolean hasOpponentNeighbour;
 		
 	 	private Tile previewTile;
 		private int cost;
 		
-		public TileNode(Tile previewTile, boolean start, boolean end, int cost) {
+		public TileNode(Tile previewTile, boolean start, boolean hasOpponentNeighbour, int cost) {
 			this.previewTile = previewTile;
 			this.start = start;
-			this.end = end;
+			this.hasOpponentNeighbour = hasOpponentNeighbour;
 			this.cost = cost;
 		}
 		
@@ -48,8 +45,8 @@ public class Field extends Group {
 			return start;
 		}
 		
-		public boolean isEnd() {
-			return end;
+		public boolean hasOpponentNeighbour() {
+			return hasOpponentNeighbour;
 		}
 	}
 	
@@ -165,22 +162,35 @@ public class Field extends Group {
 	public FieldAction getCurrentFieldAction() {
 		return currentFieldAction;
 	}
-
+	
 	private void updateCurrentTiles() {
-		resetHighlight();
 		
-		currentTiles = new HashMap<Tile, Field.TileNode>();
+		// Save all reachable tiles with their cost
+		currentTiles = new HashMap<Tile, TileNode>();
+		
+		// If player not null calculate the reachable tiles
 		if (currentPlayer != null) {
+			
+			// Start at the player tile
+			Tile startTile = currentPlayer.getTile();
+			TileNode startTileNode = new TileNode(null, true, startTile.hasOpponentNeighbour(currentPlayer.getTeam()), 0);
+			currentTiles.put(startTile, startTileNode);
+			
+			// Add start tile to visit list
+			List<Tile> openList = new ArrayList<Tile>();
+			openList.add(startTile);
+			
 			if (currentFieldAction == FieldAction.PASS) {
-				currentTiles = getCurrentTilesForPass(currentPlayer);
+				currentTiles = getCurrentTilesForPass(currentPlayer, currentTiles, openList);
 			} else if (currentFieldAction == FieldAction.MOVE) {
-				currentTiles = getCurrentTilesForMove(currentPlayer);
+				currentTiles = getCurrentTilesForMove(currentPlayer, currentTiles, openList);
 			} else if (currentFieldAction == FieldAction.SHOT) {
-				currentTiles = getCurrentTilesForShot(currentPlayer);
+				currentTiles = getCurrentTilesForShot(currentPlayer, currentTiles, openList);
 			}
 		}
 		
 		// Highlight all tiles with cost
+		resetHighlight();
 		for (Tile tile : currentTiles.keySet()) {
 			TileNode tileNode = currentTiles.get(tile);
 			tile.setHighlighted(true);
@@ -188,91 +198,67 @@ public class Field extends Group {
 		}
 	}
 	
-	public Map<Tile, TileNode> getCurrentTilesForPass(Player player) {
-		
-		// Save all reachable tiles with their cost
-		Map<Tile, TileNode> closedMap = new HashMap<Tile, TileNode>();
-		
-		// Start at the player tile
-		Tile startTile = player.getTile();
-		TileNode startTileNode = new TileNode(null, true, startTile.hasOpponentNeighbour(player.getTeam()), 0);
-		closedMap.put(startTile, startTileNode);
-		
-		// Add start tile to visit list
-		List<Tile> openList = new ArrayList<Tile>();
-		openList.add(startTile);
-		
-		// Iterate over tiles to visit
-		while (!openList.isEmpty()) {
-			
-	        // Get first tile and remove it from list 
-	        Tile currentTile = openList.get(0);
-	        openList.remove(0);
-	        
-	        // Get information about current tile
-	        TileNode currentTileNode = closedMap.get(currentTile);
-	        if (!currentTileNode.isEnd()) {	        
-	        	
-	            // Get all neighbours from current tile
-	            List<Tile> nextTiles = currentTile.getNeighbours();
-	            for (Tile nextTile : nextTiles) {
-	            	
-	            	// Check if the next file is free
-	            	if (nextTile.isFree()) {
-	            		
-	            		// Calculate cost and insert or update the
-	            		// current information
-	            		int cost = currentTileNode.cost + currentTile.getCondition();
-	            		if (cost <= player.getMoveRadius()) {
-	            			boolean visitNextTile = false;
-		           			TileNode nextTileNode = closedMap.get(nextTile);
-		           			if (nextTileNode == null) {
-		           				nextTileNode = new TileNode(currentTile, false, nextTile.hasOpponentNeighbour(player.getTeam()), cost);
-		           				closedMap.put(nextTile, nextTileNode);
-		           				visitNextTile = true;
-		           			} else {
-		           				if (!nextTileNode.end && nextTileNode.getCost() > cost) {
-		           					nextTileNode.setPreviewTile(currentTile, cost); 
-		           					visitNextTile = true;
-		           				}
-		           			}
-		           			
-		           			// If next tile is new or better than the one before
-		           			// insert tile into visit list
-		           			if (visitNextTile) {
-		           				int i = 0;
-		           				while (i < openList.size()) {
-		           					TileNode tileNode = closedMap.get(openList.get(i));
-		           					if (tileNode.getCost() > cost) {
-		           						break;
-		           					} else {
-		           						i++;
-		           					}
-		           				}
-		           				openList.add(i, nextTile);
-		           			}
-	            		}
-	           		}
-	           	}
-			}
-		}
-		
-		return closedMap;
-	}
-	
-	public Map<Tile, TileNode> getCurrentTilesForShot(Player player) {
+	private Map<Tile, TileNode> getCurrentTilesForPass(Player player, Map<Tile, TileNode> closedMap, List<Tile> openList) {
 
-		// Save all reachable tiles with their cost
-		Map<Tile, TileNode> closedMap = new HashMap<Tile, TileNode>();
+		// Iterate over tiles to visit
+		while (!openList.isEmpty()) {
+			
+	        // Get first tile and remove it from list 
+	        Tile currentTile = openList.get(0);
+	        openList.remove(0);
+	        
+	        // Get information about current tile
+	        TileNode currentTileNode = closedMap.get(currentTile);
+	        if (!currentTileNode.hasOpponentNeighbour()) {	        
+	        	
+	            // Get all neighbours from current tile
+	            List<Tile> nextTiles = currentTile.getNeighbours();
+	            for (Tile nextTile : nextTiles) {
+	            	
+            		// Calculate cost and insert or update the
+            		// current information
+            		int cost = currentTileNode.cost + currentTile.getCondition();
+            		if (currentTileNode.hasOpponentNeighbour()) {
+            			cost += 2;
+            		}
+            		
+            		if (cost <= player.getPassRadius()) {
+            			boolean visitNextTile = false;
+	           			TileNode nextTileNode = closedMap.get(nextTile);
+	           			if (nextTileNode == null) {
+	           				nextTileNode = new TileNode(currentTile, false, nextTile.hasOpponentNeighbour(player.getTeam()), cost);
+	           				closedMap.put(nextTile, nextTileNode);
+	           				visitNextTile = true;
+	           			} else {
+	           				if (!nextTileNode.hasOpponentNeighbour && nextTileNode.getCost() > cost) {
+	           					nextTileNode.setPreviewTile(currentTile, cost); 
+	           					visitNextTile = true;
+	           				}
+	           			}
+	           			
+	           			// If next tile is new or better than the one before
+	           			// insert tile into visit list
+	           			if (visitNextTile) {
+	           				int i = 0;
+	           				while (i < openList.size()) {
+	           					TileNode tileNode = closedMap.get(openList.get(i));
+	           					if (tileNode.getCost() > cost) {
+	           						break;
+	           					} else {
+	           						i++;
+	           					}
+	           				}
+	           				openList.add(i, nextTile);
+	           			}
+	           		}
+	           	}
+			}
+		}
 		
-		// Start at the player tile
-		Tile startTile = player.getTile();
-		TileNode startTileNode = new TileNode(null, true, startTile.hasOpponentNeighbour(player.getTeam()), 0);
-		closedMap.put(startTile, startTileNode);
-		
-		// Add start tile to visit list
-		List<Tile> openList = new ArrayList<Tile>();
-		openList.add(startTile);
+		return closedMap;
+	}
+	
+	private Map<Tile, TileNode> getCurrentTilesForShot(Player player, Map<Tile, TileNode> closedMap, List<Tile> openList) {
 		
 		// Iterate over tiles to visit
 		while (!openList.isEmpty()) {
@@ -283,7 +269,7 @@ public class Field extends Group {
 	        
 	        // Get information about current tile
 	        TileNode currentTileNode = closedMap.get(currentTile);
-	        if (!currentTileNode.isEnd()) {	        
+	        if (!currentTileNode.hasOpponentNeighbour()) {	        
 	        	
 	            // Get all neighbours from current tile
 	            List<Tile> nextTiles = currentTile.getNeighbours();
@@ -303,7 +289,7 @@ public class Field extends Group {
 		           				closedMap.put(nextTile, nextTileNode);
 		           				visitNextTile = true;
 		           			} else {
-		           				if (!nextTileNode.end && nextTileNode.getCost() > cost) {
+		           				if (!nextTileNode.hasOpponentNeighbour && nextTileNode.getCost() > cost) {
 		           					nextTileNode.setPreviewTile(currentTile, cost); 
 		           					visitNextTile = true;
 		           				}
@@ -332,19 +318,7 @@ public class Field extends Group {
 		return closedMap;
 	}
 	
-	public Map<Tile, TileNode> getCurrentTilesForMove(Player player) {
-		
-		// Save all reachable tiles with their cost
-		Map<Tile, TileNode> closedMap = new HashMap<Tile, TileNode>();
-		
-		// Start at the player tile
-		Tile startTile = player.getTile();
-		TileNode startTileNode = new TileNode(null, true, startTile.hasOpponentNeighbour(player.getTeam()), 0);
-		closedMap.put(startTile, startTileNode);
-		
-		// Add start tile to visit list
-		List<Tile> openList = new ArrayList<Tile>();
-		openList.add(startTile);
+	private Map<Tile, TileNode> getCurrentTilesForMove(Player player, Map<Tile, TileNode> closedMap, List<Tile> openList) {
 		
 		// Iterate over tiles to visit
 		while (!openList.isEmpty()) {
@@ -355,7 +329,7 @@ public class Field extends Group {
 	        
 	        // Get information about current tile
 	        TileNode currentTileNode = closedMap.get(currentTile);
-	        if (!currentTileNode.isEnd()) {	        
+	        if (!currentTileNode.hasOpponentNeighbour()) {	        
 	        	
 	            // Get all neighbours from current tile
 	            List<Tile> nextTiles = currentTile.getNeighbours();
@@ -375,7 +349,7 @@ public class Field extends Group {
 		           				closedMap.put(nextTile, nextTileNode);
 		           				visitNextTile = true;
 		           			} else {
-		           				if (!nextTileNode.end && nextTileNode.getCost() > cost) {
+		           				if (!nextTileNode.hasOpponentNeighbour && nextTileNode.getCost() > cost) {
 		           					nextTileNode.setPreviewTile(currentTile, cost); 
 		           					visitNextTile = true;
 		           				}
