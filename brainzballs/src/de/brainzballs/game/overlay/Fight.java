@@ -2,12 +2,20 @@ package de.brainzballs.game.overlay;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.esotericsoftware.spine.Animation;
+import com.esotericsoftware.spine.AnimationState;
+import com.esotericsoftware.spine.AnimationStateData;
+import com.esotericsoftware.spine.Skeleton;
+import com.esotericsoftware.spine.SkeletonData;
+import com.esotericsoftware.spine.SkeletonJson;
+import com.esotericsoftware.spine.SkeletonRenderer;
 
 import de.brainzballs.helper.ResourceLoader;
 
@@ -92,6 +100,75 @@ public class Fight extends Group {
 		
 		actions.setPosition(Gdx.graphics.getWidth()/2, (Gdx.graphics.getHeight()/2)-250);
 		addActor(actions);
+	}
+
+	private SkeletonData leftSkeletonData;
+	private SkeletonRenderer leftRenderer;
+	private Animation leftRun, runBall;
+	private Skeleton leftSkeleton;
+	private AnimationState leftState;
+	private void createLeftPlayer() {
+		//Loading Player Skeleton and Animation
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/Player.atlas"));
+		SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
+		jsonSkeleton.setScale(0.5f);
+		leftSkeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/Player.json"));
+		
+		leftRenderer = new SkeletonRenderer();
+		
+		leftRun = leftSkeletonData.findAnimation("run");
+		runBall = leftSkeletonData.findAnimation("runball");
+		
+		leftSkeleton = new Skeleton(leftSkeletonData);
+		leftSkeleton.updateWorldTransform();
+		
+		leftSkeleton.setFlipX(true);
+		leftSkeleton.setSkin("RedTeam");
+		leftSkeleton.setToSetupPose();
+		
+		AnimationStateData stateData = new AnimationStateData(leftSkeletonData); // Defines mixing (crossfading) between animations.
+		stateData.setMix("run", "idle1", 0.2f);
+		stateData.setMix("idle1", "run", 0.2f);
+		stateData.setMix("idle1", "idle2", 0.2f);
+		stateData.setMix("idle1", "idle3", 0.2f);
+		stateData.setMix("idle1", "idle4", 0.2f);
+		stateData.setMix("idle1", "idle5", 0.2f);
+		stateData.setMix("idle1", "idle6", 0.2f);
+		stateData.setMix("idle2", "idle1", 0.2f);
+		stateData.setMix("idle3", "idle1", 0.2f);
+		stateData.setMix("idle4", "idle1", 0.2f);
+		stateData.setMix("idle5", "idle1", 0.2f);
+		stateData.setMix("idle6", "idle1", 0.2f);
+
+		leftState = new AnimationState(stateData);
+		
+		//Set the default animation on idle
+		leftState.setAnimation(0, "idle1", true);
+	}
+	
+	/**
+	 * 1 for player
+	 * 2 for computer/enemy
+	 * 0 for draw
+	 */
+	private int whoWon() {
+		if(playerSelection == enemySelection) return 0;
+		
+		if(playerSelection == SELECTION_PAPER && enemySelection == SELECTION_ROCK) {
+			return 1;
+		}else if(playerSelection == SELECTION_PAPER && enemySelection == SELECTION_SCISSORS) {
+			return 2;
+		}else if(playerSelection == SELECTION_ROCK && enemySelection == SELECTION_PAPER) {
+			return 2;
+		}else if(playerSelection == SELECTION_ROCK && enemySelection == SELECTION_SCISSORS) {
+			return 1;
+		}else if(playerSelection == SELECTION_SCISSORS && enemySelection == SELECTION_PAPER) {
+			return 1;
+		}else if(playerSelection == SELECTION_SCISSORS && enemySelection == SELECTION_ROCK) {
+			return 2;
+		}else{
+			return 0;	
+		}
 	}
 	
 	@Override
