@@ -31,10 +31,8 @@ public class Player extends Actor {
 	
 	private LinkedList<Tile> moveList;
 	private Team team;
-	private int direction;
 	private int x, y;
 	private PlayerType playerType;
-	private int goals, fouls, passes, moves, shoots;
 	private boolean jailed;
 	private Animation idle, idleBall, run, runBall, shootBall;
 	private Animation[] specialIdle;
@@ -53,11 +51,10 @@ public class Player extends Actor {
 		this.y = y;
 		this.playerType = playerType;
 		this.idleTimer = (float) (Math.random()*10);
-		this.direction = direction;
 		this.team = team;
 		this.moveList = new LinkedList<Tile>();
 		
-		//Loading Player Skeleton and Animation
+		// Loading Player Skeleton and Animation
 		if(direction == WEST) {
 			TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Zombie/Zombie.atlas"));
 			SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
@@ -132,23 +129,6 @@ public class Player extends Actor {
 		return new Player(x, y, playerType, direction, team);
 	}
 	
-	public void pass(Tile tile) {
-		passes++;
-		// TODO
-	}
-	
-	public void move(Tile tile) {
-		moves++;
-		// TODO
-	}
-	
-	public void shoot(Tile tile) {
-		shoots++;
-		// TODO
-	}
-	
-	
-	
 	public String getHeadString() {
 		return headString;
 	}
@@ -210,26 +190,6 @@ public class Player extends Actor {
 			return 8;
 		else
 			return 0;
-	}
-	
-	public int getPasses() {
-		return passes;
-	}
-	
-	public int getMoves() {
-		return moves;
-	}
-	
-	public int getShoots() {
-		return shoots;
-	}
-	
-	public int getGoals() {
-		return goals;
-	}
-	
-	public int getFouls() {
-		return fouls;
 	}
 	
 	public boolean hasBall() {
@@ -331,13 +291,11 @@ public class Player extends Actor {
 			moveTile = moveList.getFirst();
 			System.out.println("MapTile: " + moveTile.getPositionX() + ":" + moveTile.getPositionY());
 			if(moveTile.getPositionX() < getPositionX()) {
-				direction = WEST;
 				skeleton.setFlipX(true);
 				skeleton.setToSetupPose();
 			}else{
 				skeleton.setFlipX(false);
 				skeleton.setToSetupPose();
-				direction = EAST;
 			}
 			moveList.removeFirst();
 		}
@@ -400,8 +358,6 @@ public class Player extends Actor {
 					}
 					moveTile = null;
 				}
-			}else{
-				moveTile = null;
 			}
 		}
 		

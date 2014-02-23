@@ -425,7 +425,6 @@ public class Field extends Group {
 				tile = tileNode.previewTile;
 				tileNode = currentTiles.get(tile);
 			}
-			result.add(tile);
 		}
 		Collections.reverse(result);
 		return result;
