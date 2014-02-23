@@ -97,45 +97,42 @@ public class Field extends Group {
 		ball = Ball.newInstance(horizontalCenter, verticalCenter);
 
 		// Create team1 on the left half
-		List<Player> players;
-		players = new ArrayList<Player>();
+		team1 = new Team(this);
+		List<Player> players = new ArrayList<Player>();
 		players.add(Player.newInstance(0, verticalCenter,
-				Player.PlayerType.KEEPER, Player.EAST));
+				Player.PlayerType.KEEPER, Player.EAST, team1));
 		players.add(Player.newInstance(1, verticalCenter - 2,
-				Player.PlayerType.DEFENDER, Player.EAST));
+				Player.PlayerType.DEFENDER, Player.EAST, team1));
 		players.add(Player.newInstance(1, verticalCenter + 2,
-				Player.PlayerType.DEFENDER, Player.EAST));
+				Player.PlayerType.DEFENDER, Player.EAST, team1));
 		players.add(Player.newInstance(1, verticalCenter,
-				Player.PlayerType.MIDFIELDER, Player.EAST));
+				Player.PlayerType.MIDFIELDER, Player.EAST, team1));
 		players.add(Player.newInstance(2, verticalCenter - 1,
-				Player.PlayerType.STRIKER, Player.EAST));
+				Player.PlayerType.STRIKER, Player.EAST, team1));
 		players.add(Player.newInstance(2, verticalCenter + 1,
-				Player.PlayerType.STRIKER, Player.EAST));
-		team1 = new Team(players);
-		addActor(team1);
+				Player.PlayerType.STRIKER, Player.EAST, team1));
+		for (Player p : players)
+			addActor(p);
+		team1.setPlayers(players);
 
 		// create team2 on the right half
+		team2 = new Team(this);
 		players = new ArrayList<Player>();
-		
-		//players.add(Player.newInstance(width - 1, verticalCenter,
-		//		Player.PlayerType.KEEPER, Player.WEST));
-		players.add(Player.newInstance(6, 0,
-				Player.PlayerType.KEEPER, Player.WEST));
-		players.add(Player.newInstance(7, height - 1,
-				Player.PlayerType.KEEPER, Player.WEST));
-		
+		players.add(Player.newInstance(width - 1, verticalCenter,
+				Player.PlayerType.KEEPER, Player.WEST, team2));
 		players.add(Player.newInstance(width - 2, verticalCenter - 2,
-				Player.PlayerType.DEFENDER, Player.WEST));
+				Player.PlayerType.DEFENDER, Player.WEST, team2));
 		players.add(Player.newInstance(width - 2, verticalCenter + 2,
-				Player.PlayerType.DEFENDER, Player.WEST));
+				Player.PlayerType.DEFENDER, Player.WEST, team2));
 		players.add(Player.newInstance(width - 2, verticalCenter,
-				Player.PlayerType.MIDFIELDER, Player.WEST));
+				Player.PlayerType.MIDFIELDER, Player.WEST, team2));
 		players.add(Player.newInstance(width - 3, verticalCenter - 1,
-				Player.PlayerType.STRIKER, Player.WEST));
+				Player.PlayerType.STRIKER, Player.WEST, team2));
 		players.add(Player.newInstance(width - 3, verticalCenter + 1,
-				Player.PlayerType.STRIKER, Player.WEST));
-		team2 = new Team(players);
-		addActor(team2);
+				Player.PlayerType.STRIKER, Player.WEST, team2));
+		for (Player p : players)
+			addActor(p);
+		team2.setPlayers(players);
 		
 		// Set initial field action
 		currentPlayer = team1.getPlayers().get(0);
@@ -153,7 +150,7 @@ public class Field extends Group {
 		return new Field(width, height);
 	}
 
-	public Player getPlayer(int x, int y) {
+	/*public Player getPlayer(int x, int y) {
 		Player result = getPlayer(x, y, team1);
 		if (result == null)
 			result = getPlayer(x, y, team2);
@@ -167,6 +164,20 @@ public class Field extends Group {
 				return p;
 			
 		return null;
+	}*/
+	
+	public void setCurrentPlayer(int x, int y) {
+		if (getGame().getState() == Game.STATE_TEAM1) {
+			setCurrentPlayer(x, y, team1);
+		} else if (getGame().getState() == Game.STATE_TEAM2) {
+			setCurrentPlayer(x, y, team2);
+		}
+	}
+	
+	private void setCurrentPlayer(int x, int y, Team team) {
+		for (Player p : team.getPlayers())
+			if (p.getPositionX() == x && p.getPositionY() == y)
+				currentPlayer = p;;
 	}
 	
 	public void setCurrentPlayer(Player player) {
@@ -211,32 +222,6 @@ public class Field extends Group {
 			tile.setHighlighted(true);
 			tile.getDebugLabel().setText(String.valueOf(tileNode.cost));
 		}
-	}
-
-	public boolean isFree(int x, int y) {
-		return !isTeamOnPosition(x, y, getTeam1()) && !isTeamOnPosition(x, y, getTeam2());
-	}
-	
-	public boolean isOpponentOnPosition(int x, int y) {
-		boolean result = false;
-		if (getGame().getState() == Game.STATE_TEAM1) {
-			result = isTeamOnPosition(x, y, team2);
-		} else if (getGame().getState() == Game.STATE_TEAM2) {
-			result = isTeamOnPosition(x, y, team1);
-		}
-		return result;
-	}
-	
-	public boolean isBallOnPosition(int x, int y) {
-		return (ball.getPositionX() == x && ball.getPositionY() == y);
-	}
-	
-	public boolean isTeamOnPosition(int x, int y, Team team) {
-		for (Player p : team.getPlayers())
-			if (p.getPositionX() == x && p.getPositionY() == y)
-				return true;
-		
-		return false;
 	}
 	
 	public Map<Tile, TileNode> getCurrentTilesForPass(Player player) {
@@ -461,6 +446,50 @@ public class Field extends Group {
 		
 		return result;
 	}
+	
+	public boolean isFree(int x, int y) {
+		return !isTeamOnPosition(x, y, getTeam1()) && !isTeamOnPosition(x, y, getTeam2());
+	}
+	
+	public boolean isOpponentOnPosition(int x, int y) {
+		boolean result = false;
+		if (getGame().getState() == Game.STATE_TEAM1) {
+			result = isTeamOnPosition(x, y, team2);
+		} else if (getGame().getState() == Game.STATE_TEAM2) {
+			result = isTeamOnPosition(x, y, team1);
+		}
+		return result;
+	}
+	
+	public boolean isFriendOnPosition(int x, int y) {
+		boolean result = false;
+		if (getGame().getState() == Game.STATE_TEAM1) {
+			result = isTeamOnPosition(x, y, team1);
+		} else if (getGame().getState() == Game.STATE_TEAM2) {
+			result = isTeamOnPosition(x, y, team2);
+		}
+		return result;
+	}
+	
+	public boolean isBallOnPosition(int x, int y) {
+		return (ball.getPositionX() == x && ball.getPositionY() == y);
+	}
+	
+	public boolean isTeamOnPosition(int x, int y, Team team) {
+		for (Player p : team.getPlayers())
+			if (p.getPositionX() == x && p.getPositionY() == y)
+				return true;
+		
+		return false;
+	}
+	
+	/*public boolean isPlayerSelected() {
+		return currentPlayer != null;
+	}
+	
+	public boolean isTileReachable(Tile tile) {
+		return currentTiles.containsKey(tile);
+	}*/
 	
 	public Ball getBall() {
 		return ball;

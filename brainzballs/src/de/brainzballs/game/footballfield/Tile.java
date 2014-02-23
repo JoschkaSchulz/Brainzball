@@ -143,10 +143,10 @@ public class Tile extends Group {
 	
 	public boolean hasOpponentNeighbour(Team currentTeam) {
 		boolean result = false;
-		result = result || getField().isOpponentOnPosition(x + 1, y);
-		result = result || getField().isOpponentOnPosition(x - 1, y);
-		result = result || getField().isOpponentOnPosition(x, y + 1);
-		result = result || getField().isOpponentOnPosition(x, y - 1);
+		result |= getField().isOpponentOnPosition(x + 1, y);
+		result |= getField().isOpponentOnPosition(x - 1, y);
+		result |= getField().isOpponentOnPosition(x, y + 1);
+		result |= getField().isOpponentOnPosition(x, y - 1);
 		return result;
 	}
 	
@@ -167,7 +167,8 @@ public class Tile extends Group {
 			
 		}
 		
-		getField().setCurrentPlayer(getField().getPlayer(x, y));
+		getField().setCurrentPlayer(x, y);
+		//getField().setCurrentPlayer(getField().getPlayer(x, y));
 	}
 	
 	public int getCondition() {
