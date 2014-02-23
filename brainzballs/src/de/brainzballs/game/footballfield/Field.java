@@ -112,18 +112,18 @@ public class Field extends Group {
 		List<Player> players = new ArrayList<Player>();
 		players.add(Player.newInstance(0, verticalCenter,
 				Player.PlayerType.KEEPER, Player.EAST, team1));
-		players.add(Player.newInstance(1, verticalCenter - 2,
+		players.add(Player.newInstance(2, verticalCenter - 3,
 				Player.PlayerType.DEFENDER, Player.EAST, team1));
 		players.get(players.size()-1).setName("down");
-		players.add(Player.newInstance(1, verticalCenter + 2,
+		players.add(Player.newInstance(2, verticalCenter + 3,
 				Player.PlayerType.DEFENDER, Player.EAST, team1));
 		players.get(players.size()-1).setName("up");
-		players.add(Player.newInstance(1, verticalCenter,
+		players.add(Player.newInstance(4, verticalCenter,
 				Player.PlayerType.MIDFIELDER, Player.EAST, team1));
 		players.get(players.size()-1).setName("mid");
-		players.add(Player.newInstance(2, verticalCenter - 1,
+		players.add(Player.newInstance(6, verticalCenter - 1,
 				Player.PlayerType.STRIKER, Player.EAST, team1));
-		players.add(Player.newInstance(2, verticalCenter + 1,
+		players.add(Player.newInstance(6, verticalCenter + 1,
 				Player.PlayerType.STRIKER, Player.EAST, team1));
 		for (Player p : players)
 			addActor(p);
@@ -134,15 +134,15 @@ public class Field extends Group {
 		players = new ArrayList<Player>();
 		players.add(Player.newInstance(width - 1, verticalCenter,
 				Player.PlayerType.KEEPER, Player.WEST, team2));
-		players.add(Player.newInstance(width - 2, verticalCenter - 2,
+		players.add(Player.newInstance(width - 3, verticalCenter - 3,
 				Player.PlayerType.DEFENDER, Player.WEST, team2));
-		players.add(Player.newInstance(width - 2, verticalCenter + 2,
+		players.add(Player.newInstance(width - 3, verticalCenter + 3,
 				Player.PlayerType.DEFENDER, Player.WEST, team2));
-		players.add(Player.newInstance(width - 2, verticalCenter,
+		players.add(Player.newInstance(width - 5, verticalCenter,
 				Player.PlayerType.MIDFIELDER, Player.WEST, team2));
-		players.add(Player.newInstance(width - 3, verticalCenter - 1,
+		players.add(Player.newInstance(width - 7, verticalCenter - 1,
 				Player.PlayerType.STRIKER, Player.WEST, team2));
-		players.add(Player.newInstance(width - 3, verticalCenter + 1,
+		players.add(Player.newInstance(width - 7, verticalCenter + 1,
 				Player.PlayerType.STRIKER, Player.WEST, team2));
 		for (Player p : players)
 			addActor(p);
