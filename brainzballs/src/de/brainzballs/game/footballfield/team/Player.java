@@ -1,5 +1,11 @@
 package de.brainzballs.game.footballfield.team;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
@@ -29,6 +35,7 @@ public class Player extends Actor {
 	public static final int SOUTH  	= 2;
 	public static final int EAST 	= 3;
 	
+	private LinkedList<Tile> moveList;
 	private Team team;
 	private int direction;
 	private int x, y;
@@ -51,6 +58,7 @@ public class Player extends Actor {
 		this.idleTimer = (float) (Math.random()*10);
 		this.direction = direction;
 		this.team = team;
+		this.moveList = new LinkedList<Tile>();
 		
 		polyBatch = new PolygonSpriteBatch();
 		
@@ -115,6 +123,9 @@ public class Player extends Actor {
 		
 		//Set the default animation on idle
 		state.addAnimation(0, "idle1", true,0);
+		
+		skeleton.setX((x*64)+32);
+		skeleton.setY((y*64)+32);
 	}
 	
 	public static Player newInstance(int x, int y, PlayerType playerType, int direction, Team team) {
@@ -252,25 +263,73 @@ public class Player extends Actor {
 		return true;
 	}
 
+	public void addMovePoints(Collections collection) {
+		this.moveList.addAll((Collection<? extends Tile>) collection);
+	}
+	
+	private Tile moveTile;
+	private void hanldeMoveList() {
+		if(moveList.size() > 0 && moveTile == null) {
+			moveTile = moveList.getFirst();
+			if(moveTile.getPositionX() < getPositionX()) {
+				direction = WEST;
+				skeleton.setFlipX(true);
+				skeleton.setToSetupPose();
+			}else{
+				skeleton.setFlipX(false);
+				skeleton.setToSetupPose();
+				direction = EAST;
+			}
+			moveList.removeFirst();
+		}
+	}
+	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 		
-		skeleton.setX((x*64)+32);
-		skeleton.setY((y*64)+32);
-		
 		renderer.draw(batch, skeleton);
 	}
 
+	private float speed = 50;
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		this.idleTimer += delta;
+		hanldeMoveList();
+		if(moveTile == null) {
+			this.idleTimer += delta;
 		
-		if(idleTimer >= 15) {
-			idleTimer = 0;
-			state.setAnimation(0, specialIdle[(int) Math.round(Math.random()*(specialIdle.length-1))], false);
-			state.addAnimation(0, idle, true, state.getCurrent(0).getTime());
+			if(idleTimer >= 15) {
+				idleTimer = 0;
+				state.setAnimation(0, specialIdle[(int) Math.round(Math.random()*(specialIdle.length-1))], false);
+				state.addAnimation(0, idle, true, state.getCurrent(0).getTime());
+			}
+		}else{
+			if(moveTile.getPositionX() < getPositionX()) {
+				skeleton.setX(skeleton.getX() - (delta*speed));
+				if((moveTile.getX()*64)+32 > skeleton.getX()) {
+					skeleton.setX((moveTile.getX()*64)+32);
+					moveTile = null;
+				}
+			}else if(moveTile.getPositionX() > getPositionX()) {
+				skeleton.setX(skeleton.getX() - (delta*speed));
+				if((moveTile.getX()*64)+32 > skeleton.getX()) {
+					skeleton.setX((moveTile.getX()*64)-32);
+					moveTile = null;
+				}
+			}else if(moveTile.getPositionY() < getPositionY()) {
+				skeleton.setY(skeleton.getY() - (delta*speed));
+				if((moveTile.getY()*64)+32 > skeleton.getY()) {
+					skeleton.setY((moveTile.getY()*64)-32);
+					moveTile = null;
+				}
+			}else if(moveTile.getPositionY() > getPositionY()) {
+				skeleton.setY(skeleton.getY() + (delta*speed));
+				if((moveTile.getY()*64)+32 > skeleton.getY()) {
+					skeleton.setY((moveTile.getY()*64)+32);
+					moveTile = null;
+				}
+			}
 		}
 		
 		state.update(delta);
