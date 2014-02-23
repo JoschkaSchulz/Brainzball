@@ -53,7 +53,7 @@ public class Tile extends Group {
 	}
 	
 	public boolean isInTeam(Team team) {
-		return getField().isInTeam(x, y, team);
+		return getField().isTeamOnPosition(x, y, team);
 	}
 	
 	public boolean isBorder() {
@@ -143,10 +143,10 @@ public class Tile extends Group {
 	
 	public boolean hasOpponentNeighbour(Team currentTeam) {
 		boolean result = false;
-		result = result || getField().isOpponent(x + 1, y, currentTeam);
-		result = result || getField().isOpponent(x - 1, y, currentTeam);
-		result = result || getField().isOpponent(x, y + 1, currentTeam);
-		result = result || getField().isOpponent(x, y - 1, currentTeam);
+		result = result || getField().isOpponentOnPosition(x + 1, y);
+		result = result || getField().isOpponentOnPosition(x - 1, y);
+		result = result || getField().isOpponentOnPosition(x, y + 1);
+		result = result || getField().isOpponentOnPosition(x, y - 1);
 		return result;
 	}
 	

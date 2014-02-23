@@ -213,24 +213,24 @@ public class Field extends Group {
 	}
 
 	public boolean isFree(int x, int y) {
-		return !isInTeam(x, y, getTeam1()) && !isInTeam(x, y, getTeam2());
+		return !isTeamOnPosition(x, y, getTeam1()) && !isTeamOnPosition(x, y, getTeam2());
 	}
 	
-	public boolean isOpponent(int x, int y, Team currentTeam) {
+	public boolean isOpponentOnPosition(int x, int y) {
 		boolean result = false;
 		if (getGame().getState() == Game.STATE_TEAM1) {
-			result = isInTeam(x, y, team2);
+			result = isTeamOnPosition(x, y, team2);
 		} else if (getGame().getState() == Game.STATE_TEAM2) {
-			result = isInTeam(x, y, team1);
+			result = isTeamOnPosition(x, y, team1);
 		}
 		return result;
 	}
 	
-	public boolean isBall(int x, int y) {
+	public boolean isBallOnPosition(int x, int y) {
 		return (ball.getPositionX() == x && ball.getPositionY() == y);
 	}
 	
-	public boolean isInTeam(int x, int y, Team team) {
+	public boolean isTeamOnPosition(int x, int y, Team team) {
 		for (Player p : team.getPlayers())
 			if (p.getPositionX() == x && p.getPositionY() == y)
 				return true;
