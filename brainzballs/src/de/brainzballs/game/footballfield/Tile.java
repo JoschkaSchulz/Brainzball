@@ -124,7 +124,7 @@ public class Tile extends Group {
 		return tiles;
 	}
 	
-	public boolean hasOpponentNeighbour(Team currentTeam) {
+	public boolean hasOpponentNeighbour() {
 		boolean result = false;
 		result |= getField().isOpponentOnPosition(x + 1, y);
 		result |= getField().isOpponentOnPosition(x - 1, y);

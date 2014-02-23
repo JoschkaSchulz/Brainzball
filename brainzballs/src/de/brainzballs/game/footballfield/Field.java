@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -177,7 +176,7 @@ public class Field extends Group {
 			
 			// Start at the player tile
 			Tile startTile = currentPlayer.getTile();
-			TileNode startTileNode = new TileNode(null, true, startTile.hasOpponentNeighbour(currentPlayer.getTeam()), startTile.isFree(), 0);
+			TileNode startTileNode = new TileNode(null, true, startTile.hasOpponentNeighbour(), startTile.isFree(), 0);
 			currentTiles.put(startTile, startTileNode);
 			
 			// Add start tile to visit list
@@ -232,7 +231,7 @@ public class Field extends Group {
             			boolean visitNextTile = false;
 	           			TileNode nextTileNode = closedMap.get(nextTile);
 	           			if (nextTileNode == null) {
-	           				nextTileNode = new TileNode(currentTile, false, nextTile.hasOpponentNeighbour(player.getTeam()), nextTile.isFree(), cost);
+	           				nextTileNode = new TileNode(currentTile, false, nextTile.hasOpponentNeighbour(), nextTile.isFree(), cost);
 	           				closedMap.put(nextTile, nextTileNode);
 	           				visitNextTile = true;
 	           			} else {
@@ -294,7 +293,7 @@ public class Field extends Group {
             			boolean visitNextTile = false;
 	           			TileNode nextTileNode = closedMap.get(nextTile);
 	           			if (nextTileNode == null) {
-	           				nextTileNode = new TileNode(currentTile, false, nextTile.hasOpponentNeighbour(player.getTeam()), nextTile.isFree(), cost);
+	           				nextTileNode = new TileNode(currentTile, false, nextTile.hasOpponentNeighbour(), nextTile.isFree(), cost);
 	           				closedMap.put(nextTile, nextTileNode);
 	           				visitNextTile = true;
 	           			} else {
@@ -359,7 +358,7 @@ public class Field extends Group {
 	            			boolean visitNextTile = false;
 		           			TileNode nextTileNode = closedMap.get(nextTile);
 		           			if (nextTileNode == null) {
-		           				nextTileNode = new TileNode(currentTile, false, nextTile.hasOpponentNeighbour(player.getTeam()), nextTile.isFree(), cost);
+		           				nextTileNode = new TileNode(currentTile, false, nextTile.hasOpponentNeighbour(), nextTile.isFree(), cost);
 		           				closedMap.put(nextTile, nextTileNode);
 		           				visitNextTile = true;
 		           			} else {
@@ -400,12 +399,16 @@ public class Field extends Group {
 				} else if (currentFieldAction == FieldAction.MOVE) {
 					currentPlayer.addMovePoints(path);
 					currentPlayer = null;
-					updateCurrentTiles();
+					if (tile.hasOpponentNeighbour()) {
+						List<Tile> tiles = tile.getNeighbours();
+						// find all enemys in tiles
+					}
 					getGame().setCurrentState(Game.STATE_ACTION_BEGIN);
 				} else if (currentFieldAction == FieldAction.SHOT) {
 					
 				}
 			}
+			updateCurrentTiles();
 		}
 	}
 	
@@ -480,14 +483,6 @@ public class Field extends Group {
 	public Ball getBall() {
 		return ball;
 	}
-
-	/*public Team getTeam1() {
-		return team1;
-	}
-
-	public Team getTeam2() {
-		return team2;
-	}*/
 
 	public Tile getTile(int x, int y) {
 		if (x < 0 || x >= field.length)
