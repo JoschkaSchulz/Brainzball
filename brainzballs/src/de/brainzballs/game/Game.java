@@ -46,13 +46,6 @@ public class Game extends Group {
 		showActions();
 		
 		setCurrentState(STATE_ACTION_CHOOSE);
-		
-//		debugOverlay();
-	}
-	
-	private void debugOverlay() {
-		Fight fight = new Fight();
-		addActor(fight);
 	}
 	
 	private void createPointUI() {
