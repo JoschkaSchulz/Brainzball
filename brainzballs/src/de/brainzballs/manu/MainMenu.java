@@ -122,7 +122,7 @@ public class MainMenu extends Group {
 		
 		if(leftSkeleton.getX() > Gdx.graphics.getWidth() + 200) {
 			leftSkeleton.setX(-200);
-			int head = (int) (Math.round(Math.random() * 4));
+			int head = (int) (Math.round(Math.random() * 4)-1);
 			leftSkeletonData.findSlot("Head").setAttachmentName((head == 0 ? "Head" : "Head"+head));
 			leftSkeleton.setToSetupPose();
 		}
