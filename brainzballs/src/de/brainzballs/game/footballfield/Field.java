@@ -36,6 +36,7 @@ public class Field extends Group {
 	
 	// Current selection for action
 	private Player currentPlayer;
+	private List<Player> currentEnemys;	
 	private FieldAction currentFieldAction;
 	private Map<Tile, TileNode> currentTiles;
 	
@@ -173,7 +174,7 @@ public class Field extends Group {
 		currentTiles = new HashMap<Tile, TileNode>();
 		
 		// If player not null calculate the reachable tiles
-		if (currentPlayer != null) {
+		if (currentPlayer != null && getGame().getCurrentState() == Game.STATE_ACTION_CHOOSE) {
 			
 			// Start at the player tile
 			Tile startTile = currentPlayer.getTile();
@@ -399,19 +400,13 @@ public class Field extends Group {
 					
 				} else if (currentFieldAction == FieldAction.MOVE) {
 					currentPlayer.addMovePoints(path);
-					
-					
-					
-						List<Tile> tiles = tile.getNeighbours();
-						for (Tile t : tiles) {
-							Player enemy = getOpponentPlayerOnPosition(t.getPositionX(), t.getPositionY());
-							if (enemy != null)
-								addActor(new Fight(currentPlayer, enemy));
-						}
-					
-					
-					
-					currentPlayer = null;
+					currentEnemys = new ArrayList<Player>();
+					List<Tile> nextTiles = tile.getNeighbours();
+					for (Tile nextTile : nextTiles) {
+						Player enemy = getOpponentPlayerOnPosition(nextTile.getPositionX(), nextTile.getPositionY());
+						if (enemy != null)
+							currentEnemys.add(enemy);
+					}
 					getGame().setCurrentState(Game.STATE_ACTION_BEGIN);
 				} else if (currentFieldAction == FieldAction.SHOT) {
 					
@@ -422,6 +417,9 @@ public class Field extends Group {
 	}
 	
 	public void endFieldAction() {
+		for (Player p : currentEnemys)
+			getGame().addActor(new Fight(currentPlayer, p));
+		
 		getGame().setCurrentState(Game.STATE_ACTION_END);
 	}
 	
