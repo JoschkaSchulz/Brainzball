@@ -147,6 +147,9 @@ public class Tile extends Group {
 		result = result || getField().isOpponent(x - 1, y, currentTeam);
 		result = result || getField().isOpponent(x, y + 1, currentTeam);
 		result = result || getField().isOpponent(x, y - 1, currentTeam);
+		
+		System.out.println("has opponent: " + result);
+		
 		return result;
 	}
 	

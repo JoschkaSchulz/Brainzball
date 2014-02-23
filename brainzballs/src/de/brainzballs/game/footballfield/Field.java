@@ -12,6 +12,7 @@ import java.util.TreeSet;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import de.brainzballs.game.Game;
 import de.brainzballs.game.footballfield.team.Player;
@@ -121,8 +122,12 @@ public class Field extends Group {
 
 		// create team2 on the right half
 		players = new ArrayList<Player>();
-		players.add(Player.newInstance(width - 1, verticalCenter,
+		
+		//players.add(Player.newInstance(width - 1, verticalCenter,
+		//		Player.PlayerType.KEEPER, Player.WEST));
+		players.add(Player.newInstance(6, verticalCenter,
 				Player.PlayerType.KEEPER, Player.WEST));
+		
 		players.add(Player.newInstance(width - 2, verticalCenter - 2,
 				Player.PlayerType.DEFENDER, Player.WEST));
 		players.add(Player.newInstance(width - 2, verticalCenter + 2,
@@ -196,11 +201,11 @@ public class Field extends Group {
 	public boolean isOpponent(int x, int y, Team currentTeam) {
 		boolean result = false;
 		if (team1 != currentTeam) {
-			result = result || isInTeam(x, y, team1);
+			result |= isInTeam(x, y, team1);
 		} else {
-			result = result || isInTeam(x, y, team2);
+			result |= isInTeam(x, y, team2);
 		}
-		return false;
+		return result;
 	}
 	
 	public boolean isInTeam(int x, int y, Team team) {
@@ -262,7 +267,7 @@ public class Field extends Group {
 		           				result.put(nextTile, nextTileNode);
 		           				visitNextTile = true;
 		           			} else {
-		           				if (nextTileNode.getCost() > cost) {
+		           				if (!nextTileNode.end && nextTileNode.getCost() > cost) {
 		           					nextTileNode.setPreviewTile(currentTile, cost); 
 		           					visitNextTile = true;
 		           				}
