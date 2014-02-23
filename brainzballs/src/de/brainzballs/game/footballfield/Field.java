@@ -155,7 +155,7 @@ public class Field extends Group {
 	
 	private void setCurrentPlayer(int x, int y, Team team) {
 		for (Player p : team.getPlayers())
-			if (p.getPositionX() == x && p.getPositionY() == y)
+			if (p.getPositionX() == x && p.getPositionY() == y && !p.isOffended())
 				currentPlayer = p;
 	}
 	
@@ -417,6 +417,17 @@ public class Field extends Group {
 	}
 	
 	public void endFieldAction() {
+		
+		// At the end of an action the current players heal
+		if (getGame().getCurrentTeam() == Game.TEAM_1) {
+			for (Player p : team1.getPlayers())
+				p.decrementOffended();
+		} else if (getGame().getCurrentTeam() == Game.TEAM_2) {
+			for (Player p : team2.getPlayers())
+				p.decrementOffended();
+		}
+		
+		// Do some cool fights
 		for (Player p : currentEnemys)
 			getGame().addActor(new Fight(currentPlayer, p));
 		
@@ -439,6 +450,15 @@ public class Field extends Group {
 	
 	public boolean isFree(int x, int y) {
 		return !isTeamOnPosition(x, y, team1) && !isTeamOnPosition(x, y, team2);
+	}
+	
+	public boolean isHealOpponentOnPosition(int x, int y) {
+		boolean result = false;
+		Player enemy = getOpponentPlayerOnPosition(x, y);
+		if (enemy != null)
+			result = !enemy.isOffended();
+		
+		return result;
 	}
 	
 	public boolean isOpponentOnPosition(int x, int y) {
