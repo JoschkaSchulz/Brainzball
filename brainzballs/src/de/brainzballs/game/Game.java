@@ -119,4 +119,8 @@ public class Game extends Group {
 			state = STATE_TEAM1;
 		}
 	}
+	
+	public int getState() {
+		return state;
+	}
 }

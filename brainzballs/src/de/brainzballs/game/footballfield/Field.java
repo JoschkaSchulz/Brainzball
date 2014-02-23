@@ -70,7 +70,6 @@ public class Field extends Group {
 	private Team team1, team2;
 
 	//private int currentState;
-	private Team currentTeam;
 	private Player currentPlayer;
 	private FieldAction currentFieldAction;
 	private Map<Tile, TileNode> currentTiles;
@@ -138,7 +137,6 @@ public class Field extends Group {
 		addActor(team2);
 		
 		// Set initial field action
-		currentTeam = team1;
 		currentPlayer = team1.getPlayers().get(0);
 		currentFieldAction = FieldAction.MOVE;
 		currentTiles = new HashMap<Tile, Field.TileNode>();
@@ -170,13 +168,19 @@ public class Field extends Group {
 		return null;
 	}
 	
-	public void setCurrentTeam(Team team) {
-		currentTeam = team;
-		setCurrentTiles();
-	}
-	
 	public void setCurrentPlayer(Player player) {
-		currentPlayer = player;
+		currentPlayer = null;
+		if (player != null) {
+			if (getGame().getState() == Game.STATE_TEAM1) {
+				if (player.getTeam() == team1) {
+					currentPlayer = player;
+				}
+			} else if (getGame().getState() == Game.STATE_TEAM2) {
+				if (player.getTeam() == team2) {
+					currentPlayer = player;
+				}
+			}
+		}
 		setCurrentTiles();
 	}
 
@@ -214,10 +218,10 @@ public class Field extends Group {
 	
 	public boolean isOpponent(int x, int y, Team currentTeam) {
 		boolean result = false;
-		if (team1 != currentTeam) {
-			result |= isInTeam(x, y, team1);
-		} else {
-			result |= isInTeam(x, y, team2);
+		if (getGame().getState() == Game.STATE_TEAM1) {
+			result = isInTeam(x, y, team2);
+		} else if (getGame().getState() == Game.STATE_TEAM2) {
+			result = isInTeam(x, y, team1);
 		}
 		return result;
 	}

@@ -161,6 +161,7 @@ public class Tile extends Group {
 			getField().getCurrentTilesForMove(player, 10);
 		}*/
 		
+
 		List<Tile> path = getField().getPathForTile(this);
 		if (path.size() > 0) {
 			
