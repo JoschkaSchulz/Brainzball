@@ -155,10 +155,13 @@ public class Tile extends Group {
 	}
 	
 	private void mouseClick() {
-		Player player = getField().getPlayer(x, y);
+		
+		/*Player player = getField().getPlayer(x, y);
 		if (player != null) {
 			getField().getCurrentTilesForMove(player, 10);
-		}
+		}*/
+		
+		getField().setCurrentPlayer(getField().getPlayer(x, y));
 	}
 	
 	public int getCondition() {
