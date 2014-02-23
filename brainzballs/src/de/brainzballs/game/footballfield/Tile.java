@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
+import de.brainzballs.game.footballfield.team.Player;
 import de.brainzballs.game.footballfield.team.Team;
 import de.brainzballs.helper.ResourceLoader;
 
@@ -140,20 +141,24 @@ public class Tile extends Group {
 		return tiles;
 	}
 	
-	public boolean hasOpponentNeighbour(Team team) {
-		
-		
-		return false;
-	}
-	
-	private boolean hasOpponentNeighbour(Tile tile) {
+	public boolean hasOpponentNeighbour(Team currentTeam) {
 		boolean result = false;
-		
+		result = result || getField().isOpponent(x + 1, y, currentTeam);
+		result = result || getField().isOpponent(x - 1, y, currentTeam);
+		result = result || getField().isOpponent(x, y + 1, currentTeam);
+		result = result || getField().isOpponent(x, y - 1, currentTeam);
 		return result;
 	}
 	
+	public Label getDebugLabel() {
+		return debugLabel;
+	}
+	
 	private void mouseClick(Tile tile) {
-		//TODO: GO RAIMUND GO!!!
+		Player player = getField().getPlayer(x, y);
+		if (player != null) {
+			getField().highlightMove(player, 10);
+		}
 	}
 	
 	public int getCondition() {

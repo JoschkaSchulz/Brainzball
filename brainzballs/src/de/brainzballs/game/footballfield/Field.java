@@ -147,6 +147,22 @@ public class Field extends Group {
 		return new Field(width, height);
 	}
 
+	public Player getPlayer(int x, int y) {
+		Player result = getPlayer(x, y, team1);
+		if (result == null)
+			result = getPlayer(x, y, team2);
+		
+		return result;
+	}
+	
+	public Player getPlayer(int x, int y, Team team) {
+		for (Player p : team.getPlayers())
+			if (p.getPositionX() == x && p.getPositionY() == y)
+				return p;
+			
+		return null;
+	}
+	
 	public void setPlayer(Player player) {
 		currentPlayer = player;
 		updateTiles();
@@ -203,6 +219,8 @@ public class Field extends Group {
 	}
 	public Map<Tile, TileNode> highlightMove(Player player, int radius) {
 		
+		resetHighlight();
+		
 		// Save all reachable tiles with their cost
 		Map<Tile, TileNode> result = new HashMap<Tile, TileNode>();
 		
@@ -212,7 +230,7 @@ public class Field extends Group {
 		result.put(startTile, startTileNode);
 		
 		// Add start tile to visit list
-		List<Tile> toBeVisited = startTile.getNeighbours();
+		List<Tile> toBeVisited = new ArrayList<Tile>();
 		toBeVisited.add(startTile);
 		
 		// Iterate over tiles to visit
@@ -234,32 +252,42 @@ public class Field extends Group {
 	            	if (nextTile.isFree()) {
 	            		
 	            		// Calculate cost and insert or update the
-	            		// current information 
-	            		boolean visitNextTile = false;
+	            		// current information
 	            		int cost = currentTileNode.cost + currentTile.getCondition();
-	           			TileNode nextTileNode = result.get(nextTile);
-	           			if (nextTileNode == null) {
-	           				nextTileNode = new TileNode(currentTile, false, nextTile.hasOpponentNeighbour(player.getTeam()), cost);
-	           				result.put(nextTile, nextTileNode);
-	           				visitNextTile = true;
-	           			} else {
-	           				if (nextTileNode.getCost() > cost) {
-	           					nextTileNode.setPreviewTile(currentTile, cost); 
-	           					visitNextTile = true;
-	           				}
-	           			}
-	           			
-	           			// If next tile is new or better than the one before
-	           			// insert tile into visit list
-	           			if (visitNextTile) {
-	           				for (int i = 0; i < toBeVisited.size(); i++) {
-	           					TileNode tileNode = result.get(toBeVisited.get(0));
-	           					if (tileNode.getCost() > cost) {
-	           						toBeVisited.add(i, nextTile);
-	           						break;
-	           					}
-	           				}
-	           			}
+	            		if (cost <= radius) {
+	            			boolean visitNextTile = false;
+		           			TileNode nextTileNode = result.get(nextTile);
+		           			if (nextTileNode == null) {
+		           				nextTileNode = new TileNode(currentTile, false, nextTile.hasOpponentNeighbour(player.getTeam()), cost);
+		           				result.put(nextTile, nextTileNode);
+		           				visitNextTile = true;
+		           			} else {
+		           				if (nextTileNode.getCost() > cost) {
+		           					nextTileNode.setPreviewTile(currentTile, cost); 
+		           					visitNextTile = true;
+		           				}
+		           			}
+		           			
+		           			// If next tile is new or better than the one before
+		           			// insert tile into visit list
+		           			if (visitNextTile) {
+		           				
+		           				nextTile.setHighlighted(true);
+		           				nextTile.getDebugLabel().setText(String.valueOf(cost));
+		           				
+		           				
+		           				int i = 0;
+		           				while (i < toBeVisited.size()) {
+		           					TileNode tileNode = result.get(toBeVisited.get(i));
+		           					if (tileNode.getCost() > cost) {
+		           						break;
+		           					} else {
+		           						i++;
+		           					}
+		           				}
+		           				toBeVisited.add(i, nextTile);
+		           			}
+	            		}
 	           		}
 	           	}
 			}
