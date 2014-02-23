@@ -31,14 +31,73 @@ import de.brainzballs.game.overlay.Fight;
 import de.brainzballs.helper.ResourceLoader;
 
 public class MainMenu extends Group {
+	class HunterZombie {
+		
+		private SkeletonData rightSkeletonData;
+		private SkeletonRenderer rightRenderer;
+		private Animation rightRun, rightrunBall;
+		private Skeleton rightSkeleton;
+		private AnimationState rightState;
+		
+		public HunterZombie(int x) {
+			//Loading Player Skeleton and Animation
+			TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Zombie/Zombie.atlas"));
+			SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
+			rightSkeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Zombie/Zombie.json"));
+			
+			rightRenderer = new SkeletonRenderer();
+			
+			rightSkeleton = new Skeleton(rightSkeletonData);
+			rightSkeleton.updateWorldTransform();
+			rightSkeleton.setX(x);
+			rightSkeleton.setY(120);
+			
+			rightSkeleton.setSkin("RedTeam");
+			rightSkeleton.setToSetupPose();
+			
+			int head = (int) (Math.round(Math.random() * 3)+1);
+			rightSkeletonData.findSlot("Head").setAttachmentName((head == 1 ? "Head" : "Head"+head));
+			getSkeleton().setToSetupPose();
+			
+			AnimationStateData stateData = new AnimationStateData(rightSkeletonData); // Defines mixing (crossfading) between animations.
+			stateData.setDefaultMix(0.5f);
+
+			rightState = new AnimationState(stateData);
+			
+			//Set the default animation on idle
+			rightState.setAnimation(0, "idle1", true);
+			rightState.addAnimation(0, "run", true,new Float(Math.random() * 5));
+		}
+		
+		public AnimationState getState() {
+			return this.rightState;
+		}
+		
+		public SkeletonData getRightSkeletonData() {
+			return this.rightSkeletonData;
+		}
+		
+		public Skeleton getSkeleton() {
+			return this.rightSkeleton;
+		}
+		
+		public SkeletonRenderer getRenderer() {
+			return this.rightRenderer;
+		}
+	}
+	
 	private Image background;
 	private Image ground;
 	
 	private BrainzBalls brainzBalls;
+	private List<HunterZombie> zombies;
 	private List<Image> clouds;
 	
 	public MainMenu(BrainzBalls brainzBalls) {
 		this.brainzBalls = brainzBalls;
+		
+		this.zombies = new ArrayList<MainMenu.HunterZombie>();
+		
 		this.clouds = new ArrayList<Image>();
 		this.clouds.add(new Image(ResourceLoader.CLOUD[0]));
 		this.clouds.add(new Image(ResourceLoader.CLOUD[0]));
@@ -59,36 +118,6 @@ public class MainMenu extends Group {
 		createZombie();
 		
 		createMenu();
-	}
-	
-	private SkeletonData rightSkeletonData;
-	private SkeletonRenderer rightRenderer;
-	private Animation rightRun, rightrunBall;
-	private Skeleton rightSkeleton;
-	private AnimationState rightState;
-	private void createZombie() {
-		//Loading Player Skeleton and Animation
-		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Zombie/Zombie.atlas"));
-		SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
-		rightSkeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Zombie/Zombie.json"));
-		
-		rightRenderer = new SkeletonRenderer();
-		
-		rightSkeleton = new Skeleton(rightSkeletonData);
-		rightSkeleton.updateWorldTransform();
-		rightSkeleton.setX(-500);
-		rightSkeleton.setY(120);
-		
-		rightSkeleton.setSkin("RedTeam");
-		rightSkeleton.setToSetupPose();
-		
-		AnimationStateData stateData = new AnimationStateData(rightSkeletonData); // Defines mixing (crossfading) between animations.
-		stateData.setDefaultMix(0.5f);
-
-		rightState = new AnimationState(stateData);
-		
-		//Set the default animation on idle
-		rightState.setAnimation(0, "run", true);
 	}
 	
 	private SkeletonData leftSkeletonData;
@@ -118,7 +147,13 @@ public class MainMenu extends Group {
 		leftState = new AnimationState(stateData);
 		
 		//Set the default animation on idle
-		leftState.setAnimation(0, "run", true);
+		leftState.setAnimation(0, "runball", true);
+	}
+	
+	private void createZombie() {
+		for(int i = 0; i < 25; i++) {
+			zombies.add(new HunterZombie((int)(-(Math.random()*1000)-500)));
+		}
 	}
 	
 	private void createBackground() {
@@ -151,26 +186,28 @@ public class MainMenu extends Group {
 		
 		leftSkeleton.setX(leftSkeleton.getX() + (150 * delta));
 		
-		if(leftSkeleton.getX() > Gdx.graphics.getWidth() + 200) {
+		if(leftSkeleton.getX() > Gdx.graphics.getWidth() + 1200) {
 			leftSkeleton.setX(-200);
 			int head = (int) (Math.round(Math.random() * 3)+1);
 			leftSkeletonData.findSlot("Head").setAttachmentName((head == 1 ? "Head" : "Head"+head));
 			leftSkeleton.setToSetupPose();
 		}
 		
-		rightState.update(delta);
-		rightState.apply(rightSkeleton);
-		rightSkeleton.updateWorldTransform(); 
+		for(HunterZombie zed : zombies) {
+			zed.getState().update(delta);
+			zed.getState().apply(zed.getSkeleton());
+			zed.getSkeleton().updateWorldTransform();
 		
-		rightSkeleton.setX(rightSkeleton.getX() + (150 * delta));
-		
-		if(rightSkeleton.getX() > Gdx.graphics.getWidth() + 200) {
-			rightSkeleton.setX(-200);
-			int head = (int) (Math.round(Math.random() * 3)+1);
-			rightSkeletonData.findSlot("Head").setAttachmentName((head == 1 ? "Head" : "Head"+head));
-			rightSkeleton.setToSetupPose();
+			zed.getSkeleton().setX(zed.getSkeleton().getX() + (150 * delta));
+			
+			if(zed.getSkeleton().getX() > Gdx.graphics.getWidth() + 1200) {
+				zed.getSkeleton().setX(-200);
+				int head = (int) (Math.round(Math.random() * 3)+1);
+				zed.getRightSkeletonData().findSlot("Head").setAttachmentName((head == 1 ? "Head" : "Head"+head));
+				zed.getSkeleton().setToSetupPose();
+			}
+
 		}
-		
 		for(Image cloud : clouds) {
 			cloud.moveBy(-100 * delta, 0);
 			if(cloud.getX() < -200) {
@@ -187,8 +224,9 @@ public class MainMenu extends Group {
 		super.draw(batch, parentAlpha);
 		
 		leftRenderer.draw(batch, leftSkeleton);
-		rightRenderer.draw(batch, rightSkeleton);
-
+		for(HunterZombie zed : zombies) {
+			zed.getRenderer().draw(batch, zed.getSkeleton());
+		}
 	}
 
 	private void createMenu() {		
