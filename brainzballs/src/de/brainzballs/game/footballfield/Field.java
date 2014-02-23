@@ -61,10 +61,6 @@ public class Field extends Group {
 	public static final int FIELD_HEIGHT_MIN = 7;
 	public static final int FIELD_HEIGHT_MAX = 15;
 
-	//public static final int FIELD_STATE_SELECT_PLAYER	= 0;
-	//public static final int FIELD_STATE_SELECT_ACTION	= 1;
-	//public static final int FIELD_STATE_SELECT_TILE		= 2;
-	
 	private Tile[][] field;
 	private Ball ball;
 	private Team team1, team2;
@@ -132,11 +128,6 @@ public class Field extends Group {
 		for (Player p : players)
 			addActor(p);
 		team2.setPlayers(players);
-		
-		// Set initial field action
-		currentPlayer = team1.getPlayers().get(0);
-		currentFieldAction = FieldAction.MOVE;
-		currentTiles = new HashMap<Tile, Field.TileNode>();
 	}
 
 	public static Field newInstance(int width, int height) {
@@ -148,71 +139,44 @@ public class Field extends Group {
 		height += (height % 2 == 0 ? 1 : 0);
 		return new Field(width, height);
 	}
-
-	/*public Player getPlayer(int x, int y) {
-		Player result = getPlayer(x, y, team1);
-		if (result == null)
-			result = getPlayer(x, y, team2);
-		
-		return result;
-	}
-	
-	public Player getPlayer(int x, int y, Team team) {
-		for (Player p : team.getPlayers())
-			if (p.getPositionX() == x && p.getPositionY() == y)
-				return p;
-			
-		return null;
-	}*/
 	
 	public void setCurrentPlayer(int x, int y) {
+		currentPlayer = null;
 		if (getGame().getState() == Game.STATE_TEAM1) {
 			setCurrentPlayer(x, y, team1);
 		} else if (getGame().getState() == Game.STATE_TEAM2) {
 			setCurrentPlayer(x, y, team2);
 		}
+		updateCurrentTiles();
 	}
 	
 	private void setCurrentPlayer(int x, int y, Team team) {
 		for (Player p : team.getPlayers())
 			if (p.getPositionX() == x && p.getPositionY() == y)
-				currentPlayer = p;;
+				currentPlayer = p;
 	}
 	
-	public void setCurrentPlayer(Player player) {
-		currentPlayer = null;
-		if (player != null) {
-			if (getGame().getState() == Game.STATE_TEAM1) {
-				if (player.getTeam() == team1) {
-					currentPlayer = player;
-				}
-			} else if (getGame().getState() == Game.STATE_TEAM2) {
-				if (player.getTeam() == team2) {
-					currentPlayer = player;
-				}
-			}
-		}
-		setCurrentTiles();
-	}
-
 	public void setCurrentFieldAction(FieldAction fieldAction) {
 		currentFieldAction = fieldAction;
-		setCurrentTiles();
+		updateCurrentTiles();
+	}
+	
+	public FieldAction getCurrentFieldAction() {
+		return currentFieldAction;
 	}
 
-	private void setCurrentTiles() {
-		if (currentPlayer == null)
-			return;
-
+	private void updateCurrentTiles() {
 		resetHighlight();
-		if (currentFieldAction == FieldAction.PASS) {
-			currentTiles = getCurrentTilesForPass(currentPlayer);
-		} else if (currentFieldAction == FieldAction.MOVE) {
-			currentTiles = getCurrentTilesForMove(currentPlayer);
-		} else if (currentFieldAction == FieldAction.SHOT) {
-			currentTiles = getCurrentTilesForShot(currentPlayer);
-		} else {
-			currentTiles = new HashMap<Tile, Field.TileNode>();
+		
+		currentTiles = new HashMap<Tile, Field.TileNode>();
+		if (currentPlayer != null) {
+			if (currentFieldAction == FieldAction.PASS) {
+				currentTiles = getCurrentTilesForPass(currentPlayer);
+			} else if (currentFieldAction == FieldAction.MOVE) {
+				currentTiles = getCurrentTilesForMove(currentPlayer);
+			} else if (currentFieldAction == FieldAction.SHOT) {
+				currentTiles = getCurrentTilesForShot(currentPlayer);
+			}
 		}
 		
 		// Highlight all tiles with cost
@@ -482,13 +446,13 @@ public class Field extends Group {
 		return false;
 	}
 	
-	/*public boolean isPlayerSelected() {
+	public boolean isCurrentPlayerSelected() {
 		return currentPlayer != null;
 	}
 	
 	public boolean isTileReachable(Tile tile) {
 		return currentTiles.containsKey(tile);
-	}*/
+	}
 	
 	public Ball getBall() {
 		return ball;
