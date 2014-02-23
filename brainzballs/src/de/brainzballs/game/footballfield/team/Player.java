@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.esotericsoftware.spine.Animation;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
+import com.esotericsoftware.spine.BoneData;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
@@ -54,6 +55,7 @@ public class Player extends Actor {
 		//Loading Player Skeleton and Animation
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/Player.atlas"));
 		SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
+		jsonSkeleton.setScale(0.5f);
 		skeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/Player.json"));
 		
 		renderer = new SkeletonRenderer();
@@ -70,11 +72,15 @@ public class Player extends Actor {
 		specialIdle[4] = skeletonData.findAnimation("idle6");
 		idleBall = skeletonData.findAnimation("idle1ball");
 		
-		skeletonData.findBone("root").setScaleX(0.5f);
-		skeletonData.findBone("root").setScaleY(0.5f);
-		
 		skeleton = new Skeleton(skeletonData);
 		skeleton.updateWorldTransform();
+		
+		if(direction == WEST) {
+			skeleton.setFlipX(true);
+			skeleton.setSkin("RedTeam");
+		}else{
+			skeleton.setSkin("WhiteTeam");
+		}
 		
 		AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
 		stateData.setMix("run", "idle1", 0.2f);
@@ -194,16 +200,13 @@ public class Player extends Actor {
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 		
-		batch.end();
-		polyBatch.begin();
-		skeleton.setX((x*64)+64);
-		skeleton.setY((y*64)+96);
-		renderer.draw(polyBatch, skeleton);
+		skeleton.setX((x*64)+32);
+		skeleton.setY((y*64)-32);
+		renderer.draw(batch, skeleton);
 		
-		polyBatch.end();
-		batch.begin();
 	}
 
+	private float blabla = 1;
 	@Override
 	public void act(float delta) {
 		super.act(delta);
