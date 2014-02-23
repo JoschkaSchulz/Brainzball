@@ -107,34 +107,6 @@ public class Tile extends Group {
 			return false;
 		return true;
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	/*public Map<Tile, Integer> getNeighbours() {
-		return getNeighbours(1);
-	}*/
-	
-	/*public Map<Tile, Integer> getNeighbours(int depth) {
-		return getNeighbours(new HashMap<Tile, Integer>(), depth);
-	}*/
-	
-	/*public Map<Tile, Integer> getNeighbours(Map<Tile, Integer> tiles, int depth) {
-		if (depth == 0)
-			return tiles;
-		
-		tiles = getNeighbours(tiles, getField().getTile(x, y + 1), depth);
-		tiles = getNeighbours(tiles, getField().getTile(x, y - 1), depth);
-		tiles = getNeighbours(tiles, getField().getTile(x + 1, y), depth);
-		tiles = getNeighbours(tiles, getField().getTile(x - 1, y), depth);
-		
-		return tiles;
-	}*/
 	
 	public List<Tile> getNeighbours() {
 		List<Tile> tiles = new ArrayList<Tile>();

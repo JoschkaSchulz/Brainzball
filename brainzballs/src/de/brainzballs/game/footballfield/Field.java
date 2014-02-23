@@ -1,7 +1,6 @@
 package de.brainzballs.game.footballfield;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,49 +19,6 @@ import de.brainzballs.helper.ResourceLoader;
 
 public class Field extends Group {
 
-	private class TileNode {
-		
-		private final boolean start;
-		private final boolean hasOpponentNeighbour;
-		private final boolean free;
-		
-	 	private Tile previewTile;
-		private int cost;
-		
-		public TileNode(Tile previewTile, boolean start, boolean hasOpponentNeighbour, boolean free, int cost) {
-			this.previewTile = previewTile;
-			this.start = start;
-			this.hasOpponentNeighbour = hasOpponentNeighbour;
-			this.free = free;
-			this.cost = cost;
-		}
-		
-		public void setPreviewTile(Tile tile, int cost) {
-			this.previewTile = tile;
-			this.cost = cost;
-		}
-		
-		public Tile getPreviewTile() {
-			return previewTile;
-		}
-		
-		public int getCost() {
-			return cost;
-		}
-		
-		public boolean isStart() {
-			return start;
-		}
-		
-		public boolean hasOpponentNeighbour() {
-			return hasOpponentNeighbour;
-		}
-		
-		public boolean isFree() {
-			return free;
-		}
-	}
-	
 	public enum FieldAction {
 		PASS, MOVE, SHOT
 	}
@@ -152,7 +108,7 @@ public class Field extends Group {
 		// Set initial field action
 		currentPlayer = team1.getPlayers().get(0);
 		currentFieldAction = FieldAction.MOVE;
-		currentTiles = new HashMap<Tile, Field.TileNode>();
+		currentTiles = new HashMap<Tile, TileNode>();
 	}
 
 	public static Field newInstance(int width, int height) {
