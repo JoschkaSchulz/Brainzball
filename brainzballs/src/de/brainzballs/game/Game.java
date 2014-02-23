@@ -1,12 +1,15 @@
 package de.brainzballs.game;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import de.brainzballs.BrainzBalls;
 import de.brainzballs.game.footballfield.Field;
+import de.brainzballs.game.overlay.Fight;
 import de.brainzballs.helper.ResourceLoader;
 
 public class Game extends Group {
@@ -36,6 +39,13 @@ public class Game extends Group {
 		showActions();
 		
 		state = STATE_TEAM1;
+		
+		debugOverlay();
+	}
+	
+	private void debugOverlay() {
+		Fight fight = new Fight();
+		addActor(fight);
 	}
 	
 	private void createPointUI() {
@@ -60,6 +70,12 @@ public class Game extends Group {
 	private void createActionUI() {
 		actions = new Table();
 		TextButton pass = new TextButton("Passen", ResourceLoader.SKIN);
+		pass.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				
+			}
+		});
 		TextButton shot = new TextButton("shot", ResourceLoader.SKIN);
 		TextButton move = new TextButton("move", ResourceLoader.SKIN);
 		TextButton random = new TextButton("???", ResourceLoader.SKIN);
