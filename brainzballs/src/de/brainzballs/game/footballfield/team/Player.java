@@ -63,10 +63,17 @@ public class Player extends Actor {
 		polyBatch = new PolygonSpriteBatch();
 		
 		//Loading Player Skeleton and Animation
-		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/Player.atlas"));
-		SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
-		jsonSkeleton.setScale(0.5f);
-		skeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/Player.json"));
+		if(direction == WEST) {
+			TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Zombie/Zombie.atlas"));
+			SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
+			jsonSkeleton.setScale(0.5f);
+			skeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Zombie/Zombie.json"));
+		}else{
+			TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/Player.atlas"));
+			SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
+			jsonSkeleton.setScale(0.5f);
+			skeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/Player.json"));
+		}
 		
 		renderer = new SkeletonRenderer();
 		
@@ -85,39 +92,28 @@ public class Player extends Actor {
 		skeleton = new Skeleton(skeletonData);
 		skeleton.updateWorldTransform();
 		
-		if(playerType == PlayerType.DEFENDER) {
-			skeletonData.findSlot("Head").setAttachmentName("Head2");
-		}else if(playerType == PlayerType.KEEPER){
-			skeletonData.findSlot("Head").setAttachmentName("Head4");
-		}else if(playerType == PlayerType.MIDFIELDER){
-			skeletonData.findSlot("Head").setAttachmentName("Head3");
-		}else if(playerType == PlayerType.STRIKER){
-			skeletonData.findSlot("Head").setAttachmentName("Head");
-		}else{
-			skeletonData.findSlot("Head").setAttachmentName("Head");
-		}
-		
 		if(direction == WEST) {
 			skeleton.setFlipX(true);
 			skeleton.setSkin("RedTeam");
 		}else{
 			skeleton.setSkin("WhiteTeam");
+			
+			if(playerType == PlayerType.DEFENDER) {
+				skeletonData.findSlot("Head").setAttachmentName("Head2");
+			}else if(playerType == PlayerType.KEEPER){
+				skeletonData.findSlot("Head").setAttachmentName("Head4");
+			}else if(playerType == PlayerType.MIDFIELDER){
+				skeletonData.findSlot("Head").setAttachmentName("Head3");
+			}else if(playerType == PlayerType.STRIKER){
+				skeletonData.findSlot("Head").setAttachmentName("Head");
+			}else{
+				skeletonData.findSlot("Head").setAttachmentName("Head");
+			}
 		}
 		skeleton.setToSetupPose();
 		
 		AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
-		stateData.setMix("run", "idle1", 0.2f);
-		stateData.setMix("idle1", "run", 0.2f);
-		stateData.setMix("idle1", "idle2", 0.2f);
-		stateData.setMix("idle1", "idle3", 0.2f);
-		stateData.setMix("idle1", "idle4", 0.2f);
-		stateData.setMix("idle1", "idle5", 0.2f);
-		stateData.setMix("idle1", "idle6", 0.2f);
-		stateData.setMix("idle2", "idle1", 0.2f);
-		stateData.setMix("idle3", "idle1", 0.2f);
-		stateData.setMix("idle4", "idle1", 0.2f);
-		stateData.setMix("idle5", "idle1", 0.2f);
-		stateData.setMix("idle6", "idle1", 0.2f);
+		stateData.setDefaultMix(0.5f);
 
 		state = new AnimationState(stateData);
 		
@@ -267,8 +263,38 @@ public class Player extends Actor {
 		this.moveList.addAll(list);
 	}
 	
+	public void setPositionXY(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	private  void checkLastMove() {
+		setPositionXY(moveTile.getPositionX(), moveTile.getPositionY());
+		state.setAnimation(0, idle, true);
+		isRunning = false;
+		
+		if(hasBall()) {
+			state.setAnimation(0, idleBall, true);
+			getField().getBall().setVisible(false);
+		}
+	}
+	
+	private boolean isRunning = false;
 	private Tile moveTile;
 	private void hanldeMoveList() {
+		//First start
+		if(!isRunning && moveList.size() > 0) {
+			isRunning = true;
+			if(hasBall()) {
+				state.setAnimation(0, runBall, true);
+			}else{
+				state.setAnimation(0, run, true);
+			}
+			
+			if(hasBall()) getField().getBall().setPositionXY(moveList.getLast().getPositionX(), moveList.getLast().getPositionY());
+			
+		}
+		
 		if(moveList.size() > 0 && moveTile == null) {
 			moveTile = moveList.getFirst();
 			if(moveTile.getPositionX() < getPositionX()) {
@@ -291,7 +317,7 @@ public class Player extends Actor {
 		renderer.draw(batch, skeleton);
 	}
 
-	private float speed = 50;
+	private float speed = 150;
 	@Override
 	public void act(float delta) {
 		super.act(delta);
@@ -299,7 +325,7 @@ public class Player extends Actor {
 		if(moveTile == null) {
 			this.idleTimer += delta;
 		
-			if(idleTimer >= 15) {
+			if(idleTimer >= 15 && !hasBall()) {
 				idleTimer = 0;
 				state.setAnimation(0, specialIdle[(int) Math.round(Math.random()*(specialIdle.length-1))], false);
 				state.addAnimation(0, idle, true, state.getCurrent(0).getTime());
@@ -309,24 +335,36 @@ public class Player extends Actor {
 				skeleton.setX(skeleton.getX() + (delta*speed));
 				if((moveTile.getPositionX()*64)+32 < skeleton.getX()) {
 					skeleton.setX((moveTile.getPositionX()*64)+32);
+					if(moveList.size() == 0) {
+						checkLastMove();
+					}
 					moveTile = null;
 				}
 			}else if(moveTile.getPositionX() < getPositionX()) {
 				skeleton.setX(skeleton.getX() - (delta*speed));
 				if((moveTile.getPositionX()*64)+32 > skeleton.getX()) {
 					skeleton.setX((moveTile.getPositionX()*64)+32);
+					if(moveList.size() == 0) {
+						checkLastMove();
+					}
 					moveTile = null;
 				}
 			}else if(moveTile.getPositionY() < getPositionY()) {
 				skeleton.setY(skeleton.getY() - (delta*speed));
 				if((moveTile.getPositionY()*64)+32 > skeleton.getY()) {
 					skeleton.setY((moveTile.getPositionY()*64)+32);
+					if(moveList.size() == 0) {
+						checkLastMove();
+					}
 					moveTile = null;
 				}
 			}else if(moveTile.getPositionY() > getPositionY()) {
 				skeleton.setY(skeleton.getY() + (delta*speed));
 				if((moveTile.getPositionY()*64)+32 < skeleton.getY()) {
 					skeleton.setY((moveTile.getPositionY()*64)+32);
+					if(moveList.size() == 0) {
+						checkLastMove();
+					}
 					moveTile = null;
 				}
 			}else{
