@@ -167,25 +167,20 @@ public class Field extends Group {
 	}
 	
 	public void setCurrentPlayer(Player player) {
-		System.out.println(player.toString());
 		currentPlayer = player;
 		updateCurrentTiles();
 	}
 
 	public void setCurrentFieldAction(FieldAction fieldAction) {
-		System.out.println(fieldAction.toString());
 		currentFieldAction = fieldAction;
 		updateCurrentTiles();
 	}
 
 	private void updateCurrentTiles() {
-		resetHighlight();
-		
-		
-		
 		if (currentPlayer == null)
 			return;
 
+		resetHighlight();		
 		if (currentFieldAction == FieldAction.PASS && currentPlayer.canPass()) {
 			currentTiles = getCurrentTilesForPass(currentPlayer, 4);
 		} else if (currentFieldAction == FieldAction.MOVE
