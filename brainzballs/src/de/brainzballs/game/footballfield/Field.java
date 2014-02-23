@@ -96,45 +96,42 @@ public class Field extends Group {
 		ball = Ball.newInstance(horizontalCenter, verticalCenter);
 
 		// Create team1 on the left half
-		List<Player> players;
-		players = new ArrayList<Player>();
+		team1 = new Team(this);
+		List<Player> players = new ArrayList<Player>();
 		players.add(Player.newInstance(0, verticalCenter,
-				Player.PlayerType.KEEPER, Player.EAST));
+				Player.PlayerType.KEEPER, Player.EAST, team1));
 		players.add(Player.newInstance(1, verticalCenter - 2,
-				Player.PlayerType.DEFENDER, Player.EAST));
+				Player.PlayerType.DEFENDER, Player.EAST, team1));
 		players.add(Player.newInstance(1, verticalCenter + 2,
-				Player.PlayerType.DEFENDER, Player.EAST));
+				Player.PlayerType.DEFENDER, Player.EAST, team1));
 		players.add(Player.newInstance(1, verticalCenter,
-				Player.PlayerType.MIDFIELDER, Player.EAST));
+				Player.PlayerType.MIDFIELDER, Player.EAST, team1));
 		players.add(Player.newInstance(2, verticalCenter - 1,
-				Player.PlayerType.STRIKER, Player.EAST));
+				Player.PlayerType.STRIKER, Player.EAST, team1));
 		players.add(Player.newInstance(2, verticalCenter + 1,
-				Player.PlayerType.STRIKER, Player.EAST));
-		team1 = new Team(players);
-		addActor(team1);
+				Player.PlayerType.STRIKER, Player.EAST, team1));
+		for (Player p : players)
+			addActor(p);
+		team1.setPlayers(players);
 
 		// create team2 on the right half
+		team2 = new Team(this);
 		players = new ArrayList<Player>();
-		
-		//players.add(Player.newInstance(width - 1, verticalCenter,
-		//		Player.PlayerType.KEEPER, Player.WEST));
-		players.add(Player.newInstance(6, 0,
-				Player.PlayerType.KEEPER, Player.WEST));
-		players.add(Player.newInstance(7, height - 1,
-				Player.PlayerType.KEEPER, Player.WEST));
-		
+		players.add(Player.newInstance(width - 1, verticalCenter,
+				Player.PlayerType.KEEPER, Player.WEST, team2));
 		players.add(Player.newInstance(width - 2, verticalCenter - 2,
-				Player.PlayerType.DEFENDER, Player.WEST));
+				Player.PlayerType.DEFENDER, Player.WEST, team2));
 		players.add(Player.newInstance(width - 2, verticalCenter + 2,
-				Player.PlayerType.DEFENDER, Player.WEST));
+				Player.PlayerType.DEFENDER, Player.WEST, team2));
 		players.add(Player.newInstance(width - 2, verticalCenter,
-				Player.PlayerType.MIDFIELDER, Player.WEST));
+				Player.PlayerType.MIDFIELDER, Player.WEST, team2));
 		players.add(Player.newInstance(width - 3, verticalCenter - 1,
-				Player.PlayerType.STRIKER, Player.WEST));
+				Player.PlayerType.STRIKER, Player.WEST, team2));
 		players.add(Player.newInstance(width - 3, verticalCenter + 1,
-				Player.PlayerType.STRIKER, Player.WEST));
-		team2 = new Team(players);
-		addActor(team2);
+				Player.PlayerType.STRIKER, Player.WEST, team2));
+		for (Player p : players)
+			addActor(p);
+		team2.setPlayers(players);
 		
 		// Set initial field action
 		currentPlayer = team1.getPlayers().get(0);
