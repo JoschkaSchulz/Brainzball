@@ -188,7 +188,7 @@ public class Player extends Actor {
 	}
 	
 	public boolean hasBall() {
-		return getField().isBall(x, y);
+		return getField().isBallOnPosition(x, y);
 	}
 	
 	public PlayerType getPlayerType() {

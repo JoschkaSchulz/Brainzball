@@ -70,7 +70,6 @@ public class Field extends Group {
 	private Team team1, team2;
 
 	//private int currentState;
-	private Team currentTeam;
 	private Player currentPlayer;
 	private FieldAction currentFieldAction;
 	private Map<Tile, TileNode> currentTiles;
@@ -138,7 +137,6 @@ public class Field extends Group {
 		addActor(team2);
 		
 		// Set initial field action
-		currentTeam = team1;
 		currentPlayer = team1.getPlayers().get(0);
 		currentFieldAction = FieldAction.MOVE;
 		currentTiles = new HashMap<Tile, Field.TileNode>();
@@ -170,13 +168,19 @@ public class Field extends Group {
 		return null;
 	}
 	
-	public void setCurrentTeam(Team team) {
-		currentTeam = team;
-		setCurrentTiles();
-	}
-	
 	public void setCurrentPlayer(Player player) {
-		currentPlayer = player;
+		currentPlayer = null;
+		if (player != null) {
+			if (getGame().getState() == Game.STATE_TEAM1) {
+				if (player.getTeam() == team1) {
+					currentPlayer = player;
+				}
+			} else if (getGame().getState() == Game.STATE_TEAM2) {
+				if (player.getTeam() == team2) {
+					currentPlayer = player;
+				}
+			}
+		}
 		setCurrentTiles();
 	}
 
@@ -209,24 +213,24 @@ public class Field extends Group {
 	}
 
 	public boolean isFree(int x, int y) {
-		return !isInTeam(x, y, getTeam1()) && !isInTeam(x, y, getTeam2());
+		return !isTeamOnPosition(x, y, getTeam1()) && !isTeamOnPosition(x, y, getTeam2());
 	}
 	
-	public boolean isOpponent(int x, int y, Team currentTeam) {
+	public boolean isOpponentOnPosition(int x, int y) {
 		boolean result = false;
-		if (team1 != currentTeam) {
-			result |= isInTeam(x, y, team1);
-		} else {
-			result |= isInTeam(x, y, team2);
+		if (getGame().getState() == Game.STATE_TEAM1) {
+			result = isTeamOnPosition(x, y, team2);
+		} else if (getGame().getState() == Game.STATE_TEAM2) {
+			result = isTeamOnPosition(x, y, team1);
 		}
 		return result;
 	}
 	
-	public boolean isBall(int x, int y) {
+	public boolean isBallOnPosition(int x, int y) {
 		return (ball.getPositionX() == x && ball.getPositionY() == y);
 	}
 	
-	public boolean isInTeam(int x, int y, Team team) {
+	public boolean isTeamOnPosition(int x, int y, Team team) {
 		for (Player p : team.getPlayers())
 			if (p.getPositionX() == x && p.getPositionY() == y)
 				return true;
