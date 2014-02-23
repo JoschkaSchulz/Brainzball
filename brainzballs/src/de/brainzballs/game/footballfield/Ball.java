@@ -15,6 +15,14 @@ public class Ball extends Actor {
 		return new Ball(x, y);
 	}
 	
+	public int getPositionX() {
+		return x;
+	}
+	
+	public int getPositionY() {
+		return y;
+	}
+	
 	public Field getField() {
 		return (Field)getParent();
 	}
