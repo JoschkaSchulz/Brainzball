@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import de.brainzballs.game.Game;
 import de.brainzballs.game.footballfield.team.Player;
 import de.brainzballs.game.footballfield.team.Team;
+import de.brainzballs.game.overlay.Fight;
 import de.brainzballs.helper.ResourceLoader;
 
 public class Field extends Group {
@@ -401,14 +402,12 @@ public class Field extends Group {
 					
 					
 					
-					if (tile.hasOpponentNeighbour()) {
 						List<Tile> tiles = tile.getNeighbours();
-						List<Tile> enemys = new ArrayList<Tile>();
 						for (Tile t : tiles) {
-							if (isOpponentOnPosition(t.getPositionX(), t.getPositionY()))
-								enemys.add(t);
+							Player enemy = getOpponentPlayerOnPosition(t.getPositionX(), t.getPositionY());
+							if (enemy != null)
+								addActor(new Fight(currentPlayer, enemy));
 						}
-					}
 					
 					
 					
@@ -452,6 +451,24 @@ public class Field extends Group {
 			result = isTeamOnPosition(x, y, team1);
 		}
 		return result;
+	}
+	
+	public Player getOpponentPlayerOnPosition(int x, int y) {
+		Player result = null;
+		if (getGame().getCurrentTeam() == Game.TEAM_1) {
+			result = getOpponentPlayerOnPosition(x, y, team2);
+		} else if (getGame().getCurrentTeam() == Game.TEAM_2) {
+			result = getOpponentPlayerOnPosition(x, y, team1);
+		}
+		return result;
+	}
+	
+	private Player getOpponentPlayerOnPosition(int x, int y, Team team) {
+		for (Player p : team.getPlayers())
+			if (p.getPositionX() == x && p.getPositionY() == y)
+				return p;
+		
+		return null;
 	}
 	
 	public boolean isFriendOnPosition(int x, int y) {
