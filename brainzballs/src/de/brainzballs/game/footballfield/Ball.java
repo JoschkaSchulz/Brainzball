@@ -2,19 +2,14 @@ package de.brainzballs.game.footballfield;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.esotericsoftware.spine.Animation;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
-
-import de.brainzballs.game.footballfield.team.Team;
-import de.brainzballs.game.footballfield.team.Player.PlayerType;
 
 public class Ball extends Actor {
 	
@@ -23,7 +18,6 @@ public class Ball extends Actor {
 	private AnimationState state;
 	private Skeleton skeleton;
 	private SkeletonRenderer renderer;
-	private PolygonSpriteBatch polyBatch;
 	private SkeletonData skeletonData;
 	
 	private Ball(int x, int y) {
