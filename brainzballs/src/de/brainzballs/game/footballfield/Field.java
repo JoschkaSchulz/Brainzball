@@ -167,17 +167,22 @@ public class Field extends Group {
 	}
 	
 	public void setCurrentPlayer(Player player) {
+		System.out.println(player.toString());
 		currentPlayer = player;
 		updateCurrentTiles();
 	}
 
 	public void setCurrentFieldAction(FieldAction fieldAction) {
+		System.out.println(fieldAction.toString());
 		currentFieldAction = fieldAction;
 		updateCurrentTiles();
 	}
 
 	private void updateCurrentTiles() {
 		resetHighlight();
+		
+		
+		
 		if (currentPlayer == null)
 			return;
 
@@ -278,6 +283,7 @@ public class Field extends Group {
 		           			// If next tile is new or better than the one before
 		           			// insert tile into visit list
 		           			if (visitNextTile) {
+		           				
 		           				
 		           				nextTile.setHighlighted(true);
 		           				nextTile.getDebugLabel().setText(String.valueOf(cost));
