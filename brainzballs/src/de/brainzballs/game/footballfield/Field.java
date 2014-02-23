@@ -2,18 +2,11 @@ package de.brainzballs.game.footballfield;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.TreeSet;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
-
 import de.brainzballs.game.Game;
 import de.brainzballs.game.footballfield.team.Player;
 import de.brainzballs.game.footballfield.team.Team;
@@ -77,6 +70,7 @@ public class Field extends Group {
 
 	private Player currentPlayer;
 	private FieldAction currentFieldAction;
+	private Map<Tile, TileNode> currentTiles;
 
 	private Field(int width, int height) {
 
@@ -222,17 +216,16 @@ public class Field extends Group {
 	public void highlightShot(Player player, int radius) {
 		// TODO
 	}
-	public Map<Tile, TileNode> highlightMove(Player player, int radius) {
-		
+	public void highlightMove(Player player, int radius) {
 		resetHighlight();
 		
 		// Save all reachable tiles with their cost
-		Map<Tile, TileNode> result = new HashMap<Tile, TileNode>();
+		currentTiles = new HashMap<Tile, TileNode>();
 		
 		// Start at the player tile
 		Tile startTile = player.getTile();
 		TileNode startTileNode = new TileNode(null, true, startTile.hasOpponentNeighbour(player.getTeam()), 0);
-		result.put(startTile, startTileNode);
+		currentTiles.put(startTile, startTileNode);
 		
 		// Add start tile to visit list
 		List<Tile> toBeVisited = new ArrayList<Tile>();
@@ -246,7 +239,7 @@ public class Field extends Group {
 	        toBeVisited.remove(0);
 	        
 	        // Get information about current tile
-	        TileNode currentTileNode = result.get(currentTile);
+	        TileNode currentTileNode = currentTiles.get(currentTile);
 	        if (!currentTileNode.isEnd()) {	        
 	        	
 	            // Get all neighbours from current tile
@@ -261,10 +254,10 @@ public class Field extends Group {
 	            		int cost = currentTileNode.cost + currentTile.getCondition();
 	            		if (cost <= radius) {
 	            			boolean visitNextTile = false;
-		           			TileNode nextTileNode = result.get(nextTile);
+		           			TileNode nextTileNode = currentTiles.get(nextTile);
 		           			if (nextTileNode == null) {
 		           				nextTileNode = new TileNode(currentTile, false, nextTile.hasOpponentNeighbour(player.getTeam()), cost);
-		           				result.put(nextTile, nextTileNode);
+		           				currentTiles.put(nextTile, nextTileNode);
 		           				visitNextTile = true;
 		           			} else {
 		           				if (!nextTileNode.end && nextTileNode.getCost() > cost) {
@@ -283,7 +276,7 @@ public class Field extends Group {
 		           				
 		           				int i = 0;
 		           				while (i < toBeVisited.size()) {
-		           					TileNode tileNode = result.get(toBeVisited.get(i));
+		           					TileNode tileNode = currentTiles.get(toBeVisited.get(i));
 		           					if (tileNode.getCost() > cost) {
 		           						break;
 		           					} else {
@@ -297,8 +290,6 @@ public class Field extends Group {
 	           	}
 			}
 		}
-		
-		return result;
 	}
 	
 	public Ball getBall() {
