@@ -41,7 +41,7 @@ public class Game extends Group {
 		
 		state = STATE_TEAM1;
 		
-//		debugOverlay();
+		debugOverlay();
 	}
 	
 	private void debugOverlay() {

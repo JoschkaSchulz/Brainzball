@@ -59,12 +59,9 @@ public class Fight extends Group {
 		this.state = STATE_CHOOSE;
 		
 		createActionUI();
-	}
-	
-	@Override
-	public void act(float delta) {
-		super.act(delta);
-		timer += delta;
+		
+		createLeftPlayer();
+		createRightPlayer();
 	}
 
 	private void createActionUI() {
@@ -104,26 +101,26 @@ public class Fight extends Group {
 
 	private SkeletonData leftSkeletonData;
 	private SkeletonRenderer leftRenderer;
-	private Animation leftRun, runBall;
+	private Animation leftRun, leftRunBall;
 	private Skeleton leftSkeleton;
 	private AnimationState leftState;
 	private void createLeftPlayer() {
 		//Loading Player Skeleton and Animation
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/Player.atlas"));
 		SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
-		jsonSkeleton.setScale(0.5f);
 		leftSkeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/Player.json"));
 		
 		leftRenderer = new SkeletonRenderer();
 		
 		leftRun = leftSkeletonData.findAnimation("run");
-		runBall = leftSkeletonData.findAnimation("runball");
+		leftRunBall = leftSkeletonData.findAnimation("runball");
 		
 		leftSkeleton = new Skeleton(leftSkeletonData);
 		leftSkeleton.updateWorldTransform();
+		leftSkeleton.setX(300);
+		leftSkeleton.setY(180);
 		
-		leftSkeleton.setFlipX(true);
-		leftSkeleton.setSkin("RedTeam");
+		leftSkeleton.setSkin("WhiteTeam");
 		leftSkeleton.setToSetupPose();
 		
 		AnimationStateData stateData = new AnimationStateData(leftSkeletonData); // Defines mixing (crossfading) between animations.
@@ -143,8 +140,54 @@ public class Fight extends Group {
 		leftState = new AnimationState(stateData);
 		
 		//Set the default animation on idle
-		leftState.setAnimation(0, "idle1", true);
+		leftState.setAnimation(0, "run", true);
 	}
+	
+	private SkeletonData rightSkeletonData;
+	private SkeletonRenderer rightRenderer;
+	private Animation rightRun, rightrunBall;
+	private Skeleton rightSkeleton;
+	private AnimationState rightState;
+	private void createRightPlayer() {
+		//Loading Player Skeleton and Animation
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/Player.atlas"));
+		SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
+		rightSkeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/Player.json"));
+		
+		rightRenderer = new SkeletonRenderer();
+		
+		rightRun = rightSkeletonData.findAnimation("run");
+		rightrunBall = rightSkeletonData.findAnimation("runball");
+		
+		rightSkeleton = new Skeleton(rightSkeletonData);
+		rightSkeleton.updateWorldTransform();
+		rightSkeleton.setX(1000);
+		rightSkeleton.setY(180);
+		
+		rightSkeleton.setFlipX(true);
+		rightSkeleton.setSkin("RedTeam");
+		rightSkeleton.setToSetupPose();
+		
+		AnimationStateData stateData = new AnimationStateData(rightSkeletonData); // Defines mixing (crossfading) between animations.
+		stateData.setMix("run", "idle1", 0.2f);
+		stateData.setMix("idle1", "run", 0.2f);
+		stateData.setMix("idle1", "idle2", 0.2f);
+		stateData.setMix("idle1", "idle3", 0.2f);
+		stateData.setMix("idle1", "idle4", 0.2f);
+		stateData.setMix("idle1", "idle5", 0.2f);
+		stateData.setMix("idle1", "idle6", 0.2f);
+		stateData.setMix("idle2", "idle1", 0.2f);
+		stateData.setMix("idle3", "idle1", 0.2f);
+		stateData.setMix("idle4", "idle1", 0.2f);
+		stateData.setMix("idle5", "idle1", 0.2f);
+		stateData.setMix("idle6", "idle1", 0.2f);
+
+		rightState = new AnimationState(stateData);
+		
+		//Set the default animation on idle
+		rightState.setAnimation(0, "run", true);
+	}
+	
 	
 	/**
 	 * 1 for player
@@ -170,6 +213,20 @@ public class Fight extends Group {
 			return 0;	
 		}
 	}
+
+	@Override
+	public void act(float delta) {
+		super.act(delta);
+		timer += delta;
+		
+		leftState.update(delta);
+		leftState.apply(leftSkeleton);
+		leftSkeleton.updateWorldTransform(); 
+		
+		rightState.update(delta);
+		rightState.apply(rightSkeleton);
+		rightSkeleton.updateWorldTransform(); 
+	}
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
@@ -180,6 +237,9 @@ public class Fight extends Group {
 	
 		batch.draw(ResourceLoader.MENU_GROUND, (Gdx.graphics.getWidth()/2)-512, (Gdx.graphics.getHeight()/2)-300, 1024, 200);
 	
+		leftRenderer.draw(batch, leftSkeleton);
+		rightRenderer.draw(batch, rightSkeleton);
+		
 		if(state == STATE_CALCINIT) {
 			removeActor(actions);
 			switch(playerSelection) {
