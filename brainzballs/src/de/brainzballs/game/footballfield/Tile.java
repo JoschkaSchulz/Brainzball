@@ -184,6 +184,7 @@ public class Tile extends Group {
 					// Move
 					if (getField().isTileReachable(this)) {
 						System.out.println("MOVE!");
+						getField().doFieldAction(this);
 					}
 				} else if (getField().getCurrentFieldAction() == Field.FieldAction.SHOT) {
 					
