@@ -123,6 +123,9 @@ public class Player extends Actor {
 		
 		//Set the default animation on idle
 		state.addAnimation(0, "idle1", true,0);
+		
+		skeleton.setX((x*64)+32);
+		skeleton.setY((y*64)+32);
 	}
 	
 	public static Player newInstance(int x, int y, PlayerType playerType, int direction, Team team) {
@@ -266,7 +269,7 @@ public class Player extends Actor {
 	
 	private Tile moveTile;
 	private void hanldeMoveList() {
-		if(moveList.size() > 0) {
+		if(moveList.size() > 0 && moveTile == null) {
 			moveTile = moveList.getFirst();
 			if(moveTile.getPositionX() < getPositionX()) {
 				direction = WEST;
@@ -277,6 +280,7 @@ public class Player extends Actor {
 				skeleton.setToSetupPose();
 				direction = EAST;
 			}
+			moveList.removeFirst();
 		}
 	}
 	
@@ -284,15 +288,14 @@ public class Player extends Actor {
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 		
-		skeleton.setX((x*64)+32);
-		skeleton.setY((y*64)+32);
-		
 		renderer.draw(batch, skeleton);
 	}
 
+	private float speed = 50;
 	@Override
 	public void act(float delta) {
 		super.act(delta);
+		hanldeMoveList();
 		if(moveTile == null) {
 			this.idleTimer += delta;
 		
@@ -302,7 +305,31 @@ public class Player extends Actor {
 				state.addAnimation(0, idle, true, state.getCurrent(0).getTime());
 			}
 		}else{
-//			if(moveTile.getPositionX() < )
+			if(moveTile.getPositionX() < getPositionX()) {
+				skeleton.setX(skeleton.getX() - (delta*speed));
+				if((moveTile.getX()*64)+32 > skeleton.getX()) {
+					skeleton.setX((moveTile.getX()*64)+32);
+					moveTile = null;
+				}
+			}else if(moveTile.getPositionX() > getPositionX()) {
+				skeleton.setX(skeleton.getX() - (delta*speed));
+				if((moveTile.getX()*64)+32 > skeleton.getX()) {
+					skeleton.setX((moveTile.getX()*64)-32);
+					moveTile = null;
+				}
+			}else if(moveTile.getPositionY() < getPositionY()) {
+				skeleton.setY(skeleton.getY() - (delta*speed));
+				if((moveTile.getY()*64)+32 > skeleton.getY()) {
+					skeleton.setY((moveTile.getY()*64)-32);
+					moveTile = null;
+				}
+			}else if(moveTile.getPositionY() > getPositionY()) {
+				skeleton.setY(skeleton.getY() + (delta*speed));
+				if((moveTile.getY()*64)+32 > skeleton.getY()) {
+					skeleton.setY((moveTile.getY()*64)+32);
+					moveTile = null;
+				}
+			}
 		}
 		
 		state.update(delta);
