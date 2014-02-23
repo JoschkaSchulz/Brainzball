@@ -203,9 +203,9 @@ public class Field extends Group {
 	
 	public void setCurrentPlayer(int x, int y) {
 		currentPlayer = null;
-		if (getGame().getState() == Game.STATE_TEAM1) {
+		if (getGame().getCurrentTeam() == Game.TEAM_1) {
 			setCurrentPlayer(x, y, team1);
-		} else if (getGame().getState() == Game.STATE_TEAM2) {
+		} else if (getGame().getCurrentTeam() == Game.TEAM_2) {
 			setCurrentPlayer(x, y, team2);
 		}
 		updateCurrentTiles();
@@ -450,8 +450,24 @@ public class Field extends Group {
 		return closedMap;
 	}
 	
-	public void doFieldAction(Tile tile) {		
-		currentPlayer.addMovePoints(getPathToTile(tile));
+	public void beginFieldAction(Tile tile) {
+		if (getGame().getCurrentState() == Game.STATE_ACTION_CHOOSE) {
+			List<Tile> path = getPathToTile(tile);
+			if (path.size() > 0) {			
+				if (currentFieldAction == FieldAction.PASS) {
+					
+				} else if (currentFieldAction == FieldAction.MOVE) {
+					currentPlayer.addMovePoints(path);
+					getGame().setCurrentState(Game.STATE_ACTION_BEGIN);
+				} else if (currentFieldAction == FieldAction.SHOT) {
+					
+				}
+			}
+		}
+	}
+	
+	public void endFieldAction() {
+		getGame().setCurrentState(Game.STATE_ACTION_END);
 	}
 	
 	private List<Tile> getPathToTile(Tile tile) {
@@ -475,9 +491,9 @@ public class Field extends Group {
 	
 	public boolean isOpponentOnPosition(int x, int y) {
 		boolean result = false;
-		if (getGame().getState() == Game.STATE_TEAM1) {
+		if (getGame().getCurrentTeam() == Game.TEAM_1) {
 			result = isTeamOnPosition(x, y, team2);
-		} else if (getGame().getState() == Game.STATE_TEAM2) {
+		} else if (getGame().getCurrentTeam() == Game.TEAM_2) {
 			result = isTeamOnPosition(x, y, team1);
 		}
 		return result;
@@ -485,9 +501,9 @@ public class Field extends Group {
 	
 	public boolean isFriendOnPosition(int x, int y) {
 		boolean result = false;
-		if (getGame().getState() == Game.STATE_TEAM1) {
+		if (getGame().getCurrentTeam() == Game.TEAM_1) {
 			result = isTeamOnPosition(x, y, team1);
-		} else if (getGame().getState() == Game.STATE_TEAM2) {
+		} else if (getGame().getCurrentTeam() == Game.TEAM_2) {
 			result = isTeamOnPosition(x, y, team2);
 		}
 		return result;

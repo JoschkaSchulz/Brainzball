@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
+import de.brainzballs.game.Game;
 import de.brainzballs.game.footballfield.team.Player;
 import de.brainzballs.game.footballfield.team.Team;
 import de.brainzballs.helper.ResourceLoader;
@@ -166,7 +167,9 @@ public class Tile extends Group {
 	
 	private void mouseClick() {
 		
-		if(clickTimer >= 0.5) {
+		//if(clickTimer >= 0.5) {
+		if (getField().getGame().getCurrentState() == Game.STATE_ACTION_CHOOSE) {	
+		
 			// If no player selected select one
 			if (!getField().isCurrentPlayerSelected()) {
 				getField().setCurrentPlayer(x, y);
@@ -182,13 +185,15 @@ public class Tile extends Group {
 						if (getField().isFriendOnPosition(x, y)) {
 							System.out.println("PASS!");
 						}
+						
 					} else if (getField().getCurrentFieldAction() == Field.FieldAction.MOVE) {
 						
 						// Move
 						if (getField().isTileReachable(this)) {
 							System.out.println("MOVE!");
-							getField().doFieldAction(this);
+							getField().beginFieldAction(this);
 						}
+						
 					} else if (getField().getCurrentFieldAction() == Field.FieldAction.SHOT) {
 						
 						// Shot

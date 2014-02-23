@@ -277,6 +277,8 @@ public class Player extends Actor {
 			state.setAnimation(0, idleBall, true);
 			getField().getBall().setVisible(false);
 		}
+		
+		getField().endFieldAction();
 	}
 	
 	private boolean isRunning = false;
