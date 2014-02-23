@@ -119,7 +119,9 @@ public class Field extends Group {
 		
 		//players.add(Player.newInstance(width - 1, verticalCenter,
 		//		Player.PlayerType.KEEPER, Player.WEST));
-		players.add(Player.newInstance(6, verticalCenter,
+		players.add(Player.newInstance(6, 0,
+				Player.PlayerType.KEEPER, Player.WEST));
+		players.add(Player.newInstance(7, height - 1,
 				Player.PlayerType.KEEPER, Player.WEST));
 		
 		players.add(Player.newInstance(width - 2, verticalCenter - 2,
