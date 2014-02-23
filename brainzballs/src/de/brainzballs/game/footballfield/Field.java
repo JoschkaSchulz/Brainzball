@@ -1,6 +1,8 @@
 package de.brainzballs.game.footballfield;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +10,7 @@ import java.util.Set;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import de.brainzballs.game.Game;
 import de.brainzballs.game.footballfield.team.Player;
@@ -103,10 +106,13 @@ public class Field extends Group {
 				Player.PlayerType.KEEPER, Player.EAST, team1));
 		players.add(Player.newInstance(1, verticalCenter - 2,
 				Player.PlayerType.DEFENDER, Player.EAST, team1));
+		players.get(players.size()-1).setName("down");
 		players.add(Player.newInstance(1, verticalCenter + 2,
 				Player.PlayerType.DEFENDER, Player.EAST, team1));
+		players.get(players.size()-1).setName("up");
 		players.add(Player.newInstance(1, verticalCenter,
 				Player.PlayerType.MIDFIELDER, Player.EAST, team1));
+		players.get(players.size()-1).setName("mid");
 		players.add(Player.newInstance(2, verticalCenter - 1,
 				Player.PlayerType.STRIKER, Player.EAST, team1));
 		players.add(Player.newInstance(2, verticalCenter + 1,
@@ -133,6 +139,7 @@ public class Field extends Group {
 		for (Player p : players)
 			addActor(p);
 		team2.setPlayers(players);
+		orderPlayers();
 		
 		// Set initial field action
 		currentPlayer = team1.getPlayers().get(0);
@@ -150,6 +157,26 @@ public class Field extends Group {
 		return new Field(width, height);
 	}
 
+	private void orderPlayers() {
+		
+		List<Player> players = new ArrayList<Player>();
+		
+		for(Actor a : getChildren()) {
+			if(a instanceof Player) {
+				players.add((Player)a);
+			}
+		}
+		
+		for(int i = 0; i < players.size(); i++) {
+			for(int o = 0; o < players.size(); o++) {
+				if(players.get(i).getPositionY() > players.get(o).getPositionY()) {
+					swapActor(players.get(i), players.get(o));
+					Collections.swap(players, i, o);
+				}
+			}
+		}
+	}
+	
 	/*public Player getPlayer(int x, int y) {
 		Player result = getPlayer(x, y, team1);
 		if (result == null)
@@ -561,6 +588,8 @@ public class Field extends Group {
 		super.act(delta);
 	}
 
+	
+	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
