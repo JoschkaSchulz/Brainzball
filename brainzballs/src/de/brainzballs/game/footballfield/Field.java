@@ -443,10 +443,7 @@ public class Field extends Group {
 		return closedMap;
 	}
 	
-	public void doFieldAction(Tile tile) {
-		
-		System.out.println(Arrays.toString(getPathToTile(tile).toArray()));
-		
+	public void doFieldAction(Tile tile) {		
 		currentPlayer.addMovePoints(getPathToTile(tile));
 	}
 	

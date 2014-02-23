@@ -305,30 +305,32 @@ public class Player extends Actor {
 				state.addAnimation(0, idle, true, state.getCurrent(0).getTime());
 			}
 		}else{
-			if(moveTile.getPositionX() < getPositionX()) {
-				skeleton.setX(skeleton.getX() - (delta*speed));
-				if((moveTile.getX()*64)+32 > skeleton.getX()) {
-					skeleton.setX((moveTile.getX()*64)+32);
+			if(moveTile.getPositionX() > getPositionX()) {
+				skeleton.setX(skeleton.getX() + (delta*speed));
+				if((moveTile.getPositionX()*64)+32 < skeleton.getX()) {
+					skeleton.setX((moveTile.getPositionX()*64)+32);
 					moveTile = null;
 				}
-			}else if(moveTile.getPositionX() > getPositionX()) {
+			}else if(moveTile.getPositionX() < getPositionX()) {
 				skeleton.setX(skeleton.getX() - (delta*speed));
-				if((moveTile.getX()*64)+32 > skeleton.getX()) {
-					skeleton.setX((moveTile.getX()*64)-32);
+				if((moveTile.getPositionX()*64)+32 > skeleton.getX()) {
+					skeleton.setX((moveTile.getPositionX()*64)+32);
 					moveTile = null;
 				}
 			}else if(moveTile.getPositionY() < getPositionY()) {
 				skeleton.setY(skeleton.getY() - (delta*speed));
-				if((moveTile.getY()*64)+32 > skeleton.getY()) {
-					skeleton.setY((moveTile.getY()*64)-32);
+				if((moveTile.getPositionY()*64)+32 > skeleton.getY()) {
+					skeleton.setY((moveTile.getPositionY()*64)+32);
 					moveTile = null;
 				}
 			}else if(moveTile.getPositionY() > getPositionY()) {
 				skeleton.setY(skeleton.getY() + (delta*speed));
-				if((moveTile.getY()*64)+32 > skeleton.getY()) {
-					skeleton.setY((moveTile.getY()*64)+32);
+				if((moveTile.getPositionY()*64)+32 < skeleton.getY()) {
+					skeleton.setY((moveTile.getPositionY()*64)+32);
 					moveTile = null;
 				}
+			}else{
+				moveTile = null;
 			}
 		}
 		
