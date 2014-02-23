@@ -126,7 +126,7 @@ public class Field extends Group {
 		return new Field(width, height);
 	}
 
-	private void orderPlayers() {
+	public void orderPlayers() {
 		List<Player> players = new ArrayList<Player>();
 		
 		// Get all players

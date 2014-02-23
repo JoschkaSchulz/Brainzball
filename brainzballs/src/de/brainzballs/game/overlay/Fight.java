@@ -424,6 +424,7 @@ public class Fight extends Group {
 			addActor(playerLabel);
 			state = STATE_FIGHTINIT;
 		}else if(state == STATE_END) {
+			
 			getParent().removeActor(this);
 		}
 		
