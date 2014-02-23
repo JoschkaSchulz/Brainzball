@@ -147,6 +147,22 @@ public class Field extends Group {
 		return new Field(width, height);
 	}
 
+	public Player getPlayer(int x, int y) {
+		Player result = getPlayer(x, y, team1);
+		if (result == null)
+			result = getPlayer(x, y, team2);
+		
+		return result;
+	}
+	
+	public Player getPlayer(int x, int y, Team team) {
+		for (Player p : team.getPlayers())
+			if (p.getPositionX() == x && p.getPositionY() == y)
+				return p;
+			
+		return null;
+	}
+	
 	public void setPlayer(Player player) {
 		currentPlayer = player;
 		updateTiles();

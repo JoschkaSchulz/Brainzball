@@ -156,6 +156,9 @@ public class Tile extends Actor {
 	
 	private void mouseClick(Tile tile) {
 		//TODO: GO RAIMUND GO!!!
+		
+		
+		
 	}
 	
 	public int getCondition() {
