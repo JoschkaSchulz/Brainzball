@@ -156,19 +156,36 @@ public class Tile extends Group {
 	
 	private void mouseClick() {
 		
-		/*Player player = getField().getPlayer(x, y);
-		if (player != null) {
-			getField().getCurrentTilesForMove(player, 10);
-		}*/
-		
-
-		List<Tile> path = getField().getPathForTile(this);
-		if (path.size() > 0) {
+		// If no player selected select one
+		if (!getField().isCurrentPlayerSelected()) {
+			getField().setCurrentPlayer(x, y);
+		} else {
 			
+			// If this tile not reachable check if a new player is selected
+			if (!getField().isTileReachable(this)) {
+				getField().setCurrentPlayer(x, y);
+			} else {
+				if (getField().getCurrentFieldAction() == Field.FieldAction.PASS) {
+					
+					// Pass
+					if (getField().isFriendOnPosition(x, y)) {
+						System.out.println("PASS!");
+					}
+				} else if (getField().getCurrentFieldAction() == Field.FieldAction.MOVE) {
+					
+					// Move
+					if (getField().isTileReachable(this)) {
+						System.out.println("MOVE!");
+					}
+				} else if (getField().getCurrentFieldAction() == Field.FieldAction.SHOT) {
+					
+					// Shot
+					if (getField().isTileReachable(this)) {
+						System.out.println("SHOT!");
+					}
+				}
+			}
 		}
-		
-		getField().setCurrentPlayer(x, y);
-		//getField().setCurrentPlayer(getField().getPlayer(x, y));
 	}
 	
 	public int getCondition() {
