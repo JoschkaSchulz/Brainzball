@@ -11,7 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.esotericsoftware.spine.Animation;
 import com.esotericsoftware.spine.AnimationState;
+import com.esotericsoftware.spine.AnimationState.AnimationStateListener;
 import com.esotericsoftware.spine.AnimationStateData;
+import com.esotericsoftware.spine.Event;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
@@ -21,15 +23,16 @@ import de.brainzballs.helper.ResourceLoader;
 
 public class Fight extends Group {
 
-	public static final int SELECTION_ROCK 		= 0;
-	public static final int SELECTION_PAPER 	= 1;
-	public static final int SELECTION_SCISSORS 	= 2;
+	public static final int SELECTION_SCISSORS 	= 0;
+	public static final int SELECTION_ROCK 		= 1;
+	public static final int SELECTION_PAPER 	= 2;
 	
 	private static int STATE_CHOOSE		= 0;
 	private static int STATE_CALCINIT	= 1;
 	private static int STATE_CALC		= 2;
-	private static int STATE_FIGHTANIM	= 3;
-	private static int STATE_END		= 4;
+	private static int STATE_FIGHTINIT	= 3;
+	private static int STATE_FIGHTANIM	= 4;
+	private static int STATE_END		= 5;
 	
 	private int enemySelection, playerSelection;
 	private Label enemyLabel, playerLabel;
@@ -112,9 +115,6 @@ public class Fight extends Group {
 		
 		leftRenderer = new SkeletonRenderer();
 		
-		leftRun = leftSkeletonData.findAnimation("run");
-		leftRunBall = leftSkeletonData.findAnimation("runball");
-		
 		leftSkeleton = new Skeleton(leftSkeletonData);
 		leftSkeleton.updateWorldTransform();
 		leftSkeleton.setX(300);
@@ -124,18 +124,7 @@ public class Fight extends Group {
 		leftSkeleton.setToSetupPose();
 		
 		AnimationStateData stateData = new AnimationStateData(leftSkeletonData); // Defines mixing (crossfading) between animations.
-		stateData.setMix("run", "idle1", 0.2f);
-		stateData.setMix("idle1", "run", 0.2f);
-		stateData.setMix("idle1", "idle2", 0.2f);
-		stateData.setMix("idle1", "idle3", 0.2f);
-		stateData.setMix("idle1", "idle4", 0.2f);
-		stateData.setMix("idle1", "idle5", 0.2f);
-		stateData.setMix("idle1", "idle6", 0.2f);
-		stateData.setMix("idle2", "idle1", 0.2f);
-		stateData.setMix("idle3", "idle1", 0.2f);
-		stateData.setMix("idle4", "idle1", 0.2f);
-		stateData.setMix("idle5", "idle1", 0.2f);
-		stateData.setMix("idle6", "idle1", 0.2f);
+		stateData.setDefaultMix(0.5f);
 
 		leftState = new AnimationState(stateData);
 		
@@ -156,9 +145,6 @@ public class Fight extends Group {
 		
 		rightRenderer = new SkeletonRenderer();
 		
-		rightRun = rightSkeletonData.findAnimation("run");
-		rightrunBall = rightSkeletonData.findAnimation("runball");
-		
 		rightSkeleton = new Skeleton(rightSkeletonData);
 		rightSkeleton.updateWorldTransform();
 		rightSkeleton.setX(1000);
@@ -169,18 +155,7 @@ public class Fight extends Group {
 		rightSkeleton.setToSetupPose();
 		
 		AnimationStateData stateData = new AnimationStateData(rightSkeletonData); // Defines mixing (crossfading) between animations.
-		stateData.setMix("run", "idle1", 0.2f);
-		stateData.setMix("idle1", "run", 0.2f);
-		stateData.setMix("idle1", "idle2", 0.2f);
-		stateData.setMix("idle1", "idle3", 0.2f);
-		stateData.setMix("idle1", "idle4", 0.2f);
-		stateData.setMix("idle1", "idle5", 0.2f);
-		stateData.setMix("idle1", "idle6", 0.2f);
-		stateData.setMix("idle2", "idle1", 0.2f);
-		stateData.setMix("idle3", "idle1", 0.2f);
-		stateData.setMix("idle4", "idle1", 0.2f);
-		stateData.setMix("idle5", "idle1", 0.2f);
-		stateData.setMix("idle6", "idle1", 0.2f);
+		stateData.setDefaultMix(0.5f);
 
 		rightState = new AnimationState(stateData);
 		
@@ -213,7 +188,164 @@ public class Fight extends Group {
 			return 0;	
 		}
 	}
+	
+	private float animationChooser(final String left, final String right) {		
+		int won = whoWon();
+		
+		if(won == 1) {
+			leftState.setAnimation(0, left, false);
+			leftState.addListener(new AnimationStateListener() {
+				@Override
+				public void start(int trackIndex) {
+				}
+				@Override
+				public void event(int trackIndex, Event event) {
+					if(event.getString().equals("HitEvent")) {
+						rightState.setAnimation(0, right, false);
+						rightState.addListener(new AnimationStateListener() {
+							
+							@Override
+							public void start(int trackIndex) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							@Override
+							public void event(int trackIndex, Event event) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							@Override
+							public void end(int trackIndex) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							@Override
+							public void complete(int trackIndex, int loopCount) {
+								state = STATE_END;
+							}
+						});
+					}
+				}
+				@Override
+				public void end(int trackIndex) {
+				}	
+				@Override
+				public void complete(int trackIndex, int loopCount) {
+				}
+			});
+			
+			float tmpleft = leftState.getCurrent(0).getTime();
+			float tmpright = rightState.getCurrent(0).getTime();
+		}else if(won == 2) {
+			rightState.setAnimation(0, right, false);
+			rightState.addListener(new AnimationStateListener() {
+				@Override
+				public void start(int trackIndex) {
+				}
+				@Override
+				public void event(int trackIndex, Event event) {
+					if(event.getString().equals("HitEvent")) {
+						leftState.setAnimation(0, left, false);
+						leftState.addListener(new AnimationStateListener() {
+							
+							@Override
+							public void start(int trackIndex) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							@Override
+							public void event(int trackIndex, Event event) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							@Override
+							public void end(int trackIndex) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							@Override
+							public void complete(int trackIndex, int loopCount) {
+								state = STATE_END;
+							}
+						});
+					}
+				}
+				@Override
+				public void end(int trackIndex) {
+				}	
+				@Override
+				public void complete(int trackIndex, int loopCount) {
+				}
+			});
+			
+			float tmpleft = leftState.getCurrent(0).getTime();
+			float tmpright = rightState.getCurrent(0).getTime();
+		}else{
+			rightState.setAnimation(0, right, false);
+			leftState.setAnimation(0, left, false);
+			leftState.addListener(new AnimationStateListener() {
+				
+				@Override
+				public void start(int trackIndex) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void event(int trackIndex, Event event) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void end(int trackIndex) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void complete(int trackIndex, int loopCount) {
+					state = STATE_END;
+				}
+			});
+		}
+		
+		return 1000;//(tmpleft > tmpright ? tmpleft : tmpright);
+	}
 
+	//head torso leg - attack - win lose - ball
+	private String stringAnimationBuilder(int selection, boolean win, boolean ball) {
+		String result = "";
+		switch(selection) {
+			default:
+			case SELECTION_PAPER:
+				result += "head";
+				break;
+			case SELECTION_ROCK:
+				result += "torso";
+				break;
+			case SELECTION_SCISSORS:
+				result += "leg";
+				break;
+		}
+		
+		result += "attack";
+		
+		if(win) result += "win";
+		else result += "lose";
+		
+		if(ball) result += "ball";
+		
+		return result;
+	}
+	
+	private float fightAnimCounter = 1;
 	@Override
 	public void act(float delta) {
 		super.act(delta);
@@ -227,13 +359,23 @@ public class Fight extends Group {
 		rightState.apply(rightSkeleton);
 		rightSkeleton.updateWorldTransform(); 
 		
-		if(state == STATE_FIGHTANIM) {
-			if(leftSkeleton.getX() + 200 < rightSkeleton.getX()) {
-				leftSkeleton.setX(leftSkeleton.getX() + (delta  * 50));
-				rightSkeleton.setX(rightSkeleton.getX() - (delta  * 50));
+		if(state == STATE_FIGHTINIT) {
+			if(leftSkeleton.getX() + 150 < rightSkeleton.getX()) {
+				leftSkeleton.setX(leftSkeleton.getX() + (delta  * 250));
+				rightSkeleton.setX(rightSkeleton.getX() - (delta  * 250));
 			}else{
-				state = STATE_END;
+				
+				int won = whoWon();
+				
+				String left = stringAnimationBuilder(playerSelection, won == 1, false);
+				String right = stringAnimationBuilder(enemySelection, won == 2, false);
+				fightAnimCounter = animationChooser(left, right);
+				state = STATE_FIGHTANIM;
 			}
+		}else if(state == STATE_FIGHTANIM && fightAnimCounter >= 0) {
+			fightAnimCounter -= delta;
+		}else if(fightAnimCounter <= 0){
+			state = STATE_END;
 		}
 	}
 	
@@ -272,9 +414,7 @@ public class Fight extends Group {
 		}else if(state == STATE_CALC) {
 			addActor(enemyLabel);
 			addActor(playerLabel);
-			if(timer >= 5f) state = STATE_FIGHTANIM;
-		}else if(state == STATE_FIGHTANIM) {
-//			state = STATE_END;
+			state = STATE_FIGHTINIT;
 		}else if(state == STATE_END) {
 			getParent().removeActor(this);
 		}
