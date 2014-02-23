@@ -50,15 +50,10 @@ public class Field extends Group {
 		public boolean isEnd() {
 			return end;
 		}
-		
-		/*public static List<Tile> getPath() {
-			List<Tile> result = new ArrayList<Tile>();
-			return result;
-		}*/
 	}
 	
 	public enum FieldAction {
-		PASS, MOVE, SHOT, NONE
+		PASS, MOVE, SHOT
 	}
 
 	public static final int FIELD_WIDTH_MIN = 11;
@@ -66,10 +61,16 @@ public class Field extends Group {
 	public static final int FIELD_HEIGHT_MIN = 7;
 	public static final int FIELD_HEIGHT_MAX = 15;
 
+	//public static final int FIELD_STATE_SELECT_PLAYER	= 0;
+	//public static final int FIELD_STATE_SELECT_ACTION	= 1;
+	//public static final int FIELD_STATE_SELECT_TILE		= 2;
+	
 	private Tile[][] field;
 	private Ball ball;
 	private Team team1, team2;
 
+	//private int currentState;
+	private Team currentTeam;
 	private Player currentPlayer;
 	private FieldAction currentFieldAction;
 	private Map<Tile, TileNode> currentTiles;
@@ -89,11 +90,6 @@ public class Field extends Group {
 				field[w][h] = Tile.newInstance(w, h);
 				addActor(field[w][h]);
 			}
-
-		// Set initial field action
-		currentPlayer = null;
-		currentFieldAction = FieldAction.NONE;
-		currentTiles = new HashMap<Tile, Field.TileNode>();
 
 		// Create ball
 		int horizontalCenter = (int)(width / 2);
@@ -140,6 +136,12 @@ public class Field extends Group {
 				Player.PlayerType.STRIKER, Player.WEST));
 		team2 = new Team(players);
 		addActor(team2);
+		
+		// Set initial field action
+		currentTeam = team1;
+		currentPlayer = team1.getPlayers().get(0);
+		currentFieldAction = FieldAction.MOVE;
+		currentTiles = new HashMap<Tile, Field.TileNode>();
 	}
 
 	public static Field newInstance(int width, int height) {
@@ -168,17 +170,22 @@ public class Field extends Group {
 		return null;
 	}
 	
+	public void setCurrentTeam(Team team) {
+		currentTeam = team;
+		setCurrentTiles();
+	}
+	
 	public void setCurrentPlayer(Player player) {
 		currentPlayer = player;
-		updateCurrentTiles();
+		setCurrentTiles();
 	}
 
 	public void setCurrentFieldAction(FieldAction fieldAction) {
 		currentFieldAction = fieldAction;
-		updateCurrentTiles();
+		setCurrentTiles();
 	}
 
-	private void updateCurrentTiles() {
+	private void setCurrentTiles() {
 		if (currentPlayer == null)
 			return;
 
@@ -228,12 +235,146 @@ public class Field extends Group {
 	}
 	
 	public Map<Tile, TileNode> getCurrentTilesForPass(Player player) {
+		
+		// Save all reachable tiles with their cost
 		Map<Tile, TileNode> closedMap = new HashMap<Tile, TileNode>();
+		
+		// Start at the player tile
+		Tile startTile = player.getTile();
+		TileNode startTileNode = new TileNode(null, true, startTile.hasOpponentNeighbour(player.getTeam()), 0);
+		closedMap.put(startTile, startTileNode);
+		
+		// Add start tile to visit list
+		List<Tile> openList = new ArrayList<Tile>();
+		openList.add(startTile);
+		
+		// Iterate over tiles to visit
+		while (!openList.isEmpty()) {
+			
+	        // Get first tile and remove it from list 
+	        Tile currentTile = openList.get(0);
+	        openList.remove(0);
+	        
+	        // Get information about current tile
+	        TileNode currentTileNode = closedMap.get(currentTile);
+	        if (!currentTileNode.isEnd()) {	        
+	        	
+	            // Get all neighbours from current tile
+	            List<Tile> nextTiles = currentTile.getNeighbours();
+	            for (Tile nextTile : nextTiles) {
+	            	
+	            	// Check if the next file is free
+	            	if (nextTile.isFree()) {
+	            		
+	            		// Calculate cost and insert or update the
+	            		// current information
+	            		int cost = currentTileNode.cost + currentTile.getCondition();
+	            		if (cost <= player.getMoveRadius()) {
+	            			boolean visitNextTile = false;
+		           			TileNode nextTileNode = closedMap.get(nextTile);
+		           			if (nextTileNode == null) {
+		           				nextTileNode = new TileNode(currentTile, false, nextTile.hasOpponentNeighbour(player.getTeam()), cost);
+		           				closedMap.put(nextTile, nextTileNode);
+		           				visitNextTile = true;
+		           			} else {
+		           				if (!nextTileNode.end && nextTileNode.getCost() > cost) {
+		           					nextTileNode.setPreviewTile(currentTile, cost); 
+		           					visitNextTile = true;
+		           				}
+		           			}
+		           			
+		           			// If next tile is new or better than the one before
+		           			// insert tile into visit list
+		           			if (visitNextTile) {
+		           				int i = 0;
+		           				while (i < openList.size()) {
+		           					TileNode tileNode = closedMap.get(openList.get(i));
+		           					if (tileNode.getCost() > cost) {
+		           						break;
+		           					} else {
+		           						i++;
+		           					}
+		           				}
+		           				openList.add(i, nextTile);
+		           			}
+	            		}
+	           		}
+	           	}
+			}
+		}
+		
 		return closedMap;
 	}
 	
 	public Map<Tile, TileNode> getCurrentTilesForShot(Player player) {
+
+		// Save all reachable tiles with their cost
 		Map<Tile, TileNode> closedMap = new HashMap<Tile, TileNode>();
+		
+		// Start at the player tile
+		Tile startTile = player.getTile();
+		TileNode startTileNode = new TileNode(null, true, startTile.hasOpponentNeighbour(player.getTeam()), 0);
+		closedMap.put(startTile, startTileNode);
+		
+		// Add start tile to visit list
+		List<Tile> openList = new ArrayList<Tile>();
+		openList.add(startTile);
+		
+		// Iterate over tiles to visit
+		while (!openList.isEmpty()) {
+			
+	        // Get first tile and remove it from list 
+	        Tile currentTile = openList.get(0);
+	        openList.remove(0);
+	        
+	        // Get information about current tile
+	        TileNode currentTileNode = closedMap.get(currentTile);
+	        if (!currentTileNode.isEnd()) {	        
+	        	
+	            // Get all neighbours from current tile
+	            List<Tile> nextTiles = currentTile.getNeighbours();
+	            for (Tile nextTile : nextTiles) {
+	            	
+	            	// Check if the next file is free
+	            	if (nextTile.isFree()) {
+	            		
+	            		// Calculate cost and insert or update the
+	            		// current information
+	            		int cost = currentTileNode.cost + currentTile.getCondition();
+	            		if (cost <= player.getMoveRadius()) {
+	            			boolean visitNextTile = false;
+		           			TileNode nextTileNode = closedMap.get(nextTile);
+		           			if (nextTileNode == null) {
+		           				nextTileNode = new TileNode(currentTile, false, nextTile.hasOpponentNeighbour(player.getTeam()), cost);
+		           				closedMap.put(nextTile, nextTileNode);
+		           				visitNextTile = true;
+		           			} else {
+		           				if (!nextTileNode.end && nextTileNode.getCost() > cost) {
+		           					nextTileNode.setPreviewTile(currentTile, cost); 
+		           					visitNextTile = true;
+		           				}
+		           			}
+		           			
+		           			// If next tile is new or better than the one before
+		           			// insert tile into visit list
+		           			if (visitNextTile) {
+		           				int i = 0;
+		           				while (i < openList.size()) {
+		           					TileNode tileNode = closedMap.get(openList.get(i));
+		           					if (tileNode.getCost() > cost) {
+		           						break;
+		           					} else {
+		           						i++;
+		           					}
+		           				}
+		           				openList.add(i, nextTile);
+		           			}
+	            		}
+	           		}
+	           	}
+			}
+		}
+		
 		return closedMap;
 	}
 	
