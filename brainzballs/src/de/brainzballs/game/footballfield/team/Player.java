@@ -75,6 +75,12 @@ public class Player extends Actor {
 		skeleton = new Skeleton(skeletonData);
 		skeleton.updateWorldTransform();
 		
+		if(playerType == PlayerType.DEFENDER) {
+			skeletonData.findSlot("Head").setAttachmentName("Head2");
+		}else{
+			skeletonData.findSlot("Head").setAttachmentName("Head");
+		}
+		
 		if(direction == WEST) {
 			skeleton.setFlipX(true);
 			skeleton.setSkin("RedTeam");
@@ -100,7 +106,7 @@ public class Player extends Actor {
 		state = new AnimationState(stateData);
 		
 		//Set the default animation on idle
-		state.setAnimation(0, "idle1", true);
+		state.addAnimation(0, "idle1", true,0);
 	}
 	
 	public static Player newInstance(int x, int y, PlayerType playerType, int direction) {
