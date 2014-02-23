@@ -443,9 +443,18 @@ public class Field extends Group {
 		return closedMap;
 	}
 	
-	public List<Tile> getPathForTile(Tile destination) {
+	public List<Tile> getPathToTile(Tile tile) {
 		List<Tile> result = new ArrayList<Tile>();
-		
+		if (isTileReachable(tile)) {
+			TileNode tileNode = currentTiles.get(tile);
+			while (!tileNode.isStart()) {
+				result.add(tile);
+				tile = tileNode.previewTile;
+				tileNode = currentTiles.get(tile);
+			}
+			result.add(tile);
+		}
+		Collections.reverse(result);
 		return result;
 	}
 	
