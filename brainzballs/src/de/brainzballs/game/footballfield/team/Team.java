@@ -24,47 +24,7 @@ public class Team {
 	public List<Player> getPlayers() {
 		return players;
 	}
-	
-	public int getPasses() {
-		int result = 0;
-		for (Player player : players)
-			result += player.getPasses();
 		
-		return result;
-	}
-
-	public int getMoves() {
-		int result = 0;
-		for (Player player : players)
-			result += player.getMoves();
-		
-		return result;
-	}
-
-	public int getShoots() {
-		int result = 0;
-		for (Player player : players)
-			result += player.getShoots();
-		
-		return result;
-	}
-
-	public int getGoals() {
-		int result = 0;
-		for (Player player : players)
-			result += player.getGoals();
-		
-		return result;
-	}
-
-	public int getFouls() {
-		int result = 0;
-		for (Player player : players)
-			result += player.getFouls();
-		
-		return result;
-	}
-	
 	public Field getField() {
 		return field;
 	}
