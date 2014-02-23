@@ -36,7 +36,6 @@ public class Field extends Group {
 	
 	// Current selection for action
 	private Player currentPlayer;
-	private List<Player> currentEnemys;	
 	private FieldAction currentFieldAction;
 	private Map<Tile, TileNode> currentTiles;
 	
@@ -400,13 +399,6 @@ public class Field extends Group {
 					
 				} else if (currentFieldAction == FieldAction.MOVE) {
 					currentPlayer.addMovePoints(path);
-					currentEnemys = new ArrayList<Player>();
-					List<Tile> nextTiles = tile.getNeighbours();
-					for (Tile nextTile : nextTiles) {
-						Player enemy = getOpponentPlayerOnPosition(nextTile.getPositionX(), nextTile.getPositionY());
-						if (enemy != null)
-							currentEnemys.add(enemy);
-					}
 					getGame().setCurrentState(Game.STATE_ACTION_BEGIN);
 				} else if (currentFieldAction == FieldAction.SHOT) {
 					
@@ -418,18 +410,19 @@ public class Field extends Group {
 	
 	public void endFieldAction() {
 		
-		// At the end of an action the current players heal
+		// At the end of an action the current team heal
 		if (getGame().getCurrentTeam() == Game.TEAM_1) {
-			for (Player p : team1.getPlayers())
-				p.decrementOffended();
+			team1.decrementOffended();
 		} else if (getGame().getCurrentTeam() == Game.TEAM_2) {
-			for (Player p : team2.getPlayers())
-				p.decrementOffended();
+			team2.decrementOffended();
 		}
 		
-		// Do some cool fights
-		for (Player p : currentEnemys)
-			getGame().addActor(new Fight(currentPlayer, p));
+		// Do some cool fights with the current team
+		if (getGame().getCurrentTeam() == Game.TEAM_1) {
+			team1.fight();
+		} else if (getGame().getCurrentTeam() == Game.TEAM_2) {
+			team2.fight();
+		}
 		
 		getGame().setCurrentState(Game.STATE_ACTION_END);
 	}

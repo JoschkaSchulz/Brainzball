@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.brainzballs.game.footballfield.Field;
+import de.brainzballs.game.footballfield.Tile;
+import de.brainzballs.game.overlay.Fight;
 
 public class Team {
 	
@@ -25,5 +27,23 @@ public class Team {
 		
 	public Field getField() {
 		return field;
+	}
+	
+	public void decrementOffended() {
+		for (Player p : players)
+			p.decrementOffended();
+	}
+	
+	public void fight() {
+		for (Player p : players) {
+			if (!p.isOffended()) {
+				List<Tile> nextTiles = p.getTile().getNeighbours();
+				for (Tile nextTile : nextTiles) {
+					Player enemy = getField().getOpponentPlayerOnPosition(nextTile.getPositionX(), nextTile.getPositionY());
+					if (enemy != null)
+						getField().getGame().addActor(new Fight(p, enemy));
+				}
+			}
+		}
 	}
 }
