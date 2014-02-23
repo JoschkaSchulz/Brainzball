@@ -29,6 +29,7 @@ public class Player extends Actor {
 	public static final int SOUTH  	= 2;
 	public static final int EAST 	= 3;
 	
+	private Team team;
 	private int direction;
 	private int x, y;
 	private PlayerType playerType;
@@ -43,12 +44,13 @@ public class Player extends Actor {
 	private PolygonSpriteBatch polyBatch;
 	private SkeletonData skeletonData;
 	
-	private Player(int x, int y, PlayerType playerType, int direction) {
+	private Player(int x, int y, PlayerType playerType, int direction, Team team) {
 		this.x = x;
 		this.y = y;
 		this.playerType = playerType;
 		this.idleTimer = (float) (Math.random()*10);
 		this.direction = direction;
+		this.team = team;
 		
 		polyBatch = new PolygonSpriteBatch();
 		
@@ -77,6 +79,12 @@ public class Player extends Actor {
 		
 		if(playerType == PlayerType.DEFENDER) {
 			skeletonData.findSlot("Head").setAttachmentName("Head2");
+		}else if(playerType == PlayerType.KEEPER){
+			skeletonData.findSlot("Head").setAttachmentName("Head4");
+		}else if(playerType == PlayerType.MIDFIELDER){
+			skeletonData.findSlot("Head").setAttachmentName("Head3");
+		}else if(playerType == PlayerType.STRIKER){
+			skeletonData.findSlot("Head").setAttachmentName("Head");
 		}else{
 			skeletonData.findSlot("Head").setAttachmentName("Head");
 		}
@@ -109,8 +117,8 @@ public class Player extends Actor {
 		state.addAnimation(0, "idle1", true,0);
 	}
 	
-	public static Player newInstance(int x, int y, PlayerType playerType, int direction) {
-		return new Player(x, y, playerType, direction);
+	public static Player newInstance(int x, int y, PlayerType playerType, int direction, Team team) {
+		return new Player(x, y, playerType, direction, team);
 	}
 	
 	public void pass(Tile tile) {
@@ -196,7 +204,7 @@ public class Player extends Actor {
 	}
 	
 	public Team getTeam() {
-		return (Team)getParent();
+		return team;
 	}
 	
 	public Field getField() {
@@ -219,6 +227,31 @@ public class Player extends Actor {
 		return jailed;
 	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + x;
+		result = prime * result + y;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Player other = (Player) obj;
+		if (x != other.x)
+			return false;
+		if (y != other.y)
+			return false;
+		return true;
+	}
+
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);

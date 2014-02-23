@@ -1,25 +1,35 @@
 package de.brainzballs.game.footballfield.team;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 import de.brainzballs.game.footballfield.Field;
 
-public class Team extends Group {
+public class Team {
 	
 	private List<Player> players;
+	private Field field;
 	
-	public Team(List<Player> players) {
+	public Team(Field field) {
+		this.field = field;
+		this.players = new ArrayList<Player>();
+	}
+	
+	public void setPlayers(List<Player> players) {
 		this.players = players;
-		for (Player p : this.players)
-			addActor(p);
+	}
+	
+	public List<Player> getPlayers() {
+		return players;
 	}
 	
 	public int getPasses() {
 		int result = 0;
 		for (Player player : players)
 			result += player.getPasses();
+		
 		return result;
 	}
 
@@ -27,6 +37,7 @@ public class Team extends Group {
 		int result = 0;
 		for (Player player : players)
 			result += player.getMoves();
+		
 		return result;
 	}
 
@@ -34,6 +45,7 @@ public class Team extends Group {
 		int result = 0;
 		for (Player player : players)
 			result += player.getShoots();
+		
 		return result;
 	}
 
@@ -41,6 +53,7 @@ public class Team extends Group {
 		int result = 0;
 		for (Player player : players)
 			result += player.getGoals();
+		
 		return result;
 	}
 
@@ -48,14 +61,11 @@ public class Team extends Group {
 		int result = 0;
 		for (Player player : players)
 			result += player.getFouls();
+		
 		return result;
 	}
 	
-	public List<Player> getPlayers() {
-		return players;
-	}
-	
 	public Field getField() {
-		return (Field)getParent();
+		return field;
 	}
 }
