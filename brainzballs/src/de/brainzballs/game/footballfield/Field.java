@@ -89,7 +89,9 @@ public class Field extends Group {
 			}
 
 		// Set initial field action
+		currentPlayer = null;
 		currentFieldAction = FieldAction.NONE;
+		currentTiles = new HashMap<Tile, Field.TileNode>();
 
 		// Create ball
 		int horizontalCenter = (int)(width / 2);
@@ -164,29 +166,31 @@ public class Field extends Group {
 		return null;
 	}
 	
-	public void setPlayer(Player player) {
+	public void setCurrentPlayer(Player player) {
 		currentPlayer = player;
-		updateTiles();
+		updateCurrentTiles();
 	}
 
-	public void setFieldAction(FieldAction fieldAction) {
+	public void setCurrentFieldAction(FieldAction fieldAction) {
 		currentFieldAction = fieldAction;
-		updateTiles();
+		updateCurrentTiles();
 	}
 
-	private void updateTiles() {
+	private void updateCurrentTiles() {
 		resetHighlight();
 		if (currentPlayer == null)
 			return;
 
 		if (currentFieldAction == FieldAction.PASS && currentPlayer.canPass()) {
-			highlightPass(currentPlayer, 4);
+			currentTiles = getCurrentTilesForPass(currentPlayer, 4);
 		} else if (currentFieldAction == FieldAction.MOVE
 				&& currentPlayer.canMove()) {
-			highlightMove(currentPlayer, 4);
+			currentTiles = getCurrentTilesForMove(currentPlayer, 4);
 		} else if (currentFieldAction == FieldAction.SHOT
 				&& currentPlayer.canShot()) {
-			highlightShot(currentPlayer, 4);
+			currentTiles = getCurrentTilesForShot(currentPlayer, 4);
+		} else {
+			currentTiles = new HashMap<Tile, Field.TileNode>();
 		}
 	}
 
@@ -212,22 +216,25 @@ public class Field extends Group {
 		return false;
 	}
 	
-	public void highlightPass(Player player, int radius) {
-		// TODO
+	public Map<Tile, TileNode> getCurrentTilesForPass(Player player, int radius) {
+		Map<Tile, TileNode> closedMap = new HashMap<Tile, TileNode>();
+		return closedMap;
 	}
-	public void highlightShot(Player player, int radius) {
-		// TODO
+	
+	public Map<Tile, TileNode> getCurrentTilesForShot(Player player, int radius) {
+		Map<Tile, TileNode> closedMap = new HashMap<Tile, TileNode>();
+		return closedMap;
 	}
-	public void highlightMove(Player player, int radius) {
-		resetHighlight();
+	
+	public Map<Tile, TileNode> getCurrentTilesForMove(Player player, int radius) {
 		
 		// Save all reachable tiles with their cost
-		currentTiles = new HashMap<Tile, TileNode>();
+		Map<Tile, TileNode> closedMap = new HashMap<Tile, TileNode>();
 		
 		// Start at the player tile
 		Tile startTile = player.getTile();
 		TileNode startTileNode = new TileNode(null, true, startTile.hasOpponentNeighbour(player.getTeam()), 0);
-		currentTiles.put(startTile, startTileNode);
+		closedMap.put(startTile, startTileNode);
 		
 		// Add start tile to visit list
 		List<Tile> toBeVisited = new ArrayList<Tile>();
@@ -241,7 +248,7 @@ public class Field extends Group {
 	        toBeVisited.remove(0);
 	        
 	        // Get information about current tile
-	        TileNode currentTileNode = currentTiles.get(currentTile);
+	        TileNode currentTileNode = closedMap.get(currentTile);
 	        if (!currentTileNode.isEnd()) {	        
 	        	
 	            // Get all neighbours from current tile
@@ -256,10 +263,10 @@ public class Field extends Group {
 	            		int cost = currentTileNode.cost + currentTile.getCondition();
 	            		if (cost <= radius) {
 	            			boolean visitNextTile = false;
-		           			TileNode nextTileNode = currentTiles.get(nextTile);
+		           			TileNode nextTileNode = closedMap.get(nextTile);
 		           			if (nextTileNode == null) {
 		           				nextTileNode = new TileNode(currentTile, false, nextTile.hasOpponentNeighbour(player.getTeam()), cost);
-		           				currentTiles.put(nextTile, nextTileNode);
+		           				closedMap.put(nextTile, nextTileNode);
 		           				visitNextTile = true;
 		           			} else {
 		           				if (!nextTileNode.end && nextTileNode.getCost() > cost) {
@@ -278,7 +285,7 @@ public class Field extends Group {
 		           				
 		           				int i = 0;
 		           				while (i < toBeVisited.size()) {
-		           					TileNode tileNode = currentTiles.get(toBeVisited.get(i));
+		           					TileNode tileNode = closedMap.get(toBeVisited.get(i));
 		           					if (tileNode.getCost() > cost) {
 		           						break;
 		           					} else {
@@ -292,6 +299,15 @@ public class Field extends Group {
 	           	}
 			}
 		}
+		
+		return closedMap;
+	}
+	
+	public List<Tile> getPathForTile(Tile destination) {
+		//if (currentTiles.size() == 0)
+		List<Tile> result = new ArrayList<Tile>();
+		
+		return result;
 	}
 	
 	public Ball getBall() {
