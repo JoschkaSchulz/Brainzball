@@ -11,9 +11,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
 import de.brainzballs.game.Game;
 import de.brainzballs.game.footballfield.team.Player;
 import de.brainzballs.game.footballfield.team.Team;
+import de.brainzballs.helper.ResourceLoader;
 
 public class Field extends Group {
 
@@ -77,6 +80,7 @@ public class Field extends Group {
 	private Player currentPlayer;
 	private FieldAction currentFieldAction;
 	private Map<Tile, TileNode> currentTiles;
+	private Image overlay;
 
 	private Field(int width, int height) {
 
@@ -94,6 +98,9 @@ public class Field extends Group {
 				addActor(field[w][h]);
 			}
 
+		overlay = new Image(ResourceLoader.FIELD_OVERLAY);
+		addActor(overlay);
+		
 		// Create ball
 		int horizontalCenter = (int)(width / 2);
 		int verticalCenter = (int)(height / 2);
@@ -237,7 +244,7 @@ public class Field extends Group {
 			openList.add(startTile);
 			
 			// Search for all reachable tiles
-			if (currentFieldAction == FieldAction.PASS) {
+			if (currentFieldAction == FieldAction.PASS && currentPlayer.hasBall()) {
 				currentTiles = getCurrentTilesForPass(currentPlayer, currentTiles, openList);
 			} else if (currentFieldAction == FieldAction.MOVE) {
 				currentTiles = getCurrentTilesForMove(currentPlayer, currentTiles, openList);
@@ -443,10 +450,7 @@ public class Field extends Group {
 		return closedMap;
 	}
 	
-	public void doFieldAction(Tile tile) {
-		
-		System.out.println(Arrays.toString(getPathToTile(tile).toArray()));
-		
+	public void doFieldAction(Tile tile) {		
 		currentPlayer.addMovePoints(getPathToTile(tile));
 	}
 	

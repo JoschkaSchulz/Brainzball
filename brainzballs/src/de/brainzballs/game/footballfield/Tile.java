@@ -18,6 +18,7 @@ public class Tile extends Group {
 	private final int CONDITION_NORMAL = 2;
 	private final int CONDITION_BAD = 3;
 
+	private float clickTimer;
 	private int x, y;
 	private int condition;
 	private boolean border;
@@ -36,6 +37,7 @@ public class Tile extends Group {
 		this.debugLabel = new Label("X", ResourceLoader.SKIN);
 		this.debugLabel.setPosition((x * 64) + 16, (y * 64) + 16);
 		this.debugLabel.setName("debugLabel");
+		this.clickTimer = 0;
 		goodId = (int) Math.round(Math.random()
 				* (ResourceLoader.TILE_GOOD.length - 1));
 		normalId = (int) Math.round(Math.random()
@@ -164,36 +166,39 @@ public class Tile extends Group {
 	
 	private void mouseClick() {
 		
-		// If no player selected select one
-		if (!getField().isCurrentPlayerSelected()) {
-			getField().setCurrentPlayer(x, y);
-		} else {
-			
-			// If this tile not reachable check if a new player is selected
-			if (!getField().isTileReachable(this)) {
+		if(clickTimer >= 0.5) {
+			// If no player selected select one
+			if (!getField().isCurrentPlayerSelected()) {
 				getField().setCurrentPlayer(x, y);
 			} else {
-				if (getField().getCurrentFieldAction() == Field.FieldAction.PASS) {
-					
-					// Pass
-					if (getField().isFriendOnPosition(x, y)) {
-						System.out.println("PASS!");
-					}
-				} else if (getField().getCurrentFieldAction() == Field.FieldAction.MOVE) {
-					
-					// Move
-					if (getField().isTileReachable(this)) {
-						System.out.println("MOVE!");
-						getField().doFieldAction(this);
-					}
-				} else if (getField().getCurrentFieldAction() == Field.FieldAction.SHOT) {
-					
-					// Shot
-					if (getField().isTileReachable(this)) {
-						System.out.println("SHOT!");
+				
+				// If this tile not reachable check if a new player is selected
+				if (!getField().isTileReachable(this)) {
+					getField().setCurrentPlayer(x, y);
+				} else {
+					if (getField().getCurrentFieldAction() == Field.FieldAction.PASS) {
+						
+						// Pass
+						if (getField().isFriendOnPosition(x, y)) {
+							System.out.println("PASS!");
+						}
+					} else if (getField().getCurrentFieldAction() == Field.FieldAction.MOVE) {
+						
+						// Move
+						if (getField().isTileReachable(this)) {
+							System.out.println("MOVE!");
+							getField().doFieldAction(this);
+						}
+					} else if (getField().getCurrentFieldAction() == Field.FieldAction.SHOT) {
+						
+						// Shot
+						if (getField().isTileReachable(this)) {
+							System.out.println("SHOT!");
+						}
 					}
 				}
 			}
+			clickTimer = 0;
 		}
 	}
 	
@@ -245,4 +250,12 @@ public class Tile extends Group {
 		super.draw(batch, parentAlpha);
 	}
 
+	@Override
+	public void act(float delta) {
+		this.clickTimer += delta;
+		super.act(delta);
+	}
+
+	
+	
 }

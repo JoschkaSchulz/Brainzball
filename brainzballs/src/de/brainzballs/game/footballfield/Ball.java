@@ -29,6 +29,7 @@ public class Ball extends Actor {
 	private Ball(int x, int y) {
 		this.x = x;
 		this.y = y;
+		this.visible = true;
 		
 		//Loading Player Skeleton and Animation
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/Ball.atlas"));
@@ -54,6 +55,11 @@ public class Ball extends Actor {
 		return new Ball(x, y);
 	}
 	
+	public void setPositionXY(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
 	public int getPositionX() {
 		return x;
 	}
@@ -64,6 +70,11 @@ public class Ball extends Actor {
 	
 	public Field getField() {
 		return (Field)getParent();
+	}
+	
+	private boolean visible;
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 	
 	public Tile getTile() {
@@ -83,10 +94,12 @@ public class Ball extends Actor {
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 		
-		skeleton.setX((x*64)+32);
-		skeleton.setY((y*64)+32);
-		
-		renderer.draw(batch, skeleton);
+		if(visible) {
+			skeleton.setX((x*64)+32);
+			skeleton.setY((y*64)+32);
+			
+			renderer.draw(batch, skeleton);
+		}
 	}
 
 	
