@@ -152,7 +152,7 @@ public class Field extends Group {
 		return new Field(width, height);
 	}
 
-	public Player getPlayer(int x, int y) {
+	/*public Player getPlayer(int x, int y) {
 		Player result = getPlayer(x, y, team1);
 		if (result == null)
 			result = getPlayer(x, y, team2);
@@ -166,6 +166,20 @@ public class Field extends Group {
 				return p;
 			
 		return null;
+	}*/
+	
+	public void setCurrentPlayer(int x, int y) {
+		if (getGame().getState() == Game.STATE_TEAM1) {
+			setCurrentPlayer(x, y, team1);
+		} else if (getGame().getState() == Game.STATE_TEAM2) {
+			setCurrentPlayer(x, y, team2);
+		}
+	}
+	
+	private void setCurrentPlayer(int x, int y, Team team) {
+		for (Player p : team.getPlayers())
+			if (p.getPositionX() == x && p.getPositionY() == y)
+				currentPlayer = p;;
 	}
 	
 	public void setCurrentPlayer(Player player) {
@@ -210,32 +224,6 @@ public class Field extends Group {
 			tile.setHighlighted(true);
 			tile.getDebugLabel().setText(String.valueOf(tileNode.cost));
 		}
-	}
-
-	public boolean isFree(int x, int y) {
-		return !isInTeam(x, y, getTeam1()) && !isInTeam(x, y, getTeam2());
-	}
-	
-	public boolean isOpponent(int x, int y, Team currentTeam) {
-		boolean result = false;
-		if (getGame().getState() == Game.STATE_TEAM1) {
-			result = isInTeam(x, y, team2);
-		} else if (getGame().getState() == Game.STATE_TEAM2) {
-			result = isInTeam(x, y, team1);
-		}
-		return result;
-	}
-	
-	public boolean isBall(int x, int y) {
-		return (ball.getPositionX() == x && ball.getPositionY() == y);
-	}
-	
-	public boolean isInTeam(int x, int y, Team team) {
-		for (Player p : team.getPlayers())
-			if (p.getPositionX() == x && p.getPositionY() == y)
-				return true;
-		
-		return false;
 	}
 	
 	public Map<Tile, TileNode> getCurrentTilesForPass(Player player) {
@@ -460,6 +448,50 @@ public class Field extends Group {
 		
 		return result;
 	}
+	
+	public boolean isFree(int x, int y) {
+		return !isTeamOnPosition(x, y, getTeam1()) && !isTeamOnPosition(x, y, getTeam2());
+	}
+	
+	public boolean isOpponentOnPosition(int x, int y) {
+		boolean result = false;
+		if (getGame().getState() == Game.STATE_TEAM1) {
+			result = isTeamOnPosition(x, y, team2);
+		} else if (getGame().getState() == Game.STATE_TEAM2) {
+			result = isTeamOnPosition(x, y, team1);
+		}
+		return result;
+	}
+	
+	public boolean isFriendOnPosition(int x, int y) {
+		boolean result = false;
+		if (getGame().getState() == Game.STATE_TEAM1) {
+			result = isTeamOnPosition(x, y, team1);
+		} else if (getGame().getState() == Game.STATE_TEAM2) {
+			result = isTeamOnPosition(x, y, team2);
+		}
+		return result;
+	}
+	
+	public boolean isBallOnPosition(int x, int y) {
+		return (ball.getPositionX() == x && ball.getPositionY() == y);
+	}
+	
+	public boolean isTeamOnPosition(int x, int y, Team team) {
+		for (Player p : team.getPlayers())
+			if (p.getPositionX() == x && p.getPositionY() == y)
+				return true;
+		
+		return false;
+	}
+	
+	/*public boolean isPlayerSelected() {
+		return currentPlayer != null;
+	}
+	
+	public boolean isTileReachable(Tile tile) {
+		return currentTiles.containsKey(tile);
+	}*/
 	
 	public Ball getBall() {
 		return ball;

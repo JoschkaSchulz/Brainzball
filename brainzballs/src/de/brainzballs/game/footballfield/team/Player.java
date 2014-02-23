@@ -188,7 +188,7 @@ public class Player extends Actor {
 	}
 	
 	public boolean hasBall() {
-		return getField().isBall(x, y);
+		return getField().isBallOnPosition(x, y);
 	}
 	
 	public PlayerType getPlayerType() {
@@ -218,7 +218,6 @@ public class Player extends Actor {
 	public boolean isJailed() {
 		return jailed;
 	}
-
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
