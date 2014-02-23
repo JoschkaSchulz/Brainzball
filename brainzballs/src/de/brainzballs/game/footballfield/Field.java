@@ -237,7 +237,7 @@ public class Field extends Group {
 			openList.add(startTile);
 			
 			// Search for all reachable tiles
-			if (currentFieldAction == FieldAction.PASS) {
+			if (currentFieldAction == FieldAction.PASS && currentPlayer.hasBall()) {
 				currentTiles = getCurrentTilesForPass(currentPlayer, currentTiles, openList);
 			} else if (currentFieldAction == FieldAction.MOVE) {
 				currentTiles = getCurrentTilesForMove(currentPlayer, currentTiles, openList);
