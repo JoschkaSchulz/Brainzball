@@ -44,6 +44,14 @@ public class Tile extends Group {
 				* (ResourceLoader.TILE_BAD.length - 1));
 	}
 
+	public int getPositionX() {
+		return this.x;
+	}
+
+	public int getPositionY() {
+		return this.y;
+	}
+	
 	public static Tile newInstance(int x, int y) {
 		return new Tile(x, y);
 	}
