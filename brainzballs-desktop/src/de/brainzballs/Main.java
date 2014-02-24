@@ -9,8 +9,8 @@ public class Main {
 		cfg.title = "brainzballs";
 		cfg.useGL20 = true;
 		cfg.resizable = false;
-		cfg.width = 1920;
-		cfg.height = 1080;
+		cfg.width = 1280;
+		cfg.height = 720;
 		
 		new LwjglApplication(new BrainzBalls(), cfg);
 	}
