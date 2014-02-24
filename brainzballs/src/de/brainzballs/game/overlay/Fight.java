@@ -430,18 +430,18 @@ public class Fight extends Group {
 				right.incrementOffended();
 			} else if (result == 1) {
 				right.incrementOffended();
+				left.getTeam().setPoints(left.getTeam().getPoints()+1);
 				if(right.hasBall()) {
 					left.getField().getBall().setPositionXY(left.getPositionX(), left.getPositionY());
 					left.setBallIdle(true);
-					left.getTeam().setPoints(left.getTeam().getPoints()+1);
 					right.setBallIdle(false);
 				}
 			} else if (result == 2) {
 				left.incrementOffended();
+				right.getTeam().setPoints(right.getTeam().getPoints()+1);
 				if(left.hasBall()) {
 					right.getField().getBall().setPositionXY(right.getPositionX(), right.getPositionY());
 					right.setBallIdle(true);
-					right.getTeam().setPoints(left.getTeam().getPoints()+1);
 					left.setBallIdle(false);
 				}
 			}
