@@ -415,11 +415,15 @@ public class Field extends Group {
 	
 	public void endFieldAction() {
 		
-		// At the end of an action the current team heal
+		// At the end of an action the current team heal and get points
 		if (getGame().getCurrentTeam() == Game.TEAM_1) {
 			team1.decrementOffended();
+			if (team1.hasBall())
+				team1.setPoints(team1.getPoints() + 1);
 		} else if (getGame().getCurrentTeam() == Game.TEAM_2) {
 			team2.decrementOffended();
+			if (team2.hasBall())
+				team2.setPoints(team2.getPoints() + 1);
 		}
 		
 		// Do some cool fights with the current team
