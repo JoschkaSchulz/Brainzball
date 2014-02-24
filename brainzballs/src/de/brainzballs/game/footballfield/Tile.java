@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import de.brainzballs.game.Game;
 import de.brainzballs.game.footballfield.team.Team;
@@ -42,6 +43,15 @@ public class Tile extends Group {
 				* (ResourceLoader.TILE_NORMAL.length - 1));
 		badId = (int) Math.round(Math.random()
 				* (ResourceLoader.TILE_BAD.length - 1));
+		
+		this.addListener(new ClickListener() {
+
+			@Override
+			public boolean isOver() {
+				return super.isOver();
+			}
+			
+		});
 	}
 
 	public int getPositionX() {
@@ -226,7 +236,7 @@ public class Tile extends Group {
 		
 		super.draw(batch, parentAlpha);
 	}
-
+	
 	@Override
 	public void act(float delta) {
 		super.act(delta);

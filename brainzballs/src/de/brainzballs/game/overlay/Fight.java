@@ -62,7 +62,7 @@ public class Fight extends Group {
 				break;
 		}
 		enemyLabel.setColor(1f, 0f, 0f, 1f);
-		enemyLabel.setPosition((Gdx.graphics.getWidth()/2) + 25, Gdx.graphics.getHeight() - 125);
+		enemyLabel.setPosition((1280/2) + 25, 720 - 125);
 		enemyLabel.setFontScale(0.65f);
 		
 		this.state = STATE_CHOOSE;
@@ -104,7 +104,7 @@ public class Fight extends Group {
 		actions.add(shot).size(250f, 64f).padRight(50f);
 		actions.add(move).size(250f, 64f).padRight(50f);
 		
-		actions.setPosition(Gdx.graphics.getWidth()/2, (Gdx.graphics.getHeight()/2)-250);
+		actions.setPosition(1280/2, (720/2)-250);
 		addActor(actions);
 	}
 
@@ -390,11 +390,11 @@ public class Fight extends Group {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		//drawing the overlay
-		batch.draw(ResourceLoader.OVERLAY_BACKGROUND, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.draw(ResourceLoader.OVERLAY_BACKGROUND, 0, 0, 1280, 720);
 	
-		batch.draw(ResourceLoader.MENU_BACKGROUND_SKY, (Gdx.graphics.getWidth()/2)-512, (Gdx.graphics.getHeight()/2)-300, 1024, 600);
+		batch.draw(ResourceLoader.MENU_BACKGROUND_SKY, (1280/2)-512, (720/2)-300, 1024, 600);
 	
-		batch.draw(ResourceLoader.MENU_GROUND, (Gdx.graphics.getWidth()/2)-512, (Gdx.graphics.getHeight()/2)-300, 1024, 200);
+		batch.draw(ResourceLoader.MENU_GROUND, (1280/2)-512, (720/2)-300, 1024, 200);
 	
 		leftRenderer.draw(batch, leftSkeleton);
 		rightRenderer.draw(batch, rightSkeleton);
@@ -414,7 +414,7 @@ public class Fight extends Group {
 					break;
 			}
 			playerLabel.setColor(0.25f, 0.75f, 0.25f, 1f);
-			playerLabel.setPosition(150, Gdx.graphics.getHeight() - 125);
+			playerLabel.setPosition(150, 720 - 125);
 			playerLabel.setFontScale(0.65f);
 			
 			state = STATE_CALC;

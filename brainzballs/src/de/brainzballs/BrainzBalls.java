@@ -13,6 +13,9 @@ import de.brainzballs.helper.ResourceLoader;
 import de.brainzballs.manu.MainMenu;
 
 public class BrainzBalls implements ApplicationListener {
+	public static final float WIDTH = 1280f;
+	public static final float HEIGHT = 720f;	
+	
 	private Stage stage;
 	
 	private MainMenu mainMenu;
@@ -20,7 +23,7 @@ public class BrainzBalls implements ApplicationListener {
 	private Music music;
 	
 	public void create () {
-	    stage = new Stage();
+	    stage = new Stage();	    
 	    Gdx.input.setInputProcessor(stage);
 	    
 	    //Load Resources
@@ -42,7 +45,7 @@ public class BrainzBalls implements ApplicationListener {
 	}
 
 	public void resize (int width, int height) {
-	    stage.setViewport(width, height, false);
+	    stage.setViewport(WIDTH, HEIGHT, false);
 	}
 
 	public void render () {

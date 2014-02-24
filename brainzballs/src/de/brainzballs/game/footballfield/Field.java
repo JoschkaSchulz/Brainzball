@@ -11,7 +11,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import de.brainzballs.BrainzBalls;
 import de.brainzballs.game.Game;
 import de.brainzballs.game.footballfield.team.Player;
 import de.brainzballs.game.footballfield.team.Team;
@@ -41,15 +43,14 @@ public class Field extends Group {
 	
 	// Decoration
 	private Image overlay;
-
 	
 	private Field(int width, int height) {
 
 		// Set bounds for the field
 		int gWidth = width * 64;
 		int gHeight = height * 64;
-		int fieldX = Gdx.graphics.getWidth() / 2 - gWidth / 2;
-		int fieldY = Gdx.graphics.getHeight() / 2 - gHeight / 2;
+		int fieldX = (int)BrainzBalls.WIDTH / 2 - gWidth / 2;
+		int fieldY = (int)BrainzBalls.HEIGHT / 2 - gHeight / 2;
 		setBounds(fieldX, fieldY, gWidth, gHeight);
 
 		// Create field with tiles
@@ -558,18 +559,25 @@ public class Field extends Group {
 	private int mouseX, mouseY, overX, overY;
 	private Tile overTile;
 
+
+	private float facX = (BrainzBalls.WIDTH/Gdx.graphics.getWidth());
+	private float facY = (BrainzBalls.HEIGHT/Gdx.graphics.getHeight());
+	
 	@Override
 	public void act(float delta) {
 		resetMouseOverTile();
-		mouseX = Gdx.input.getX();
-		mouseY = Gdx.input.getY();
+		
+		mouseX = (int)(Gdx.input.getX()*facX);
+		mouseY = (int)(Gdx.input.getY()*facY);
+		
 		if (mouseX > getX() && mouseX < (getX() + getWidth())
 				&& mouseY > getY() && mouseY < (getY() + getHeight())) {
 			mouseX -= getX();
 			mouseY -= getY();
-			overX = (mouseX / 64);
+			overX = (int)(mouseX / 64);
 			overY = (int)(((getHeight()) - mouseY) / 64);
 			overTile = getTile(overX, overY);
+			System.out.println(overX + ":" + overY);
 			overTile.setMouseOver(true);
 		}
 		super.act(delta);
