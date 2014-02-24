@@ -28,10 +28,12 @@ public class Game extends Group {
 	
 	private Table points;
 	private Label team1Points, team2Points;
+	private int t1Points, t2Points;
 	private Table actions;
 	
 	public Game(BrainzBalls brainzBalls) {
 		this.brainzBalls = brainzBalls;
+		this.t1Points = this.t2Points = 0;
 		
 		this.field = Field.newInstance(19, 9);
 		addActor(this.field);
@@ -44,6 +46,16 @@ public class Game extends Group {
 		showActions();
 		
 		setCurrentState(STATE_ACTION_CHOOSE);
+	}
+	
+	public void team1GotAPoint() {
+		this.t1Points++;
+		this.team1Points.setText(this.t1Points + " Punkte");
+	}
+	
+	public void team2GotAPoint() {
+		this.t2Points++;
+		this.team2Points.setText(this.t2Points + " Punkte");
 	}
 	
 	private void createPointUI() {
