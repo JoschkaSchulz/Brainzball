@@ -109,7 +109,7 @@ public class MainMenu extends Group {
 		
 		for(Image cloud : clouds) {
 			cloud.setScale(0.75f);
-			cloud.setPosition((int)(Gdx.graphics.getWidth() + (Math.random() * 1500)),
+			cloud.setPosition((int)(1280 + (Math.random() * 1500)),
 					(int) (300 + (Math.random() * 500)));
 			addActor(cloud);
 		}
@@ -186,7 +186,7 @@ public class MainMenu extends Group {
 		
 		leftSkeleton.setX(leftSkeleton.getX() + (150 * delta));
 		
-		if(leftSkeleton.getX() > Gdx.graphics.getWidth() + 1200) {
+		if(leftSkeleton.getX() > 1280 + 1200) {
 			leftSkeleton.setX(-200);
 			int head = (int) (Math.round(Math.random() * 3)+1);
 			leftSkeletonData.findSlot("Head").setAttachmentName((head == 1 ? "Head" : "Head"+head));
@@ -200,7 +200,7 @@ public class MainMenu extends Group {
 		
 			zed.getSkeleton().setX(zed.getSkeleton().getX() + (150 * delta));
 			
-			if(zed.getSkeleton().getX() > Gdx.graphics.getWidth() + 1200) {
+			if(zed.getSkeleton().getX() > 1280 + 1200) {
 				zed.getSkeleton().setX(-200);
 				int head = (int) (Math.round(Math.random() * 3)+1);
 				zed.getRightSkeletonData().findSlot("Head").setAttachmentName((head == 1 ? "Head" : "Head"+head));
@@ -211,7 +211,7 @@ public class MainMenu extends Group {
 		for(Image cloud : clouds) {
 			cloud.moveBy(-100 * delta, 0);
 			if(cloud.getX() < -200) {
-				cloud.setPosition((int)(Gdx.graphics.getWidth() + (Math.random() * 500)),
+				cloud.setPosition((int)(1280 + (Math.random() * 500)),
 						(int) (300 + (Math.random() * 500)));
 			}
 		}
@@ -260,7 +260,7 @@ public class MainMenu extends Group {
 		table.add(creditsButton).row();
 		table.add(endButton);
 		
-		table.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/1.5f);
+		table.setPosition(1280/2, 720/1.5f);
 		addActor(table);
 	}
 }

@@ -3,6 +3,7 @@
 <module>
 	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
 	<inherits name='BrainzBalls' />
+	<inherits name="com.esotericsoftware.spine"/>
 	<entry-point class='de.brainzballs.client.GwtLauncher' />
 	<set-configuration-property name="gdx.assetpath" value="../brainzballs-android/assets" />
 </module>

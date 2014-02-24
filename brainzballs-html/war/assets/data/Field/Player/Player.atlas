@@ -1,0 +1,159 @@
+
+Player-1.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ball
+  rotate: false
+  xy: 750, 75
+  size: 57, 51
+  orig: 69, 67
+  offset: 8, 8
+  index: -1
+Body
+  rotate: false
+  xy: 472, 56
+  size: 63, 70
+  orig: 76, 85
+  offset: 6, 6
+  index: -1
+BodyRed
+  rotate: false
+  xy: 537, 56
+  size: 63, 70
+  orig: 76, 85
+  offset: 6, 6
+  index: -1
+Head
+  rotate: false
+  xy: 137, 20
+  size: 126, 106
+  orig: 150, 150
+  offset: 9, 21
+  index: -1
+Head2
+  rotate: false
+  xy: 374, 22
+  size: 96, 104
+  orig: 150, 150
+  offset: 32, 19
+  index: -1
+Head3
+  rotate: true
+  xy: 2, 16
+  size: 110, 133
+  orig: 150, 150
+  offset: 21, 16
+  index: -1
+Head4
+  rotate: false
+  xy: 265, 22
+  size: 107, 104
+  orig: 150, 150
+  offset: 23, 21
+  index: -1
+LeftFoot
+  rotate: false
+  xy: 871, 98
+  size: 50, 28
+  orig: 76, 30
+  offset: 14, 2
+  index: -1
+LeftHand
+  rotate: false
+  xy: 711, 51
+  size: 27, 31
+  orig: 33, 37
+  offset: 4, 5
+  index: -1
+LeftLowerArm
+  rotate: true
+  xy: 676, 51
+  size: 31, 33
+  orig: 40, 34
+  offset: 0, 1
+  index: -1
+LeftLowerLeg
+  rotate: false
+  xy: 622, 17
+  size: 28, 40
+  orig: 34, 41
+  offset: 2, 0
+  index: -1
+LeftUpperArm
+  rotate: true
+  xy: 809, 99
+  size: 27, 60
+  orig: 58, 84
+  offset: 15, 10
+  index: -1
+LeftUpperLeg
+  rotate: true
+  xy: 472, 2
+  size: 52, 73
+  orig: 67, 83
+  offset: 5, 10
+  index: -1
+LeftUpperLegRed
+  rotate: true
+  xy: 547, 2
+  size: 52, 73
+  orig: 67, 83
+  offset: 5, 10
+  index: -1
+Neck
+  rotate: true
+  xy: 650, 59
+  size: 23, 24
+  orig: 35, 33
+  offset: 5, 4
+  index: -1
+RightFoot
+  rotate: false
+  xy: 923, 98
+  size: 50, 28
+  orig: 63, 33
+  offset: 7, 5
+  index: -1
+RightHand
+  rotate: true
+  xy: 740, 48
+  size: 25, 30
+  orig: 37, 35
+  offset: 6, 0
+  index: -1
+RightLowerArm
+  rotate: true
+  xy: 809, 82
+  size: 15, 44
+  orig: 46, 57
+  offset: 22, 2
+  index: -1
+RightLowerLeg
+  rotate: true
+  xy: 975, 98
+  size: 28, 42
+  orig: 75, 73
+  offset: 18, 30
+  index: -1
+RightUpperArm
+  rotate: false
+  xy: 602, 59
+  size: 46, 23
+  orig: 72, 50
+  offset: 11, 12
+  index: -1
+RightUpperLeg
+  rotate: true
+  xy: 602, 84
+  size: 42, 72
+  orig: 67, 83
+  offset: 14, 7
+  index: -1
+RightUpperLegRed
+  rotate: true
+  xy: 676, 84
+  size: 42, 72
+  orig: 67, 83
+  offset: 14, 7
+  index: -1
