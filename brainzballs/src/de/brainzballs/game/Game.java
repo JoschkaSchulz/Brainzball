@@ -48,14 +48,14 @@ public class Game extends Group {
 		setCurrentState(STATE_ACTION_CHOOSE);
 	}
 	
-	public void team1GotAPoint() {
-		this.t1Points++;
-		this.team1Points.setText(this.t1Points + " Punkte");
+	public void setPointsTeam1(int points) {
+		this.team1Points.setText(points + " Punkte");
+		System.out.println(points + " Punkte");
 	}
 	
-	public void team2GotAPoint() {
-		this.t2Points++;
-		this.team2Points.setText(this.t2Points + " Punkte");
+	public void setPointsTeam2(int points) {
+		this.team2Points.setText(points + " Punkte");
+		System.out.println(points + " Punkte");
 	}
 	
 	private void createPointUI() {
