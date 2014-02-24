@@ -35,7 +35,7 @@ public class BrainzBalls implements ApplicationListener {
 	    //Adding the menu to stage
 	    stage.addActor(mainMenu);
 	    
-	    music = Gdx.audio.newMusic(Gdx.files.internal("data/music/music1.mp3"));
+	    music = Gdx.audio.newMusic(Gdx.files.internal("data/Music/music1.mp3"));
 	    music.setLooping(true);
 	    music.setVolume(0.15f);
 	    music.play();

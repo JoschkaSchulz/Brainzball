@@ -34,38 +34,43 @@ public class ResourceLoader {
 	
 	public static Skin SKIN;
 	public static void loadRessources() {
+		boolean export = false;
+		String path = (export ? "assets/data" : "data");
+		
 		Texture.setEnforcePotImages(false);
 		CLOUD = new TextureRegion[3];
-		CLOUD[0] = new TextureRegion(new Texture(Gdx.files.internal("data/Menu/Cloud1.png")));
-		CLOUD[1] = new TextureRegion(new Texture(Gdx.files.internal("data/Menu/Cloud2.png")));
-		CLOUD[2] = new TextureRegion(new Texture(Gdx.files.internal("data/Menu/Cloud3.png")));
-		MENU_BACKGROUND_SKY = new TextureRegion(new Texture(Gdx.files.internal("data/Menu/MenuBackgroundSky.png")));
-		MENU_GROUND = new TextureRegion(new Texture(Gdx.files.internal("data/Menu/MenuGround.png")));
+		CLOUD[0] = new TextureRegion(new Texture(Gdx.files.internal(path+"/Menu/Cloud1.png")));
+		CLOUD[1] = new TextureRegion(new Texture(Gdx.files.internal(path+"/Menu/Cloud2.png")));
+		CLOUD[2] = new TextureRegion(new Texture(Gdx.files.internal(path+"/Menu/Cloud3.png")));
+		MENU_BACKGROUND_SKY = new TextureRegion(new Texture(Gdx.files.internal(path+"/Menu/MenuBackgroundSky.png")));
+		MENU_GROUND = new TextureRegion(new Texture(Gdx.files.internal(path+"/Menu/MenuGround.png")));
 		
 		TILE_GOOD = new TextureRegion[3];
-		TILE_GOOD[0] = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/GrassTileNormal1.png"))); 
-		TILE_GOOD[1] = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/GrassTileNormal2.png"))); 
-		TILE_GOOD[2] = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/GrassTileNormal3.png"))); 
+		TILE_GOOD[0] = new TextureRegion(new Texture(Gdx.files.internal(path+"/Field/Tiles/GrassTileNormal1.png"))); 
+		TILE_GOOD[1] = new TextureRegion(new Texture(Gdx.files.internal(path+"/Field/Tiles/GrassTileNormal2.png"))); 
+		TILE_GOOD[2] = new TextureRegion(new Texture(Gdx.files.internal(path+"/Field/Tiles/GrassTileNormal3.png"))); 
 		
 		TILE_NORMAL = new TextureRegion[2];
-		TILE_NORMAL[0] = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/DirtTileNormal1.png"))); 
-		TILE_NORMAL[1] = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/DirtTileNormal2.png"))); 
+		TILE_NORMAL[0] = new TextureRegion(new Texture(Gdx.files.internal(path+"/Field/Tiles/DirtTileNormal1.png"))); 
+		TILE_NORMAL[1] = new TextureRegion(new Texture(Gdx.files.internal(path+"/Field/Tiles/DirtTileNormal2.png"))); 
 		
 		TILE_BAD = new TextureRegion[1];
-		TILE_BAD[0] = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/DirtTileBad1.png"))); 
+		TILE_BAD[0] = new TextureRegion(new Texture(Gdx.files.internal(path+"/Field/Tiles/DirtTileBad1.png"))); 
 		
-		TILE_GRID = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/Grid.png"))); 
+		TILE_GRID = new TextureRegion(new Texture(Gdx.files.internal(path+"/Field/Tiles/Grid.png"))); 
 
-		FIELD_OVERLAY = new TextureRegion(new Texture(Gdx.files.internal("data/Field/FieldOverlay.png")));
+		FIELD_OVERLAY = new TextureRegion(new Texture(Gdx.files.internal(path+"/Field/FieldOverlay.png")));
 		
-		HIGHLIGHT = new TextureRegion(new Texture(Gdx.files.internal("data/Field/Tiles/highlight.png"))); 
+		HIGHLIGHT = new TextureRegion(new Texture(Gdx.files.internal(path+"/Field/Tiles/highlight.png"))); 
 
-		OVERLAY_BACKGROUND = new TextureRegion(new Texture(Gdx.files.internal("data/Overlay/overlay_background.png"))); 
+		OVERLAY_BACKGROUND = new TextureRegion(new Texture(Gdx.files.internal(path+"/Overlay/overlay_background.png"))); 
 		
-		BUTTON_FONT = new BitmapFont(Gdx.files.internal("data/GUI/Fonts/ButtonFont.fnt"),Gdx.files.internal("data/GUI/Fonts/ButtonFont.png"), false);
-		BUTTON = new TextureRegion(new Texture(Gdx.files.internal("data/GUI/Buttons/Button.png")));
-		BUTTON_PRESSED = new TextureRegion(new Texture(Gdx.files.internal("data/GUI/Buttons/ButtonPressed.png")));
+		BUTTON_FONT = new BitmapFont(Gdx.files.internal(path+"/GUI/Fonts/ButtonFont.fnt"),Gdx.files.internal("data/GUI/Fonts/ButtonFont.png"), false);
+		BUTTON = new TextureRegion(new Texture(Gdx.files.internal(path+"/GUI/Buttons/Button.png")));
+		BUTTON_PRESSED = new TextureRegion(new Texture(Gdx.files.internal(path+"/GUI/Buttons/ButtonPressed.png")));
 	
+		
+		System.out.println("TEXTUREN FERTIG GELADEN!");
 		
 		//Creating the Skin
 		SKIN = new Skin();

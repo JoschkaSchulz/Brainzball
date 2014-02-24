@@ -26,10 +26,10 @@ public class Ball extends Actor {
 		this.visible = true;
 		
 		//Loading Player Skeleton and Animation
-		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/Ball.atlas"));
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/Player/ball.atlas"));
 		SkeletonJson jsonSkeleton = new SkeletonJson(atlas);
 		jsonSkeleton.setScale(0.5f);
-		skeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/Ball.json"));
+		skeletonData = jsonSkeleton.readSkeletonData(Gdx.files.internal("data/Field/Player/ball.json"));
 		
 		renderer = new SkeletonRenderer();
 		
