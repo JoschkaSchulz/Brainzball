@@ -44,6 +44,14 @@ public class Team {
 			p.decrementOffended();
 	}
 	
+	public boolean hasBall() {
+		for (Player p : players)
+			if (p.hasBall())
+				return true;
+		
+		return false;
+	}
+	
 	public void fight() {
 		for (Player p : players) {
 			if (!p.isOffended()) {
