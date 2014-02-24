@@ -430,6 +430,8 @@ public class Fight extends Group {
 				right.incrementOffended();
 			} else if (result == 1) {
 				right.incrementOffended();
+				right.getState().setAnimation(0, "stunned", false);
+				right.getState().addAnimation(0, "stunnedloop", true, right.getState().getCurrent(0).getTime());
 				left.getTeam().setPoints(left.getTeam().getPoints()+1);
 				if(right.hasBall()) {
 					left.getField().getBall().setPositionXY(left.getPositionX(), left.getPositionY());
@@ -438,6 +440,8 @@ public class Fight extends Group {
 				}
 			} else if (result == 2) {
 				left.incrementOffended();
+				left.getState().setAnimation(0, "stunned", false);
+				left.getState().addAnimation(0, "stunnedloop", true, left.getState().getCurrent(0).getTime());
 				right.getTeam().setPoints(right.getTeam().getPoints()+1);
 				if(left.hasBall()) {
 					right.getField().getBall().setPositionXY(right.getPositionX(), right.getPositionY());

@@ -168,12 +168,21 @@ public class Player extends Actor {
 	}
 	
 	public void incrementOffended() {
+		if(offended <= 0) {
+			state.setAnimation(0, "stunned", false);
+			state.addAnimation(0, "stunnedloop", true, state.getCurrent(0).getTime());
+		}
 		offended++;
 	}
 	
 	public void decrementOffended() {
-		if (offended > 0)
+		if (offended > 0){
 			offended--;
+			if(offended <= 0) {
+				state.setAnimation(0, "stunnedstandup", false);
+				state.addAnimation(0, "idle1", true, state.getCurrent(0).getTime());
+			}
+		}
 	}
 	
 	public int getMoveRadius() {
@@ -281,6 +290,12 @@ public class Player extends Actor {
 		this.y = y;
 	}
 	
+	
+	
+	public AnimationState getState() {
+		return state;
+	}
+
 	private  void checkLastMove() {
 		setPositionXY(moveTile.getPositionX(), moveTile.getPositionY());
 		state.setAnimation(0, idle, true);
@@ -339,7 +354,7 @@ public class Player extends Actor {
 		if(moveTile == null) {
 			this.idleTimer += delta;
 		
-			if(idleTimer >= 15 && !hasBall()) {
+			if(idleTimer >= 15 && !hasBall() && this.offended <= 0) {
 				idleTimer = 0;
 				state.setAnimation(0, specialIdle[(int) Math.round(Math.random()*(specialIdle.length-1))], false);
 				state.addAnimation(0, idle, true, state.getCurrent(0).getTime());

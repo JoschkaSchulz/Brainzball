@@ -577,7 +577,6 @@ public class Field extends Group {
 			overX = (int)(mouseX / 64);
 			overY = (int)(((getHeight()) - mouseY) / 64);
 			overTile = getTile(overX, overY);
-			System.out.println(overX + ":" + overY);
 			overTile.setMouseOver(true);
 		}
 		super.act(delta);
