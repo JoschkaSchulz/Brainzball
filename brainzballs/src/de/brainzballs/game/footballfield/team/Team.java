@@ -11,12 +11,22 @@ public class Team {
 	
 	private List<Player> players;
 	private Field field;
+	private int points;
 	
 	public Team(Field field) {
 		this.field = field;
 		this.players = new ArrayList<Player>();
 	}
 	
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
+		getField().updatePoints();
+	}
+
 	public void setPlayers(List<Player> players) {
 		this.players = players;
 	}

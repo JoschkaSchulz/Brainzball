@@ -115,6 +115,11 @@ public class Field extends Group {
 		orderPlayers();
 	}
 
+	public void updatePoints() {
+		getGame().setPointsTeam1(team1.getPoints());
+		getGame().setPointsTeam2(team2.getPoints());
+	}
+	
 	public static Field newInstance(int width, int height) {
 		width = (width < FIELD_WIDTH_MIN ? FIELD_WIDTH_MIN : width);
 		width = (width > FIELD_WIDTH_MAX ? FIELD_WIDTH_MAX : width);

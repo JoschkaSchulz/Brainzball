@@ -433,6 +433,7 @@ public class Fight extends Group {
 				if(right.hasBall()) {
 					left.getField().getBall().setPositionXY(left.getPositionX(), left.getPositionY());
 					left.setBallIdle(true);
+					left.getTeam().setPoints(left.getTeam().getPoints()+1);
 					right.setBallIdle(false);
 				}
 			} else if (result == 2) {
@@ -440,6 +441,7 @@ public class Fight extends Group {
 				if(left.hasBall()) {
 					right.getField().getBall().setPositionXY(right.getPositionX(), right.getPositionY());
 					right.setBallIdle(true);
+					right.getTeam().setPoints(left.getTeam().getPoints()+1);
 					left.setBallIdle(false);
 				}
 			}
