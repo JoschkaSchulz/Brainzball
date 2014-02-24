@@ -42,7 +42,7 @@ public class BrainzBalls implements ApplicationListener {
 	}
 
 	public void resize (int width, int height) {
-	    stage.setViewport(width, height, true);
+	    stage.setViewport(width, height, false);
 	}
 
 	public void render () {
