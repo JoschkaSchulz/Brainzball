@@ -20,6 +20,9 @@ public class ResourceLoader {
 	public static TextureRegion MENU_BACKGROUND_SKY;
 	public static TextureRegion MENU_GROUND;
 
+	public static TextureRegion HEART_FULL;
+	public static TextureRegion HEART_EMPTY;
+	
 	public static TextureRegion TILE_GOOD[];
 	public static TextureRegion TILE_NORMAL[];
 	public static TextureRegion TILE_BAD[];
@@ -44,6 +47,9 @@ public class ResourceLoader {
 		CLOUD[2] = new TextureRegion(new Texture(Gdx.files.internal(path+"/Menu/Cloud3.png")));
 		MENU_BACKGROUND_SKY = new TextureRegion(new Texture(Gdx.files.internal(path+"/Menu/MenuBackgroundSky.png")));
 		MENU_GROUND = new TextureRegion(new Texture(Gdx.files.internal(path+"/Menu/MenuGround.png")));
+		
+		HEART_FULL = new TextureRegion(new Texture(Gdx.files.internal(path+"/heart_full.png")));
+		HEART_EMPTY = new TextureRegion(new Texture(Gdx.files.internal(path+"/heart_empty.png")));
 		
 		TILE_GOOD = new TextureRegion[3];
 		TILE_GOOD[0] = new TextureRegion(new Texture(Gdx.files.internal(path+"/Field/Tiles/GrassTileNormal1.png"))); 

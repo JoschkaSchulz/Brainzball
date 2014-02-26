@@ -17,6 +17,7 @@ import com.esotericsoftware.spine.SkeletonRenderer;
 
 import de.brainzballs.game.footballfield.Field;
 import de.brainzballs.game.footballfield.Tile;
+import de.brainzballs.helper.ResourceLoader;
 
 public class Player extends Actor {
 	
@@ -29,6 +30,9 @@ public class Player extends Actor {
 	public static final int SOUTH  	= 2;
 	public static final int EAST 	= 3;
 	
+	
+	private int maxHealth;
+	private int currentHealth;
 	private LinkedList<Tile> moveList;
 	private Team team;
 	private int x, y;
@@ -50,6 +54,8 @@ public class Player extends Actor {
 	private Player(int x, int y, PlayerType playerType, int direction, Team team) {
 		this.x = x;
 		this.y = y;
+		this.maxHealth = 5;
+		this.currentHealth = maxHealth;
 		this.offended = 0;
 		this.playerType = playerType;
 		this.idleTimer = (float) (Math.random()*10);
@@ -282,7 +288,7 @@ public class Player extends Actor {
 	}
 
 	public void addMovePoints(List<Tile> list) {
-		this.moveList.addAll(list);
+		if(!isDead()) this.moveList.addAll(list);
 	}
 	
 	public void setPositionXY(int x, int y) {
@@ -339,9 +345,21 @@ public class Player extends Actor {
 		}
 	}
 	
+	public boolean isDead() {
+		return currentHealth <= 0;
+	}
+	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
+		
+		for(int i = 0; i < maxHealth; i++) {
+			if(currentHealth > i) {
+				batch.draw(ResourceLoader.HEART_FULL, skeleton.getX()-48, skeleton.getY()+(i*16), 16, 16);
+			}else{
+				batch.draw(ResourceLoader.HEART_EMPTY, skeleton.getX()-48, skeleton.getY()+(i*16), 16, 16);
+			}
+		}
 		
 		renderer.draw(batch, skeleton);
 	}
