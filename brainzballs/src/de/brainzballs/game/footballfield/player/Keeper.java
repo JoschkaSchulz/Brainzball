@@ -1,5 +1,6 @@
 package de.brainzballs.game.footballfield.player;
 
+import de.brainzballs.game.footballfield.player.Player.PlayerType;
 import de.brainzballs.game.footballfield.team.Team;
 
 public class Keeper extends Player {
@@ -25,7 +26,21 @@ public class Keeper extends Player {
 	/*************************************************************************************
 	 *				getter and setter
 	 *************************************************************************************/	
-
+	@Override
+	public int getMoveRadius() {
+		return 2;
+		
+	}
+	
+	@Override
+	public int getPassRadius() {
+		return 10;
+	}
+	
+	@Override
+	public int getShotRadius() {
+		return 10;
+	}
 	/*************************************************************************************
 	 *				methods
 	 *************************************************************************************/	

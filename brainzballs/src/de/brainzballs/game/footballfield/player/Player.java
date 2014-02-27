@@ -109,6 +109,10 @@ public abstract class Player extends Actor {
 	 *				getter and setter
 	 *************************************************************************************/
 	
+	abstract public int getMoveRadius();
+	abstract public int getPassRadius();
+	abstract public int getShotRadius();
+	
 	public void setBallIdle(boolean ballIdle) {
 		if(ballIdle) {
 			state.setAnimation(0, ANIMATION_IDLE_BALL, true);
@@ -143,45 +147,6 @@ public abstract class Player extends Actor {
 
 	public boolean isOffended() {
 		return offended > 0;
-	}
-	
-	public int getMoveRadius() {
-		if (playerType == PlayerType.KEEPER)
-			return 2;
-		if (playerType == PlayerType.DEFENDER)
-			return 4;
-		if (playerType == PlayerType.MIDFIELDER)
-			return 6;
-		if (playerType == PlayerType.STRIKER)
-			return 8;
-		else
-			return 0;
-	}
-	
-	public int getPassRadius() {
-		if (playerType == PlayerType.KEEPER)
-			return 10;
-		if (playerType == PlayerType.DEFENDER)
-			return 8;
-		if (playerType == PlayerType.MIDFIELDER)
-			return 6;
-		if (playerType == PlayerType.STRIKER)
-			return 4;
-		else
-			return 0;
-	}
-	
-	public int getShotRadius() {
-		if (playerType == PlayerType.KEEPER)
-			return 10;
-		if (playerType == PlayerType.DEFENDER)
-			return 4;
-		if (playerType == PlayerType.MIDFIELDER)
-			return 6;
-		if (playerType == PlayerType.STRIKER)
-			return 8;
-		else
-			return 0;
 	}
 	
 	public boolean hasBall() {

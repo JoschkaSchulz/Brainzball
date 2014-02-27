@@ -1,5 +1,6 @@
 package de.brainzballs.game.footballfield.player;
 
+import de.brainzballs.game.footballfield.player.Player.PlayerType;
 import de.brainzballs.game.footballfield.team.Team;
 
 public class Midfielder extends Player {
@@ -25,7 +26,20 @@ public class Midfielder extends Player {
 	/*************************************************************************************
 	 *				getter and setter
 	 *************************************************************************************/	
-
+	@Override
+	public int getMoveRadius() {
+		return 6;
+	}
+	
+	@Override
+	public int getPassRadius() {
+		return 6;
+	}
+	
+	@Override
+	public int getShotRadius() {
+		return 6;
+	}
 	/*************************************************************************************
 	 *				methods
 	 *************************************************************************************/	
