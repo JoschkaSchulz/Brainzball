@@ -2,6 +2,7 @@ package de.brainzballs.manu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -59,7 +60,8 @@ public class MainMenu extends Group {
 			
 			//Set the default animation on idle
 			rightState.setAnimation(0, "idle1", true);
-			rightState.addAnimation(0, "run", true,new Float(Math.random() * 5));
+			int runRandom = (int) (Math.round(Math.random()*2)+1);
+			rightState.addAnimation(0, (runRandom == 1 ? "run" : "run"+runRandom), true,new Float(Math.random() * 5));
 		}
 		
 		public AnimationState getState() {
@@ -144,7 +146,7 @@ public class MainMenu extends Group {
 	}
 	
 	private void createZombie() {
-		for(int i = 0; i < 25; i++) {
+		for(int i = 0; i < 15; i++) {
 			zombies.add(new HunterZombie((int)(-(Math.random()*1000)-500)));
 		}
 	}

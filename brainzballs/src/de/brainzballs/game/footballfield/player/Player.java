@@ -191,10 +191,20 @@ public abstract class Player extends Actor {
 		return currentHealth <= 0;
 	}
 	
+	public int getCurrentHealth() {
+		return currentHealth;
+	}
+
+	public void setCurrentHealth(int currentHealth) {
+		this.currentHealth = currentHealth;
+	}
+	
 	/*************************************************************************************
 	 *				methods
 	 *************************************************************************************/
 	
+	
+
 	/**
 	 * This method loads all the Spine data
 	 */
@@ -262,7 +272,6 @@ public abstract class Player extends Actor {
 	public void decrementOffended() {
 		if (offended > 0){
 			offended--;
-			currentHealth--;
 			if(offended <= 0 && !isDead()) {
 				state.setAnimation(0, "stunnedstandup", false);
 				state.addAnimation(0, "idle1", true, state.getCurrent(0).getTime());
@@ -366,6 +375,8 @@ public abstract class Player extends Actor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
+
+		renderer.draw(batch, skeleton);
 		
 		for(int i = 0; i < maxHealth; i++) {
 			if(currentHealth > i) {
@@ -374,8 +385,6 @@ public abstract class Player extends Actor {
 				batch.draw(ResourceLoader.HEART_EMPTY, skeleton.getX()-48, skeleton.getY()+(i*16), 16, 16);
 			}
 		}
-		
-		renderer.draw(batch, skeleton);
 	}
 	
 	/**
@@ -388,7 +397,7 @@ public abstract class Player extends Actor {
 		if(moveTile == null) {
 			this.idleTimer += delta;
 		
-			if(idleTimer >= 15 && !hasBall() && this.offended <= 0) {
+			if(idleTimer >= 15 && !hasBall() && this.offended <= 0 && !isDead()) {
 				idleTimer = 0;
 				state.setAnimation(0, specialIdle[(int) Math.round(Math.random()*(specialIdle.length-1))], false);
 				state.addAnimation(0, ANIMATION_IDLE, true, state.getCurrent(0).getTime());

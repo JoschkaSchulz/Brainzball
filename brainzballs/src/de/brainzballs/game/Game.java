@@ -111,14 +111,6 @@ public class Game extends Group {
 				field.getY() + - (pass.getHeight()/2));
 	}
 	
-	private void eventHandling() {
-		
-	}
-	
-	private void actionHandling() {
-		
-	}
-	
 	public void setCurrentState(int state) {
 		currentState = state;
 		if (currentState == STATE_ACTION_CHOOSE) {
