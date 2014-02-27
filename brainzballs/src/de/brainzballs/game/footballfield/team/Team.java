@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.brainzballs.game.footballfield.Field;
 import de.brainzballs.game.footballfield.Tile;
+import de.brainzballs.game.footballfield.player.Player;
 import de.brainzballs.game.overlay.Fight;
 
 public class Team {

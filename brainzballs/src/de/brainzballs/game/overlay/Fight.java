@@ -19,7 +19,7 @@ import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 
-import de.brainzballs.game.footballfield.team.Player;
+import de.brainzballs.game.footballfield.player.Player;
 import de.brainzballs.helper.ResourceLoader;
 
 public class Fight extends Group {

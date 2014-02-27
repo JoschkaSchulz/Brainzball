@@ -11,13 +11,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import de.brainzballs.BrainzBalls;
 import de.brainzballs.game.Game;
-import de.brainzballs.game.footballfield.team.Player;
+import de.brainzballs.game.footballfield.player.Player;
+import de.brainzballs.game.footballfield.player.PlayerFactory;
 import de.brainzballs.game.footballfield.team.Team;
-import de.brainzballs.game.overlay.Fight;
 import de.brainzballs.helper.ResourceLoader;
 
 public class Field extends Group {
@@ -74,21 +73,12 @@ public class Field extends Group {
 		// Create team1 with players on the left
 		team1 = new Team(this);
 		List<Player> players = new ArrayList<Player>();
-		players.add(Player.newInstance(0, verticalCenter,
-				Player.PlayerType.KEEPER, Player.EAST, team1));
-		players.add(Player.newInstance(2, verticalCenter - 3,
-				Player.PlayerType.DEFENDER, Player.EAST, team1));
-		players.get(players.size()-1).setName("down");
-		players.add(Player.newInstance(2, verticalCenter + 3,
-				Player.PlayerType.DEFENDER, Player.EAST, team1));
-		players.get(players.size()-1).setName("up");
-		players.add(Player.newInstance(4, verticalCenter,
-				Player.PlayerType.MIDFIELDER, Player.EAST, team1));
-		players.get(players.size()-1).setName("mid");
-		players.add(Player.newInstance(6, verticalCenter - 1,
-				Player.PlayerType.STRIKER, Player.EAST, team1));
-		players.add(Player.newInstance(6, verticalCenter + 1,
-				Player.PlayerType.STRIKER, Player.EAST, team1));
+		players.add(PlayerFactory.newKeeperInstance(0, verticalCenter, Player.EAST, team1));
+		players.add(PlayerFactory.newDefenderInstance(2, verticalCenter-3, Player.EAST, team1));
+		players.add(PlayerFactory.newDefenderInstance(2, verticalCenter+3, Player.EAST, team1));
+		players.add(PlayerFactory.newMidfielderInstance(4, verticalCenter, Player.EAST, team1));
+		players.add(PlayerFactory.newStrikerInstance(6, verticalCenter-1, Player.EAST, team1));
+		players.add(PlayerFactory.newStrikerInstance(6, verticalCenter+1, Player.EAST, team1));
 		for (Player p : players)
 			addActor(p);
 		team1.setPlayers(players);
@@ -96,18 +86,12 @@ public class Field extends Group {
 		// create team2 with players on the right
 		team2 = new Team(this);
 		players = new ArrayList<Player>();
-		players.add(Player.newInstance(width - 1, verticalCenter,
-				Player.PlayerType.KEEPER, Player.WEST, team2));
-		players.add(Player.newInstance(width - 3, verticalCenter - 3,
-				Player.PlayerType.DEFENDER, Player.WEST, team2));
-		players.add(Player.newInstance(width - 3, verticalCenter + 3,
-				Player.PlayerType.DEFENDER, Player.WEST, team2));
-		players.add(Player.newInstance(width - 5, verticalCenter,
-				Player.PlayerType.MIDFIELDER, Player.WEST, team2));
-		players.add(Player.newInstance(width - 7, verticalCenter - 1,
-				Player.PlayerType.STRIKER, Player.WEST, team2));
-		players.add(Player.newInstance(width - 7, verticalCenter + 1,
-				Player.PlayerType.STRIKER, Player.WEST, team2));
+		players.add(PlayerFactory.newKeeperInstance(width - 1, verticalCenter, Player.WEST, team2));
+		players.add(PlayerFactory.newDefenderInstance(width - 3, verticalCenter-3, Player.WEST, team2));
+		players.add(PlayerFactory.newDefenderInstance(width - 3, verticalCenter+3, Player.WEST, team2));
+		players.add(PlayerFactory.newMidfielderInstance(width - 5, verticalCenter, Player.WEST, team2));
+		players.add(PlayerFactory.newStrikerInstance(width - 7, verticalCenter-1, Player.WEST, team2));
+		players.add(PlayerFactory.newStrikerInstance(width - 7, verticalCenter+1, Player.WEST, team2));
 		for (Player p : players)
 			addActor(p);
 		team2.setPlayers(players);
