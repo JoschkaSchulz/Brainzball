@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.esotericsoftware.spine.Animation;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationState.AnimationStateListener;
@@ -24,6 +25,10 @@ import de.brainzballs.helper.ResourceLoader;
 
 public class Fight extends Group {
 
+	/*************************************************************************************
+	 *				variables
+	 *************************************************************************************/
+	
 	public static final int SELECTION_SCISSORS 	= 0;
 	public static final int SELECTION_ROCK 		= 1;
 	public static final int SELECTION_PAPER 	= 2;
@@ -41,7 +46,25 @@ public class Fight extends Group {
 	private Table actions;
 	private float timer;
 	
+	//left player fields
+	private SkeletonData leftSkeletonData;
+	private SkeletonRenderer leftRenderer;
+	private Animation leftRun, leftRunBall;
+	private Skeleton leftSkeleton;
+	private AnimationState leftState;
+	
+	//right player fields
+	private SkeletonData rightSkeletonData;
+	private SkeletonRenderer rightRenderer;
+	private Skeleton rightSkeleton;
+	private AnimationState rightState;
+	
+	//the both player references
 	private Player left, right;
+	
+	/*************************************************************************************
+	 *				constructor
+	 *************************************************************************************/
 	
 	public Fight(Player left, Player right) {
 		this.left = left;
@@ -73,6 +96,10 @@ public class Fight extends Group {
 		createRightPlayer();
 	}
 
+	/*************************************************************************************
+	 *				methods
+	 *************************************************************************************/
+	
 	private void createActionUI() {
 		actions = new Table();
 		TextButton pass = new TextButton("Kopf", ResourceLoader.SKIN);
@@ -108,11 +135,6 @@ public class Fight extends Group {
 		addActor(actions);
 	}
 
-	private SkeletonData leftSkeletonData;
-	private SkeletonRenderer leftRenderer;
-	private Animation leftRun, leftRunBall;
-	private Skeleton leftSkeleton;
-	private AnimationState leftState;
 	private void createLeftPlayer() {
 		//Loading Player Skeleton and Animation
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/"+(left.isZombie()?"Zombie/Zombie":"Player/Player")+".atlas"));
@@ -139,11 +161,6 @@ public class Fight extends Group {
 		leftState.setAnimation(0, "run", true);
 	}
 	
-	private SkeletonData rightSkeletonData;
-	private SkeletonRenderer rightRenderer;
-	private Animation rightRun, rightrunBall;
-	private Skeleton rightSkeleton;
-	private AnimationState rightState;
 	private void createRightPlayer() {
 		//Loading Player Skeleton and Animation
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/Field/"+(right.isZombie()?"Zombie/Zombie":"Player/Player")+".atlas"));
@@ -389,6 +406,7 @@ public class Fight extends Group {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		
 		//drawing the overlay
 		batch.draw(ResourceLoader.OVERLAY_BACKGROUND, 0, 0, 1280, 720);
 	

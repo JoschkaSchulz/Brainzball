@@ -55,7 +55,7 @@ public class Team {
 	
 	public void fight() {
 		for (Player p : players) {
-			if (!p.isOffended()) {
+			if (!p.isOffended() && !p.isDead()) {
 				List<Tile> nextTiles = p.getTile().getNeighbours();
 				for (Tile nextTile : nextTiles) {
 					Player enemy = getField().getOpponentPlayerOnPosition(nextTile.getPositionX(), nextTile.getPositionY());
