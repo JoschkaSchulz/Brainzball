@@ -21,6 +21,10 @@ import de.brainzballs.helper.ResourceLoader;
 
 public class Player extends Actor {
 	
+	/*************************************************************************************
+	 *				variables
+	 *************************************************************************************/
+	
 	public enum PlayerType {
 	    KEEPER, DEFENDER, MIDFIELDER, STRIKER
 	}
@@ -47,9 +51,17 @@ public class Player extends Actor {
 	private SkeletonRenderer renderer;
 	private SkeletonData skeletonData;
 	
+	private boolean isRunning = false;
+	private Tile moveTile;
+	private float speed = 150;					//Animation speed
+	
 	private String headString;
 	private String teamString;
 	private boolean zombie;
+	
+	/*************************************************************************************
+	 *				Constructor
+	 *************************************************************************************/	
 	
 	private Player(int x, int y, PlayerType playerType, int direction, Team team) {
 		this.x = x;
@@ -137,6 +149,10 @@ public class Player extends Actor {
 		return new Player(x, y, playerType, direction, team);
 	}
 	
+	/*************************************************************************************
+	 *				getter and setter
+	 *************************************************************************************/
+	
 	public void setBallIdle(boolean ballIdle) {
 		if(ballIdle) {
 			state.setAnimation(0, idleBall, true);
@@ -171,24 +187,6 @@ public class Player extends Actor {
 
 	public boolean isOffended() {
 		return offended > 0;
-	}
-	
-	public void incrementOffended() {
-		if(offended <= 0) {
-			state.setAnimation(0, "stunned", false);
-			state.addAnimation(0, "stunnedloop", true, state.getCurrent(0).getTime());
-		}
-		offended++;
-	}
-	
-	public void decrementOffended() {
-		if (offended > 0){
-			offended--;
-			if(offended <= 0) {
-				state.setAnimation(0, "stunnedstandup", false);
-				state.addAnimation(0, "idle1", true, state.getCurrent(0).getTime());
-			}
-		}
 	}
 	
 	public int getMoveRadius() {
@@ -262,6 +260,53 @@ public class Player extends Actor {
 		return jailed;
 	}
 	
+	public void setPositionXY(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public AnimationState getState() {
+		return state;
+	}
+	
+	public boolean isDead() {
+		return currentHealth <= 0;
+	}
+	
+	/*************************************************************************************
+	 *				methods
+	 *************************************************************************************/
+	
+	/**
+	 * This method increments the oddended for this player
+	 */
+	public void incrementOffended() {
+		if(offended <= 0 && !isDead()) {
+			state.setAnimation(0, "stunned", false);
+			state.addAnimation(0, "stunnedloop", true, state.getCurrent(0).getTime());
+		}
+		offended++;
+	}
+	
+	/**
+	 * This method decrements the offended for this player
+	 */
+	public void decrementOffended() {
+		if (offended > 0){
+			offended--;
+			currentHealth--;
+			if(offended <= 0 && !isDead()) {
+				state.setAnimation(0, "stunnedstandup", false);
+				state.addAnimation(0, "idle1", true, state.getCurrent(0).getTime());
+			}else if(isDead()) {
+				state.setAnimation(0, "die", false);
+			}
+		}
+	}
+	
+	/**
+	 * hashCode for equasls
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -271,6 +316,9 @@ public class Player extends Actor {
 		return result;
 	}
 
+	/**
+	 * equals method
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -287,22 +335,20 @@ public class Player extends Actor {
 		return true;
 	}
 
+	/**
+	 * Add a List of points to the movement of this player. The list will be 
+	 * added on the end of the movement list from the player
+	 * 
+	 * @param list a list of Tiles for each movement
+	 */
 	public void addMovePoints(List<Tile> list) {
 		if(!isDead()) this.moveList.addAll(list);
 	}
 	
-	public void setPositionXY(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-	
-	
-	
-	public AnimationState getState() {
-		return state;
-	}
-
-	private  void checkLastMove() {
+	/**
+	 * This method is fired after the last move of the player
+	 */
+	private  void lastMove() {
 		setPositionXY(moveTile.getPositionX(), moveTile.getPositionY());
 		state.setAnimation(0, idle, true);
 		isRunning = false;
@@ -314,9 +360,10 @@ public class Player extends Actor {
 		
 		getField().endFieldAction();
 	}
-	
-	private boolean isRunning = false;
-	private Tile moveTile;
+		
+	/**
+	 * handles the movement list of the player, if an element is in it
+	 */
 	private void hanldeMoveList() {
 		//First start
 		if(!isRunning && moveList.size() > 0) {
@@ -344,11 +391,10 @@ public class Player extends Actor {
 			moveList.removeFirst();
 		}
 	}
-	
-	public boolean isDead() {
-		return currentHealth <= 0;
-	}
-	
+		
+	/**
+	 * libGDX draw method
+	 */
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
@@ -363,8 +409,10 @@ public class Player extends Actor {
 		
 		renderer.draw(batch, skeleton);
 	}
-
-	private float speed = 150;
+	
+	/**
+	 * libGDX act method
+	 */
 	@Override
 	public void act(float delta) {
 		super.act(delta);
@@ -383,7 +431,7 @@ public class Player extends Actor {
 				if((moveTile.getPositionX()*64)+32 < skeleton.getX()) {
 					skeleton.setX((moveTile.getPositionX()*64)+32);
 					if(moveList.size() == 0) {
-						checkLastMove();
+						lastMove();
 					}
 					setPositionXY(moveTile.getPositionX(), moveTile.getPositionY());
 					getField().orderPlayers();
@@ -394,7 +442,7 @@ public class Player extends Actor {
 				if((moveTile.getPositionX()*64)+32 > skeleton.getX()) {
 					skeleton.setX((moveTile.getPositionX()*64)+32);
 					if(moveList.size() == 0) {
-						checkLastMove();
+						lastMove();
 					}
 					setPositionXY(moveTile.getPositionX(), moveTile.getPositionY());
 					getField().orderPlayers();
@@ -405,7 +453,7 @@ public class Player extends Actor {
 				if((moveTile.getPositionY()*64)+32 > skeleton.getY()) {
 					skeleton.setY((moveTile.getPositionY()*64)+32);
 					if(moveList.size() == 0) {
-						checkLastMove();
+						lastMove();
 					}
 					setPositionXY(moveTile.getPositionX(), moveTile.getPositionY());
 					getField().orderPlayers();
@@ -416,7 +464,7 @@ public class Player extends Actor {
 				if((moveTile.getPositionY()*64)+32 < skeleton.getY()) {
 					skeleton.setY((moveTile.getPositionY()*64)+32);
 					if(moveList.size() == 0) {
-						checkLastMove();
+						lastMove();
 					}
 					setPositionXY(moveTile.getPositionX(), moveTile.getPositionY());
 					getField().orderPlayers();
