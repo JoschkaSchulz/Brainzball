@@ -15,8 +15,6 @@ public class Defender extends Player {
 	
 	protected Defender(int x, int y, int direction, Team team) {
 		super(x, y, Player.PlayerType.DEFENDER , direction, team);
-		maxHealth = 5;
-		currentHealth = maxHealth;
 	}
 	
 	public static Defender newInstance(int x, int y, int direction, Team team) {
@@ -40,16 +38,14 @@ public class Defender extends Player {
 	public int getShotRadius() {
 		return 4;
 	}
-	/*************************************************************************************
-	 *				methods
-	 *************************************************************************************/	
 	
 	@Override
-	protected void loadSpineSkeleton() {
-		super.loadSpineSkeleton();
-		
-		skeletonData.findSlot("Head").setAttachmentName("Head2");
-		this.headString = "Head2";
-		skeleton.setToSetupPose();
+	public int getMaxHealth() {
+		return 3;
+	}
+
+	@Override
+	public String getHeadString() {
+		return "Head2";
 	}
 }

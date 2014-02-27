@@ -15,8 +15,6 @@ public class Midfielder extends Player {
 	
 	protected Midfielder(int x, int y, int direction, Team team) {
 		super(x, y, Player.PlayerType.MIDFIELDER , direction, team);
-		maxHealth = 5;
-		currentHealth = maxHealth;
 	}
 	
 	public static Midfielder newInstance(int x, int y, int direction, Team team) {
@@ -40,16 +38,14 @@ public class Midfielder extends Player {
 	public int getShotRadius() {
 		return 6;
 	}
-	/*************************************************************************************
-	 *				methods
-	 *************************************************************************************/	
 	
 	@Override
-	protected void loadSpineSkeleton() {
-		super.loadSpineSkeleton();
-		
-		skeletonData.findSlot("Head").setAttachmentName("Head3");
-		this.headString = "Head3";
-		skeleton.setToSetupPose();
+	public int getMaxHealth() {
+		return 2;
+	}
+
+	@Override
+	public String getHeadString() {
+		return "Head3";
 	}
 }

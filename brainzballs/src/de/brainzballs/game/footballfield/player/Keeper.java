@@ -15,8 +15,6 @@ public class Keeper extends Player {
 	
 	protected Keeper(int x, int y, int direction, Team team) {
 		super(x, y, Player.PlayerType.KEEPER , direction, team);
-		maxHealth = 5;
-		currentHealth = maxHealth;
 	}
 	
 	public static Keeper newInstance(int x, int y, int direction, Team team) {
@@ -29,7 +27,6 @@ public class Keeper extends Player {
 	@Override
 	public int getMoveRadius() {
 		return 2;
-		
 	}
 	
 	@Override
@@ -41,16 +38,14 @@ public class Keeper extends Player {
 	public int getShotRadius() {
 		return 10;
 	}
-	/*************************************************************************************
-	 *				methods
-	 *************************************************************************************/	
 	
 	@Override
-	protected void loadSpineSkeleton() {
-		super.loadSpineSkeleton();
-		
-		skeletonData.findSlot("Head").setAttachmentName("Head4");
-		this.headString = "Head4";
-		skeleton.setToSetupPose();
+	public int getMaxHealth() {
+		return 5;
+	}
+
+	@Override
+	public String getHeadString() {
+		return "Head4";
 	}
 }

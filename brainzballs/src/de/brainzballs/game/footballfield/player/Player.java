@@ -72,7 +72,6 @@ public abstract class Player extends Actor {
 	private float speed = 150;					//Animation speed
 	
 	//fighting strings
-	protected String headString;				//the head index of the player
 	private String teamString;					//the team index of the player
 	private boolean zombie;						//is the player a zombie
 	
@@ -92,8 +91,8 @@ public abstract class Player extends Actor {
 	protected Player(int x, int y, PlayerType playerType, int direction, Team team) {
 		this.x = x;
 		this.y = y;
-		this.maxHealth = 5;
-		this.currentHealth = maxHealth;
+		this.maxHealth = getMaxHealth();
+		this.currentHealth = getMaxHealth();
 		this.offended = 0;
 		this.playerType = playerType;
 		this.idleTimer = (float) (Math.random()*10);
@@ -106,12 +105,18 @@ public abstract class Player extends Actor {
 	}
 	
 	/*************************************************************************************
-	 *				getter and setter
+	 *				abstract methods
 	 *************************************************************************************/
 	
 	abstract public int getMoveRadius();
 	abstract public int getPassRadius();
 	abstract public int getShotRadius();
+	abstract public int getMaxHealth();
+	abstract public String getHeadString();
+	
+	/*************************************************************************************
+	 *				getter and setter
+	 *************************************************************************************/
 	
 	public void setBallIdle(boolean ballIdle) {
 		if(ballIdle) {
@@ -119,14 +124,6 @@ public abstract class Player extends Actor {
 		}else{
 			state.setAnimation(0, ANIMATION_IDLE, true);
 		}
-	}
-	
-	public String getHeadString() {
-		return headString;
-	}
-
-	public void setHeadString(String headString) {
-		this.headString = headString;
 	}
 
 	public String getTeamString() {
@@ -224,6 +221,9 @@ public abstract class Player extends Actor {
 		//create the skeleton from the skeleton data and update it with the world coordinates
 		skeleton = new Skeleton(skeletonData);
 		skeleton.updateWorldTransform();
+		
+		//Setting up the head
+		skeletonData.findSlot("Head").setAttachmentName(getHeadString());
 		
 		//setting up the team
 		if(zombie) skeleton.setFlipX(true);

@@ -15,8 +15,6 @@ public class Striker extends Player {
 	
 	protected Striker(int x, int y, int direction, Team team) {
 		super(x, y, Player.PlayerType.STRIKER , direction, team);
-		maxHealth = 5;
-		currentHealth = maxHealth;
 	}
 	
 	public static Striker newInstance(int x, int y, int direction, Team team) {
@@ -40,16 +38,14 @@ public class Striker extends Player {
 	public int getShotRadius() {
 		return 8;
 	}
-	/*************************************************************************************
-	 *				methods
-	 *************************************************************************************/	
 	
 	@Override
-	protected void loadSpineSkeleton() {
-		super.loadSpineSkeleton();
-		
-		skeletonData.findSlot("Head").setAttachmentName("Head");
-		this.headString = "Head";
-		skeleton.setToSetupPose();
+	public int getMaxHealth() {
+		return 1;
+	}
+
+	@Override
+	public String getHeadString() {
+		return "Head";
 	}
 }
