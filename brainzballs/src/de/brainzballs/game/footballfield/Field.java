@@ -144,7 +144,7 @@ public class Field extends Group {
 	
 	private void setCurrentPlayer(int x, int y, Team team) {
 		for (Player p : team.getPlayers())
-			if (p.getPositionX() == x && p.getPositionY() == y && !p.isOffended())
+			if (p.getPositionX() == x && p.getPositionY() == y && !p.isOffended() && !p.isDead())
 				currentPlayer = p;
 	}
 	
@@ -456,6 +456,24 @@ public class Field extends Group {
 			result = isTeamOnPosition(x, y, team1);
 		}
 		return result;
+	}
+	
+	public Player getHealOpponentPlayerOnPosition(int x, int y) {
+		Player result = null;
+		if (getGame().getCurrentTeam() == Game.TEAM_1) {
+			result = getHealOpponentPlayerOnPosition(x, y, team2);
+		} else if (getGame().getCurrentTeam() == Game.TEAM_2) {
+			result = getHealOpponentPlayerOnPosition(x, y, team1);
+		}
+		return result;
+	}
+	
+	private Player getHealOpponentPlayerOnPosition(int x, int y, Team team) {
+		for (Player p : team.getPlayers())
+			if (p.getPositionX() == x && p.getPositionY() == y && !p.isOffended() && !p.isDead())
+				return p;
+		
+		return null;
 	}
 	
 	public Player getOpponentPlayerOnPosition(int x, int y) {
