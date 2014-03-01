@@ -443,7 +443,7 @@ public class Field extends Group {
 		boolean result = false;
 		Player enemy = getOpponentPlayerOnPosition(x, y);
 		if (enemy != null)
-			result = !enemy.isOffended();
+			result = !enemy.isOffended() && !enemy.isDead();
 		
 		return result;
 	}
@@ -492,7 +492,7 @@ public class Field extends Group {
 	
 	public boolean isTeamOnPosition(int x, int y, Team team) {
 		for (Player p : team.getPlayers())
-			if (p.getPositionX() == x && p.getPositionY() == y)
+			if (p.getPositionX() == x && p.getPositionY() == y && !p.isDead())
 				return true;
 		
 		return false;
