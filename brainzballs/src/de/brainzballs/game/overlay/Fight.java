@@ -444,8 +444,10 @@ public class Fight extends Group {
 		}else if(state == STATE_END) {
 			int result = whoWon();
 			if (result == 0) {
-				left.incrementOffended();
-				right.incrementOffended();
+				right.setCurrentHealth(right.getCurrentHealth()-1);
+				left.setCurrentHealth(left.getCurrentHealth()-1);
+				if(right.getCurrentHealth() > 0) right.incrementOffended();
+				if(left.getCurrentHealth() > 0) left.incrementOffended();
 			} else if (result == 1) {
 				right.setCurrentHealth(right.getCurrentHealth()-1);
 				if(right.getCurrentHealth() > 0) {
