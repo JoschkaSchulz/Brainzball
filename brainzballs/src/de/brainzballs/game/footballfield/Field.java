@@ -144,7 +144,7 @@ public class Field extends Group {
 	
 	private void setCurrentPlayer(int x, int y, Team team) {
 		for (Player p : team.getPlayers())
-			if (p.getPositionX() == x && p.getPositionY() == y && !p.isOffended())
+			if (p.getPositionX() == x && p.getPositionY() == y && !p.isOffended() && !p.isDead())
 				currentPlayer = p;
 	}
 	
