@@ -446,8 +446,20 @@ public class Fight extends Group {
 			if (result == 0) {
 				right.setCurrentHealth(right.getCurrentHealth()-1);
 				left.setCurrentHealth(left.getCurrentHealth()-1);
-				if(right.getCurrentHealth() > 0) right.incrementOffended();
-				if(left.getCurrentHealth() > 0) left.incrementOffended();
+				if(right.getCurrentHealth() > 0) {
+					right.incrementOffended();
+					right.getState().setAnimation(0, "stunned", false);
+					right.getState().addAnimation(0, "stunnedloop", true, right.getState().getCurrent(0).getTime());
+				}else{
+					right.getState().setAnimation(0, "die", false);
+				}
+				if(left.getCurrentHealth() > 0) {
+					left.incrementOffended();
+					left.getState().setAnimation(0, "stunned", false);
+					left.getState().addAnimation(0, "stunnedloop", true, left.getState().getCurrent(0).getTime());
+				}else{
+					left.getState().setAnimation(0, "die", false);
+				}
 			} else if (result == 1) {
 				right.setCurrentHealth(right.getCurrentHealth()-1);
 				if(right.getCurrentHealth() > 0) {
